@@ -1,114 +1,82 @@
-# Ja zum Kunstmuseum — Fundraising Landing Page (Prototype)
+# Ja zum Kunsthaus — Campaign Image Generator (Prototype)
 
-A single-page fundraising landing page for an art museum. Mostly static marketing
-content plus **one interactive feature**: a box where a visitor describes how their
-personal *"Ja zum Kunstmuseum"* poster should look, and the app generates it with an
-AI image model. The result can be viewed and downloaded.
+A mostly-static **Statamic 6** landing page for the *Kunsthaus* vote/fundraising
+campaign with one interactive feature: a visitor uploads a portrait, picks a
+**"JA" painting technique**, enters their name, and the app composites a
+shareable poster image — **deterministically, with no generative AI anywhere**.
 
-> **Prototype** — prioritises a clean end-to-end flow over production hardening.
-> Deferred production concerns are marked with `// PROD:` comments in the code.
+> **Prototype scope (Build Brief v7, Phases 1–2).** Upload → composite → preview.
+> No DB record, moderation, email or live gallery yet — those are later phases,
+> stubbed with `// PROD:` / `PROD:` markers. See `docs/kunsthaus-build-brief-v7.md`.
 
 ## Stack
 
 - **Laravel 13** (PHP 8.4) under Laravel Herd
-- **Vue 3** (`<script setup>`) mounted as an island into a Blade view via Vite
+- **Statamic 6** (flat-file content + eloquent CP users) — landing page, JA-styles
+  collection, Control Panel
+- **Vue 3** (`<script setup>`) island mounted into the Antlers `home` template via Vite
 - **Tailwind CSS v4**
-- Image generation via the first-party **Laravel AI SDK** (`laravel/ai`) →
-  OpenAI **`gpt-image-1`** at 1024×1024
+- **Intervention Image (GD driver)** for server-side compositing — no Imagick dependency
+- **@imgly/background-removal** for the optional **client-side** (in-browser) cutout
 
-## How it works
+## What works in this prototype
 
-```
-Vue <ImageGenerator>  ──POST /api/generate-image { prompt }──▶  ImageGenerationController
-                                                                  ├─ validate (3–300 chars)
-                                                                  ├─ throttle 10/min + daily cap
-                                                                  ├─ PromptBuilder (brand template + denylist)
-                                                                  └─ ImageGeneratorContract ─▶ Laravel AI SDK ─▶ OpenAI
-                                                                       │
-                       ◀── { id, url } ── stores PNG to storage/app/public/generations/{uuid}.png
-```
+- Statamic landing page at `/` (hero, "why", generator, **placeholder** gallery) and CP at `/cp`.
+- `ja_styles` Statamic collection (label + transparent-PNG asset + order) → drives the dropdown.
+- Generator island: drag/drop portrait picker, optional in-browser background removal
+  (progress UI, raw photo never leaves the device), JA-style picker with thumbnails, Vorname/Name.
+- `POST /api/generate`: validates upload, **respects EXIF orientation and strips EXIF/GPS**,
+  sanitises the name, composites portrait + JA + name + branding onto the template canvas (GD),
+  returns `{ preview_id, url }`. Synchronous, clean JSON errors, rate-limited 10/min/IP.
+- `GET /api/ja-styles`: JSON list for the dropdown.
 
-The OpenAI call sits behind `App\Contracts\ImageGeneratorContract`. Swapping providers
-(e.g. to Gemini Imagen or xAI) is a **single change in `config/image.php`** — controller
-and frontend never reference a concrete provider.
-
-## Setup
+## Local setup
 
 ```bash
 composer install
 npm install
-
-cp .env.example .env        # if you don't already have a .env
-php artisan key:generate
+cp .env.example .env && php artisan key:generate
 php artisan migrate
 php artisan storage:link
+npm run build           # or: npm run dev
+
+# Statamic CP assets (public/vendor) are gitignored — (re)publish them on deploy:
+php artisan vendor:publish --tag=statamic --force
+
+# Seed placeholder "JA" PNGs (only needed if storage/app/public/ja-styles is empty):
+php scripts/make-placeholder-ja.php
+
+# Create a Control Panel user (or use the seeded one if present):
+php artisan statamic:make:user
 ```
 
-### Required environment variables
+Visit `https://kunsthaus.ch.test/` (Herd) and `/cp` for the Control Panel.
 
-```dotenv
-OPENAI_API_KEY=sk-...       # OpenAI key with gpt-image-1 access
-IMAGE_PROVIDER=openai       # Laravel AI SDK provider
-IMAGE_MODEL=gpt-image-1     # image model
-IMAGE_QUALITY=medium        # low | medium | high (see note below)
-IMAGE_DAILY_CAP=100         # hard global generations/day ceiling
-```
+## ⚠️ Design / asset deliverables (placeholders flagged, not guessed)
 
-> **Quality vs. timeout:** generation is **synchronous**, so it must finish within
-> Herd's FastCGI read timeout (~30s). `gpt-image-1` at `high` quality regularly runs
-> longer and returns a **502** from nginx; `medium` (~18–20s) and `low` (~17s) fit
-> comfortably and look great. Keep `IMAGE_QUALITY=medium` unless/until generation is
-> moved to a queue (`[PROD]`), after which `high` becomes safe.
+- **Composite layout** — canvas size, zone positions, fonts and colours live in
+  `config/composite.php` and are **placeholders**. Update that one file when the design lands.
+- **"JA" style PNGs** — `storage/app/public/ja-styles/*.png` are placeholders generated by
+  `scripts/make-placeholder-ja.php` (watermarked "Platzhalter"). The designer delivers real
+  transparent PNGs; replace them in the CP (collection *JA-Stile*).
+- **Bundled fonts** — `resources/fonts/` ships OFL fonts (Fraunces, Instrument Sans) so the
+  GD composite renders on shared hosting; swap for the final campaign typefaces.
 
-The app is served by Herd at **https://kunstmuseum.ch.test**. The database is SQLite
-(`database/database.sqlite`), created automatically by `php artisan migrate`.
+## Licence note — background removal
 
-## Run
+`@imgly/background-removal` is **AGPL-3.0 with a paid commercial option**. This is a paid
+client deliverable, so before production either buy the @imgly commercial licence **or** swap
+to a permissively-licensed model (BiRefNet/MODNet, MIT/Apache). The cutout is gated by the
+`VITE_ENABLE_BG_REMOVAL` flag (`config/app.php` → `bg_removal_enabled`) so the swap is contained.
 
-```bash
-npm run dev      # Vite dev server (HMR) — keep running while developing
-# Herd serves the PHP app; visit https://kunstmuseum.ch.test
-```
+## Not yet built (later phases — see brief)
 
-For a production-style build of the assets:
+Confirm/submit + `GeneratedImage` record + immediate download/email (Phase 4), Runway moderation
+in the CP (Phase 5), publish notification via cron-driven queue (Phase 6), live gallery + consent
+wording (Phase 7), Turnstile/captcha. All marked in code with `PROD:`.
 
-```bash
-npm run build
-```
+## Deployment target
 
-## Testing the flow
-
-1. Open **https://kunstmuseum.ch.test** — landing content + generator are visible.
-2. Type a description (e.g. *"ein Sonnenaufgang über dem Museum mit fröhlichen Menschen"*)
-   and click **Bild generieren**. After a short wait (~5–15s) the AI image appears.
-3. Click **Bild herunterladen** to download the PNG, or **Neues Bild gestalten** to reset.
-
-Edge cases to try:
-- **Too short / empty** input → inline validation error, no API call.
-- **Off-brand input** (denylist) → friendly 422, no API call.
-- **Rapid repeats** → `throttle:10,1` returns *Too Many Attempts*.
-- **Daily cap** → past `IMAGE_DAILY_CAP` generations, a friendly "Tageslimit erreicht" message.
-- **API failure** (e.g. missing key) → clean inline error, never a stack trace.
-
-## Key files
-
-| Concern | File |
-| --- | --- |
-| Landing page | `resources/views/landing.blade.php` |
-| Vue component | `resources/js/components/ImageGenerator.vue` |
-| Controller | `app/Http/Controllers/ImageGenerationController.php` |
-| Prompt template + denylist | `app/Services/PromptBuilder.php` |
-| Generator contract | `app/Contracts/ImageGeneratorContract.php` |
-| Laravel AI implementation | `app/Services/LaravelAiImageGenerator.php` |
-| Provider/model/cap config | `config/image.php` |
-| API route | `routes/api.php` |
-
-## Deferred (`[PROD]`, out of scope)
-
-Marked with `// PROD:` in code where they'd attach:
-
-- Queued/async generation (job + status polling or websockets)
-- Persistent shareable URLs + dynamic OG/social-card meta tags
-- Full content moderation (OpenAI moderation endpoint) + Turnstile/captcha
-- Real branding, copy, fonts, legal/imprint, analytics
-- Cost dashboards / per-user accounting
+Swiss shared host (Hostpoint/Cyon/Metanet): docroot → `public/`, PHP ≥ 8.4, `memory_limit ≥ 256M`,
+compositing via GD, assets built locally and deployed, scheduler + queue driven by cron
+(no persistent daemon). Details in the brief's *Deployment / hosting* section.

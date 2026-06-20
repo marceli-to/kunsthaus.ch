@@ -47,6 +47,16 @@ return [
             'report' => false,
         ],
 
+        // Statamic asset container disk for the "JA" style PNGs.
+        'ja_styles' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/ja-styles'),
+            'url' => rtrim(env('APP_URL', 'http://localhost'), '/').'/storage/ja-styles',
+            'visibility' => 'public',
+            'throw' => false,
+            'report' => false,
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),

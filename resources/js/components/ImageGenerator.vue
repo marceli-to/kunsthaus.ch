@@ -1,251 +1,272 @@
 <script setup>
-import { computed, ref } from 'vue';
+import { ref, reactive, onMounted, computed } from 'vue';
 
-const MAX = 300;
-const MIN = 3;
+const props = defineProps({
+    bgRemovalEnabled: { type: Boolean, default: false },
+});
 
-// The campaign headline is composited onto the artwork here (not rendered by
-// the image model), so it is always correctly spelled, legible and in-frame.
-const HEADLINE = 'Ja zum Kunstmuseum';
+// ── State ────────────────────────────────────────────────────────────────
+const styles = ref([]);            // JA styles from the API
+const form = reactive({
+    firstName: '',
+    lastName: '',
+    jaStyle: '',
+    removeBg: false,
+});
 
-const prompt = ref('');
-const state = ref('idle'); // idle | loading | success | error
-const errorMessage = ref('');
-const image = ref(null); // { id, url }
-const downloading = ref(false);
+const portraitFile = ref(null);    // File to upload (cutout result or original)
+const portraitPreview = ref('');   // object URL shown in the picker
+const isDragging = ref(false);
 
-const remaining = computed(() => MAX - prompt.value.length);
-const tooLong = computed(() => prompt.value.length > MAX);
-const canSubmit = computed(
-    () => prompt.value.trim().length >= MIN && !tooLong.value && state.value !== 'loading',
+const cutoutBusy = ref(false);
+const cutoutProgress = ref(0);
+const generating = ref(false);
+const previewUrl = ref('');
+const error = ref('');
+const fieldErrors = reactive({});
+
+const canGenerate = computed(
+    () => portraitFile.value && form.jaStyle && form.firstName.trim() && !generating.value && !cutoutBusy.value,
 );
 
-async function generate() {
-    if (!canSubmit.value) return;
+// ── JA styles ────────────────────────────────────────────────────────────
+onMounted(async () => {
+    try {
+        const res = await fetch('/api/ja-styles');
+        const json = await res.json();
+        styles.value = json.data ?? [];
+        if (styles.value.length) form.jaStyle = styles.value[0].key;
+    } catch {
+        error.value = 'Die Stile konnten nicht geladen werden.';
+    }
+});
 
-    state.value = 'loading';
-    errorMessage.value = '';
+// ── Portrait selection ───────────────────────────────────────────────────
+let originalFile = null; // keep the raw pick so toggling the cutout can re-run
+
+async function onFile(file) {
+    if (!file || !file.type.startsWith('image/')) {
+        error.value = 'Bitte wähle eine Bilddatei.';
+        return;
+    }
+    error.value = '';
+    originalFile = file;
+    await applyPortrait();
+}
+
+async function applyPortrait() {
+    if (!originalFile) return;
+
+    if (form.removeBg && props.bgRemovalEnabled) {
+        await runCutout(originalFile);
+    } else {
+        setPortrait(originalFile);
+    }
+}
+
+function setPortrait(fileOrBlob, name = 'portrait.png') {
+    portraitFile.value = fileOrBlob instanceof File
+        ? fileOrBlob
+        : new File([fileOrBlob], name, { type: fileOrBlob.type });
+    if (portraitPreview.value) URL.revokeObjectURL(portraitPreview.value);
+    portraitPreview.value = URL.createObjectURL(portraitFile.value);
+}
+
+// Detect WebGPU once: capable devices get the full-precision model on the GPU
+// (cleaner edges, still fast); CPU-only phones get the lighter half-precision
+// model so they stay responsive (the brief flags weak mid/low-end devices).
+let webgpuSupport = null;
+async function hasWebGpu() {
+    if (webgpuSupport !== null) return webgpuSupport;
+    try {
+        webgpuSupport = !!navigator.gpu && !!(await navigator.gpu.requestAdapter());
+    } catch {
+        webgpuSupport = false;
+    }
+    return webgpuSupport;
+}
+
+// ── Client-side background removal (@imgly) ────────────────────────────────
+// PROD: @imgly/background-removal is AGPL-3.0 — buy the commercial licence or
+// swap to a permissive model (BiRefNet/MODNet) before launch. The raw photo
+// never leaves the device: only the finished cut-out is uploaded.
+async function runCutout(file) {
+    cutoutBusy.value = true;
+    cutoutProgress.value = 0;
+    error.value = '';
+    try {
+        const { removeBackground } = await import('@imgly/background-removal');
+        const gpu = await hasWebGpu();
+        // Prefer the full-precision model ('isnet') for the cleanest matte. Only
+        // step down to half-precision on weak CPU-only devices (no WebGPU AND few
+        // cores) so the brief's low-end phones stay responsive.
+        const weakCpu = !gpu && (navigator.hardwareConcurrency ?? 4) < 8;
+        const blob = await removeBackground(file, {
+            model: weakCpu ? 'isnet_fp16' : 'isnet',
+            device: gpu ? 'gpu' : 'cpu', // gpu auto-falls back to wasm if unsupported
+            output: { format: 'image/png', quality: 1 },
+            progress: (_key, current, total) => {
+                cutoutProgress.value = total ? Math.round((current / total) * 100) : 0;
+            },
+        });
+        setPortrait(blob, 'cutout.png');
+    } catch (e) {
+        // Fall back to the original photo so the user is never stuck.
+        form.removeBg = false;
+        setPortrait(file);
+        error.value = 'Hintergrund entfernen hat nicht geklappt — das Originalfoto wird verwendet.';
+    } finally {
+        cutoutBusy.value = false;
+    }
+}
+
+function onToggleBg() {
+    // Re-derive the portrait from the original whenever the toggle changes.
+    applyPortrait();
+}
+
+// ── Drag & drop ────────────────────────────────────────────────────────────
+function onDrop(e) {
+    isDragging.value = false;
+    onFile(e.dataTransfer.files?.[0]);
+}
+
+// ── Generate ───────────────────────────────────────────────────────────────
+async function generate() {
+    generating.value = true;
+    error.value = '';
+    previewUrl.value = '';
+    Object.keys(fieldErrors).forEach((k) => delete fieldErrors[k]);
 
     try {
-        const res = await fetch('/api/generate-image', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-            },
-            body: JSON.stringify({ prompt: prompt.value.trim() }),
-        });
+        const body = new FormData();
+        body.append('portrait', portraitFile.value);
+        body.append('ja_style', form.jaStyle);
+        body.append('first_name', form.firstName);
+        body.append('last_name', form.lastName);
 
-        const data = await res.json().catch(() => ({}));
+        const res = await fetch('/api/generate', {
+            method: 'POST',
+            body,
+            headers: { Accept: 'application/json' },
+        });
+        const json = await res.json();
 
         if (!res.ok) {
-            // Laravel validation errors arrive under `errors`; ours under `error`.
-            const validation = data.errors ? Object.values(data.errors)[0]?.[0] : null;
-            errorMessage.value =
-                data.error || validation || data.message || 'Etwas ist schiefgelaufen. Bitte versuche es erneut.';
-            state.value = 'error';
+            if (res.status === 429) error.value = 'Zu viele Anfragen — bitte warte einen Moment.';
+            else error.value = json.message ?? 'Etwas ist schiefgelaufen.';
+            if (json.errors) Object.assign(fieldErrors, json.errors);
             return;
         }
-
-        image.value = data;
-        state.value = 'success';
+        previewUrl.value = json.url;
     } catch {
-        errorMessage.value = 'Netzwerkfehler. Bitte überprüfe deine Verbindung und versuche es erneut.';
-        state.value = 'error';
-    }
-}
-
-// Load the source artwork as an <img> we can draw to a canvas. Same-origin
-// (public storage), so the canvas stays untainted and exportable.
-function loadImage(url) {
-    return new Promise((resolve, reject) => {
-        const img = new Image();
-        img.crossOrigin = 'anonymous';
-        img.onload = () => resolve(img);
-        img.onerror = () => reject(new Error('image load failed'));
-        img.src = url;
-    });
-}
-
-// Word-wrap a string to fit a max pixel width on the given 2D context.
-function wrapLines(ctx, text, maxWidth) {
-    const words = text.split(' ');
-    const lines = [];
-    let line = '';
-    for (const word of words) {
-        const candidate = line ? `${line} ${word}` : word;
-        if (ctx.measureText(candidate).width > maxWidth && line) {
-            lines.push(line);
-            line = word;
-        } else {
-            line = candidate;
-        }
-    }
-    if (line) lines.push(line);
-    return lines;
-}
-
-// Composite the headline onto the artwork at full native resolution and return
-// a PNG blob. Mirrors the on-screen overlay so download is WYSIWYG.
-async function buildPosterBlob(url) {
-    const img = await loadImage(url);
-    const w = img.naturalWidth || 1024;
-    const h = img.naturalHeight || 1024;
-
-    const canvas = document.createElement('canvas');
-    canvas.width = w;
-    canvas.height = h;
-    const ctx = canvas.getContext('2d');
-
-    ctx.drawImage(img, 0, 0, w, h);
-
-    // Bottom scrim so light type stays legible over any artwork.
-    const scrimTop = h * 0.58;
-    const gradient = ctx.createLinearGradient(0, scrimTop, 0, h);
-    gradient.addColorStop(0, 'rgba(28, 26, 23, 0)');
-    gradient.addColorStop(1, 'rgba(28, 26, 23, 0.62)');
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0, scrimTop, w, h - scrimTop);
-
-    // Headline — brand serif, sized and padded relative to the artwork so it
-    // never touches the edges.
-    const pad = w * 0.06;
-    const fontPx = w * 0.072;
-    const lineHeight = fontPx * 1.08;
-    ctx.font = `700 ${fontPx}px 'Fraunces', Georgia, serif`;
-    // Make sure the (possibly lazy) webfont is ready before measuring/drawing.
-    if (document.fonts?.load) {
-        try {
-            await document.fonts.load(`700 ${fontPx}px 'Fraunces'`, HEADLINE);
-            await document.fonts.ready;
-        } catch {
-            /* fall back to serif */
-        }
-    }
-
-    const lines = wrapLines(ctx, HEADLINE, w - pad * 2);
-    ctx.fillStyle = '#f7f3ec'; // canvas
-    ctx.textBaseline = 'alphabetic';
-    ctx.textAlign = 'left';
-    let baseline = h - pad - (lines.length - 1) * lineHeight;
-    for (const line of lines) {
-        ctx.fillText(line, pad, baseline);
-        baseline += lineHeight;
-    }
-
-    return await new Promise((resolve) => canvas.toBlob(resolve, 'image/png'));
-}
-
-async function download() {
-    if (!image.value || downloading.value) return;
-    downloading.value = true;
-    try {
-        const blob = await buildPosterBlob(image.value.url);
-        const href = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = href;
-        a.download = `ja-zum-kunstmuseum-${image.value.id}.png`;
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-        URL.revokeObjectURL(href);
-    } catch {
-        // Fall back to the raw artwork (without the baked-in headline) so the
-        // user can still save something.
-        window.open(image.value.url, '_blank');
+        error.value = 'Netzwerkfehler — bitte versuche es erneut.';
     } finally {
-        downloading.value = false;
+        generating.value = false;
     }
 }
 
 function reset() {
-    state.value = 'idle';
-    image.value = null;
-    errorMessage.value = '';
-    prompt.value = '';
+    previewUrl.value = '';
 }
 </script>
 
 <template>
-    <div class="rounded-3xl border border-ink/10 bg-white/70 p-6 shadow-sm backdrop-blur-sm sm:p-8">
-        <!-- Success -->
-        <div v-if="state === 'success' && image" class="space-y-5">
-            <figure class="@container relative overflow-hidden rounded-2xl border border-ink/10 bg-canvas">
-                <img :src="image.url" alt="Dein generiertes «Ja zum Kunstmuseum» Bild" class="block w-full" />
-                <!-- Headline overlay (composited into the file on download). -->
-                <div class="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/60 to-transparent pt-[18cqw]"></div>
-                <p
-                    class="pointer-events-none absolute bottom-[6cqw] left-[6cqw] right-[6cqw] font-serif font-bold leading-[1.08] text-canvas text-[7.2cqw]"
-                >
-                    {{ HEADLINE }}
-                </p>
-            </figure>
-            <div class="flex flex-col gap-3 sm:flex-row">
-                <button
-                    type="button"
-                    @click="download"
-                    :disabled="downloading"
-                    class="flex-1 rounded-full bg-clay px-6 py-3 text-center font-medium text-canvas transition hover:bg-ink disabled:opacity-60"
-                >
-                    {{ downloading ? 'Bild wird vorbereitet …' : 'Bild herunterladen' }}
-                </button>
-                <button
-                    type="button"
-                    @click="reset"
-                    class="flex-1 rounded-full border border-ink/15 px-6 py-3 font-medium text-ink/80 transition hover:border-ink/40 hover:text-ink"
-                >
-                    Neues Bild gestalten
+    <div class="rounded-2xl border border-ink/10 bg-canvas p-6 shadow-sm sm:p-8">
+        <!-- Preview result -->
+        <div v-if="previewUrl" class="flex flex-col items-center gap-5">
+            <img :src="previewUrl" alt="Dein «Ja zum Kunsthaus» Bild" class="w-full max-w-sm rounded-lg shadow-md" />
+            <div class="flex flex-wrap items-center justify-center gap-3">
+                <a :href="previewUrl" download="ja-zum-kunsthaus.jpg"
+                   class="rounded-full bg-clay px-6 py-2.5 font-medium text-canvas transition hover:bg-ink">
+                    Herunterladen
+                </a>
+                <button type="button" @click="reset"
+                        class="rounded-full px-6 py-2.5 font-medium text-ink/70 transition hover:text-ink">
+                    Neues Bild
                 </button>
             </div>
-            <!-- PROD: persistent shareable URL + OG meta tags for social sharing attach here. -->
+            <!-- PROD: "Use this image" → submit (email + consent) is Phase 4. -->
+            <p class="text-sm text-ink/40">Vorschau — noch nicht gespeichert (Bestätigung folgt in Phase 4).</p>
         </div>
 
-        <!-- Loading -->
-        <div v-else-if="state === 'loading'" class="space-y-5">
-            <div class="relative aspect-square w-full overflow-hidden rounded-2xl border border-ink/10 bg-sand/50">
-                <div class="absolute inset-0 animate-pulse bg-gradient-to-br from-sand/60 via-canvas to-ochre/20"></div>
-                <div class="absolute inset-0 flex flex-col items-center justify-center gap-3 text-center">
-                    <svg class="h-8 w-8 animate-spin text-clay" viewBox="0 0 24 24" fill="none">
-                        <circle class="opacity-20" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
-                        <path class="opacity-90" fill="currentColor" d="M4 12a8 8 0 0 1 8-8V0C5.4 0 0 5.4 0 12h4z" />
-                    </svg>
-                    <p class="text-sm font-medium text-ink/60">Dein Bild entsteht … das dauert einen Moment.</p>
+        <!-- Form -->
+        <div v-else class="grid gap-6 sm:grid-cols-2">
+            <!-- Portrait picker -->
+            <div class="sm:col-span-2">
+                <label class="mb-2 block text-sm font-medium">Foto</label>
+                <div
+                    class="relative flex aspect-[4/3] items-center justify-center overflow-hidden rounded-xl border-2 border-dashed transition"
+                    :class="isDragging ? 'border-clay bg-sand/40' : 'border-ink/20 bg-sand/20'"
+                    @dragover.prevent="isDragging = true"
+                    @dragleave.prevent="isDragging = false"
+                    @drop.prevent="onDrop"
+                >
+                    <img v-if="portraitPreview" :src="portraitPreview" alt="Vorschau"
+                         class="h-full w-full object-contain" />
+                    <div v-else class="px-6 text-center text-ink/50">
+                        <p class="font-medium">Foto hierher ziehen</p>
+                        <p class="text-sm">oder klicken zum Auswählen</p>
+                    </div>
+                    <input type="file" accept="image/*"
+                           class="absolute inset-0 cursor-pointer opacity-0"
+                           @change="onFile($event.target.files?.[0])" />
+
+                    <div v-if="cutoutBusy"
+                         class="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-canvas/85 text-ink">
+                        <p class="font-medium">Hintergrund entfernen…</p>
+                        <div class="h-1.5 w-40 overflow-hidden rounded-full bg-ink/10">
+                            <div class="h-full bg-clay transition-all" :style="{ width: cutoutProgress + '%' }"></div>
+                        </div>
+                        <p class="text-sm text-ink/50">Läuft lokal auf deinem Gerät</p>
+                    </div>
                 </div>
-            </div>
-        </div>
 
-        <!-- Idle / error form -->
-        <form v-else @submit.prevent="generate" class="space-y-4">
-            <div>
-                <label for="prompt" class="mb-2 block text-sm font-medium text-ink/70">
-                    Wie sieht dein «Ja zum Kunstmuseum» aus?
+                <!-- Background removal toggle -->
+                <label v-if="bgRemovalEnabled" class="mt-3 flex items-center gap-2 text-sm">
+                    <input type="checkbox" v-model="form.removeBg" :disabled="cutoutBusy || !portraitFile"
+                           @change="onToggleBg" class="rounded border-ink/30 text-clay focus:ring-clay" />
+                    <span>Hintergrund entfernen <span class="text-ink/40">(im Browser, dein Foto bleibt lokal)</span></span>
                 </label>
-                <textarea
-                    id="prompt"
-                    v-model="prompt"
-                    rows="3"
-                    :maxlength="MAX + 50"
-                    placeholder="Beschreibe dein Ja zum Kunstmuseum…"
-                    class="w-full resize-none rounded-2xl border border-ink/15 bg-canvas/60 px-4 py-3 text-ink placeholder:text-ink/35 focus:border-clay focus:ring-2 focus:ring-clay/30 focus:outline-none"
-                ></textarea>
-                <div class="mt-1.5 flex items-center justify-between text-xs">
-                    <span :class="tooLong ? 'text-clay' : 'text-ink/40'">
-                        {{ remaining }} Zeichen übrig
-                    </span>
+            </div>
+
+            <!-- JA style -->
+            <div>
+                <label class="mb-2 block text-sm font-medium">Maltechnik</label>
+                <div class="grid grid-cols-3 gap-2">
+                    <button v-for="s in styles" :key="s.key" type="button" @click="form.jaStyle = s.key"
+                            class="flex flex-col items-center gap-1 rounded-lg border p-2 transition"
+                            :class="form.jaStyle === s.key ? 'border-clay bg-sand/40' : 'border-ink/15 hover:border-ink/30'">
+                        <img :src="s.url" :alt="s.label" class="h-10 w-full object-contain" />
+                        <span class="text-xs">{{ s.label }}</span>
+                    </button>
+                </div>
+                <p v-if="fieldErrors.ja_style" class="mt-1 text-sm text-clay">{{ fieldErrors.ja_style[0] }}</p>
+            </div>
+
+            <!-- Name -->
+            <div class="grid content-start gap-3">
+                <div>
+                    <label class="mb-2 block text-sm font-medium">Vorname</label>
+                    <input v-model="form.firstName" type="text" maxlength="40"
+                           class="w-full rounded-lg border border-ink/20 bg-canvas px-3 py-2 focus:border-clay focus:ring-clay" />
+                    <p v-if="fieldErrors.first_name" class="mt-1 text-sm text-clay">{{ fieldErrors.first_name[0] }}</p>
+                </div>
+                <div>
+                    <label class="mb-2 block text-sm font-medium">Name <span class="text-ink/40">(optional)</span></label>
+                    <input v-model="form.lastName" type="text" maxlength="40"
+                           class="w-full rounded-lg border border-ink/20 bg-canvas px-3 py-2 focus:border-clay focus:ring-clay" />
                 </div>
             </div>
 
-            <p v-if="state === 'error'" class="rounded-xl bg-clay/10 px-4 py-3 text-sm text-clay">
-                {{ errorMessage }}
-            </p>
-
-            <button
-                type="submit"
-                :disabled="!canSubmit"
-                class="w-full rounded-full bg-clay px-6 py-3.5 font-medium text-canvas shadow-sm transition hover:bg-ink disabled:cursor-not-allowed disabled:opacity-40"
-            >
-                Bild generieren
-            </button>
-        </form>
+            <!-- Actions -->
+            <div class="sm:col-span-2">
+                <p v-if="error" class="mb-3 rounded-lg bg-clay/10 px-4 py-2 text-sm text-clay">{{ error }}</p>
+                <button type="button" :disabled="!canGenerate" @click="generate"
+                        class="w-full rounded-full bg-clay px-6 py-3 font-medium text-canvas transition hover:bg-ink disabled:cursor-not-allowed disabled:opacity-40">
+                    {{ generating ? 'Wird erstellt…' : 'Vorschau erstellen' }}
+                </button>
+            </div>
+        </div>
     </div>
 </template>

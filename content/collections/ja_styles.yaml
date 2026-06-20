@@ -1,0 +1,6 @@
+title: 'JA-Stile'
+template: home
+sort_by: order
+sort_dir: asc
+sites:
+  - default

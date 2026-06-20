@@ -1,0 +1,25 @@
+title: 'JA-Stil'
+tabs:
+  main:
+    display: Main
+    sections:
+      - fields:
+          - handle: title
+            field:
+              type: text
+              required: true
+              display: Label
+              instructions: 'Anzeigename der Maltechnik, z. B. «Öl» oder «Aquarell».'
+          - handle: asset
+            field:
+              type: assets
+              container: ja_styles
+              max_files: 1
+              required: true
+              display: 'JA-Asset (transparentes PNG)'
+              instructions: 'Transparentes PNG des Wortes «JA» in dieser Technik.'
+          - handle: order
+            field:
+              type: integer
+              display: Reihenfolge
+              default: 0

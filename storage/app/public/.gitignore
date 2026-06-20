@@ -1,2 +1,4 @@
 *
 !.gitignore
+!ja-styles/
+!ja-styles/**

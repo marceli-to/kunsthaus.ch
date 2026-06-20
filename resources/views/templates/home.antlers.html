@@ -1,0 +1,78 @@
+{{#
+  Home / landing template. Copy here is PLACEHOLDER — final wording, fonts and
+  the composite layout are client/design deliverables (flagged, not guessed).
+#}}
+
+{{# Hero #}}
+<section class="mx-auto max-w-5xl px-6 pt-12 pb-16 text-center sm:pt-20">
+  <p class="mb-5 text-sm font-medium uppercase tracking-[0.2em] text-clay">Eine Abstimmung fürs Museum</p>
+  <h1 class="font-serif text-5xl font-semibold leading-[1.05] text-balance sm:text-7xl">
+    Ja zum <span class="italic text-clay">Kunsthaus</span>
+  </h1>
+  <p class="mx-auto mt-6 max-w-xl text-lg text-pretty text-ink/70">
+    Kunst gehört allen. Setz ein Zeichen für ein offenes, lebendiges Museum —
+    und gestalte dein ganz persönliches «Ja» als Plakatbild.
+  </p>
+  <div class="mt-9 flex items-center justify-center gap-3">
+    <a href="#mitmachen"
+       class="rounded-full bg-clay px-7 py-3 font-medium text-canvas shadow-sm transition hover:bg-ink">
+      Dein Bild gestalten
+    </a>
+    <a href="#warum" class="rounded-full px-7 py-3 font-medium text-ink/70 transition hover:text-ink">
+      Mehr erfahren
+    </a>
+  </div>
+</section>
+
+{{# Why #}}
+<section id="warum" class="border-y border-ink/10 bg-sand/40">
+  <div class="mx-auto grid max-w-5xl gap-10 px-6 py-16 sm:grid-cols-3">
+    <div>
+      <h3 class="font-serif text-xl font-semibold">Offen für alle</h3>
+      <p class="mt-2 text-ink/70">Ein Museum ist ein öffentlicher Raum für Begegnung, Bildung und Inspiration.</p>
+    </div>
+    <div>
+      <h3 class="font-serif text-xl font-semibold">Kunst bewahren</h3>
+      <p class="mt-2 text-ink/70">Sammlung, Vermittlung und Ausstellungen brauchen ein sicheres Zuhause.</p>
+    </div>
+    <div>
+      <h3 class="font-serif text-xl font-semibold">Gemeinsam gestalten</h3>
+      <p class="mt-2 text-ink/70">Zeig dein «Ja» — als Bild, das du teilen und weitergeben kannst.</p>
+    </div>
+  </div>
+</section>
+
+{{# Generator — Vue island #}}
+<section id="mitmachen" class="mx-auto max-w-5xl px-6 py-20">
+  <div class="mb-8 text-center">
+    <h2 class="font-serif text-3xl font-semibold sm:text-4xl">Gestalte dein «Ja»</h2>
+    <p class="mx-auto mt-3 max-w-lg text-ink/70">
+      Foto wählen, Maltechnik aussuchen, Namen eingeben — fertig ist dein Plakatbild.
+    </p>
+  </div>
+
+  {{# The Vue island fetches JA styles from /api/ja-styles and reads the
+      client-side background-removal flag from this data attribute. #}}
+  <div
+    id="image-generator"
+    data-bg-removal="{{ config:app:bg_removal_enabled }}"
+  ></div>
+</section>
+
+{{# Gallery — placeholder (Phase 7). Wired to published composites later. #}}
+<section id="galerie" class="border-t border-ink/10 bg-sand/30">
+  <div class="mx-auto max-w-5xl px-6 py-16">
+    <h2 class="font-serif text-2xl font-semibold">Unterstützer:innen-Galerie</h2>
+    <p class="mt-2 max-w-lg text-ink/70">
+      Hier erscheinen freigegebene «Ja»-Bilder der Community.
+    </p>
+    <div class="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-4">
+      {{# PROD: replace with a Runway/Antlers loop over published GeneratedImage records. #}}
+      <div class="aspect-[3/4] rounded-lg border border-dashed border-ink/20 bg-canvas"></div>
+      <div class="aspect-[3/4] rounded-lg border border-dashed border-ink/20 bg-canvas"></div>
+      <div class="aspect-[3/4] rounded-lg border border-dashed border-ink/20 bg-canvas"></div>
+      <div class="aspect-[3/4] rounded-lg border border-dashed border-ink/20 bg-canvas"></div>
+    </div>
+    <p class="mt-4 text-sm text-ink/40">Platzhalter — Galerie folgt mit der Moderation (Phase 5–7).</p>
+  </div>
+</section>

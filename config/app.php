@@ -17,6 +17,20 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Background Removal (client-side)
+    |--------------------------------------------------------------------------
+    |
+    | Toggles whether the generator UI offers the in-browser background cutout
+    | (@imgly/background-removal). Removal runs entirely on the visitor's
+    | device — there is NO server-side ML. Off-switch for low-end devices or
+    | until the @imgly commercial licence is in place.
+    |
+    */
+
+    'bg_removal_enabled' => (bool) env('VITE_ENABLE_BG_REMOVAL', true),
+
+    /*
+    |--------------------------------------------------------------------------
     | Application Environment
     |--------------------------------------------------------------------------
     |

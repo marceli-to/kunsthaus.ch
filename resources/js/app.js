@@ -5,5 +5,8 @@ import ImageGenerator from './components/ImageGenerator.vue';
 const el = document.getElementById('image-generator');
 
 if (el) {
-    createApp(ImageGenerator).mount(el);
+    createApp(ImageGenerator, {
+        // Server decides whether the client-side cutout is offered at all.
+        bgRemovalEnabled: el.dataset.bgRemoval === '1' || el.dataset.bgRemoval === 'true',
+    }).mount(el);
 }

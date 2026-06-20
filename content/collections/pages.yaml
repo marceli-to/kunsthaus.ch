@@ -1,0 +1,7 @@
+title: Pages
+template: home
+route: '{parent_uri}/{slug}'
+structure:
+  root: true
+sites:
+  - default

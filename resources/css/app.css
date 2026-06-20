@@ -1,8 +1,13 @@
 @import 'tailwindcss';
 
+/* Webfonts (placeholder choice — final typefaces are a design deliverable). */
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..600&family=Instrument+Sans:wght@400..600&display=swap');
+
+@source '../views';
+@source '../../content';
+@source '../js/**/*.vue';
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
-@source './js/**/*.vue';
 
 @theme {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',

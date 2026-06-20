@@ -7,9 +7,10 @@
     "license": "MIT",
     "require": {
         "php": "^8.3",
-        "laravel/ai": "^0.8.0",
+        "intervention/image": "^3.0",
         "laravel/framework": "^13.8",
-        "laravel/tinker": "^3.0"
+        "laravel/tinker": "^3.0",
+        "statamic/cms": "^6.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
@@ -33,6 +34,9 @@
         }
     },
     "scripts": {
+        "pre-update-cmd": [
+            "Statamic\\Console\\Composer\\Scripts::preUpdateCmd"
+        ],
         "setup": [
             "composer install",
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
@@ -79,7 +83,8 @@
         "sort-packages": true,
         "allow-plugins": {
             "pestphp/pest-plugin": true,
-            "php-http/discovery": true
+            "php-http/discovery": true,
+            "pixelfear/composer-dist-plugin": true
         }
     },
     "minimum-stability": "stable",
