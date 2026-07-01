@@ -1,0 +1,119 @@
+title: Blog
+tabs:
+  main:
+    display: Main
+    sections:
+      -
+        fields:
+          -
+            handle: title
+            field:
+              type: text
+              required: true
+              display: Title
+              validate:
+                - required
+          -
+            handle: date
+            field:
+              type: date
+              required: true
+              display: Date
+              validate:
+                - required
+  content:
+    display: Content
+    sections:
+      -
+        fields:
+          -
+            handle: hero_image
+            field:
+              type: assets
+              container: assets
+              max_files: 1
+              display: 'Hero Image'
+              instructions: 'Grosses Bild im Kopfbereich des Beitrags.'
+          -
+            handle: blocks
+            field:
+              type: replicator
+              display: 'Content Blocks'
+              collapse: true
+              sets:
+                main:
+                  display: Main
+                  sets:
+                    editor:
+                      display: 'Rich Text'
+                      instructions: 'A rich text block'
+                      icon: text
+                      fields:
+                        -
+                          import: editor
+                    image:
+                      display: Image
+                      instructions: 'A single image block'
+                      icon: assets
+                      fields:
+                        -
+                          handle: image
+                          field:
+                            type: assets
+                            container: assets
+                            max_files: 1
+                            display: Image
+                        -
+                          handle: caption
+                          field:
+                            type: text
+                            display: Caption
+  preview:
+    display: Preview
+    sections:
+      -
+        display: Teaser
+        instructions: 'Wird in Listen und auf der Landing-Page angezeigt.'
+        fields:
+          -
+            handle: summary
+            field:
+              type: textarea
+              display: Summary
+              instructions: 'Kurztext für Listen und Teaser.'
+          -
+            handle: teaser_image
+            field:
+              type: assets
+              container: assets
+              max_files: 1
+              display: 'Teaser Image'
+              instructions: 'Bild für Listen und Teaser.'
+  settings:
+    display: Settings
+    sections:
+      -
+        display: Template
+        fields:
+          -
+            handle: template
+            field:
+              type: template
+              display: Template
+      -
+        display: SEO
+        fields:
+          -
+            import: seo
+  sidebar:
+    display: Sidebar
+    sections:
+      -
+        fields:
+          -
+            handle: slug
+            field:
+              type: slug
+              localizable: true
+              validate: 'max:200'
+              show_regenerate: true

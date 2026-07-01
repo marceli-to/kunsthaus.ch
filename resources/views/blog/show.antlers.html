@@ -1,0 +1,15 @@
+{{ hero_image }}
+  <img src="{{ url }}" alt="{{ alt ?? title }}">
+{{ /hero_image }}
+
+<time datetime="{{ date format='Y-m-d' }}">{{ date format='j.F Y' }}</time>
+
+<h1>{{ title }}</h1>
+
+{{ if summary }}
+  <p>{{ summary }}</p>
+{{ /if }}
+
+{{ blocks }}
+  {{ partial:components/blocks }}
+{{ /blocks }}
