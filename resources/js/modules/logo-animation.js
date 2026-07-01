@@ -1,12 +1,12 @@
 /**
- * Ja-zum-Kunstmuseum logo — crossfades the interchangeable last word
+ * Ja-zum-Kunsthaus logo — crossfades the interchangeable last word
  * (Standard → Begegnung → Bildung → …) like a looping GIF.
  *
  * Markup contract (see resources/views/components/logos/logo.antlers.html):
  *   <svg data-ja-logo>
  *     …fixed lockup…
- *     <g data-ja-logo-word="standard"  class="… opacity-100">…</g>
- *     <g data-ja-logo-word="begegnung" class="… opacity-0">…</g>
+ *     <g data-logo-word="standard"  class="… opacity-100">…</g>
+ *     <g data-logo-word="begegnung" class="… opacity-0">…</g>
  *     …
  *   </svg>
  *
@@ -33,8 +33,8 @@ const prefersReducedMotion = () =>
  * @param {{ interval?: number, autoplay?: boolean }} [options]
  */
 export function createLogoAnimation(svg, { interval = 2400, autoplay = true } = {}) {
-    const words = Array.from(svg.querySelectorAll('[data-ja-logo-word]'));
-    const names = words.map((el) => el.dataset.jaLogoWord);
+    const words = Array.from(svg.querySelectorAll('[data-logo-word]'));
+    const names = words.map((el) => el.dataset.logoWord);
     let index = Math.max(0, words.findIndex((el) => el.classList.contains(VISIBLE)));
     if (index === -1) index = 0;
     let timer = null;
