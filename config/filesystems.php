@@ -47,6 +47,17 @@ return [
             'report' => false,
         ],
 
+        // Statamic asset container disk for the general site assets ("assets"
+        // container). Served straight from public/assets at /assets.
+        'assets' => [
+            'driver' => 'local',
+            'root' => public_path('assets'),
+            'url' => '/assets',
+            'visibility' => 'public',
+            'throw' => false,
+            'report' => false,
+        ],
+
         // Statamic asset container disk for the "JA" style PNGs.
         'ja_styles' => [
             'driver' => 'local',

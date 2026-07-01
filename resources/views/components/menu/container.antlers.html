@@ -1,0 +1,26 @@
+<nav
+  x-show="menu"
+  x-cloak
+  x-transition:enter="transition ease-out duration-300"
+  x-transition:enter-start="opacity-0"
+  x-transition:enter-end="opacity-100"
+  x-transition:leave="transition ease-in duration-200"
+  x-transition:leave-start="opacity-100"
+  x-transition:leave-end="opacity-0"
+  class="fixed top-0 left-0 bg-white w-full h-dvh">
+  
+  {{ partial:components/layout/inner class="py-16 md:py-20 flex items-center justify-between" }}
+    {{ partial:components/logos/logo class="text-accent" }}
+    {{ partial:components/menu/buttons/hide }}
+  {{ /partial:components/layout/inner }}
+
+  {{ partial:components/layout/inner class="" }}
+    <ul class="flex flex-col">
+      {{ nav:main }}
+        {{ partial:components/menu/item }}
+      {{ /nav:main }}
+    </ul>
+  {{ /partial:components/layout/inner }}
+
+</nav>
+

@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ja zum Kunstmuseum – animiertes Logo</title>
+<style>
+  body { margin: 0; min-height: 100vh; display: grid; place-items: center; gap: 2rem;
+         font-family: system-ui, sans-serif; background: #f4f4f5; }
+  /* currentColor drives the logo colour — set it via `color` */
+  .ja-logo { width: min(90vw, 640px); height: auto; color: #0000FF; }
+
+  /* Crossfade mode: JS adds .is-animating, then all words stack and fade. */
+  .ja-logo.is-animating .ja-logo__word {
+    display: block !important;         /* override the static display:none */
+    opacity: 0;
+    transition: opacity .45s ease;
+  }
+  .ja-logo.is-animating .ja-logo__word[data-active] { opacity: 1; }
+
+  .controls { display: flex; gap: .5rem; flex-wrap: wrap; justify-content: center; }
+  button { padding: .5rem 1rem; border: 1px solid #0000FF; background: #fff;
+           color: #0000FF; border-radius: 999px; cursor: pointer; font: inherit; }
+  button.on { background: #0000FF; color: #fff; }
+</style>
+</head>
+<body>
+
+  <!-- The SVG is inlined so JS can reach its groups. You can also load it
+       with fetch() or an <object>/<img> won't work (JS can't reach inner nodes). -->
+  <div id="logo-host"></div>
+
+  <div class="controls" id="controls"></div>
+
+<script>
+(async function () {
+  // Inline the SVG (fetch works when served over http; for file:// just paste the SVG markup here)
+  const host = document.getElementById('logo-host');
+  host.innerHTML = await (await fetch('logo-animated.svg')).text();
+
+  const svg   = host.querySelector('.ja-logo');
+  const words = [...svg.querySelectorAll('.ja-logo__word')];
+  const names = words.map(w => w.dataset.word);
+
+  // --- core API: show one word by name ---
+  function showWord(name) {
+    words.forEach(w => w.toggleAttribute('data-active', w.dataset.word === name));
+  }
+
+  // --- gif-like auto-cycle ---
+  let i = 0, timer = null;
+  function start(intervalMs = 1500) {
+    svg.classList.add('is-animating');           // switch to crossfade rendering
+    stop();
+    timer = setInterval(() => {
+      i = (i + 1) % words.length;
+      showWord(names[i]);
+      syncButtons();
+    }, intervalMs);
+  }
+  function stop() { clearInterval(timer); timer = null; }
+
+  // --- demo buttons: jump to any word / toggle the loop ---
+  const bar = document.getElementById('controls');
+  names.forEach(n => {
+    const b = document.createElement('button');
+    b.textContent = n;
+    b.onclick = () => { stop(); i = names.indexOf(n); showWord(n); syncButtons(); };
+    bar.appendChild(b);
+  });
+  const playBtn = document.createElement('button');
+  playBtn.textContent = '▶ loop';
+  playBtn.onclick = () => timer ? (stop(), playBtn.textContent = '▶ loop')
+                                : (start(), playBtn.textContent = '⏸ stop');
+  bar.appendChild(playBtn);
+
+  function syncButtons() {
+    [...bar.querySelectorAll('button')].forEach(b =>
+      b.classList.toggle('on', b.textContent === names[i]));
+  }
+
+  svg.classList.add('is-animating');
+  showWord(names[0]); syncButtons();
+  start();               // autostart the loop; comment out for manual control
+})();
+</script>
+</body>
+</html>

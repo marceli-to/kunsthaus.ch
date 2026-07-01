@@ -1,23 +1,26 @@
-@import 'tailwindcss';
+@import "./partials/fonts.css";
+@import "tailwindcss";
+@import "./partials/spacing.css";
+@import "./partials/font-sizes.css";
 
-/* Webfonts (placeholder choice — final typefaces are a design deliverable). */
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..600&family=Instrument+Sans:wght@400..600&display=swap');
-
-@source '../views';
-@source '../../content';
-@source '../js/**/*.vue';
-@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
-@source '../../storage/framework/views/*.php';
+@source "../views";
+@source "../../content";
+@source "../js/**/*.vue";
+@source "../**/*.js";
 
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
-    --font-serif: 'Fraunces', ui-serif, Georgia, Cambria, 'Times New Roman', serif;
-
-    /* Warm cultural-institution palette */
-    --color-canvas: #f7f3ec;
-    --color-ink: #1c1a17;
-    --color-clay: #b4543a;
-    --color-ochre: #c98a3b;
-    --color-sand: #e8dcca;
+  --font-sans: 'futura-pt', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  --color-accent: #0000ff;
+  --color-light: #FFFBF8;
 }
+
+@layer base {
+  :root {
+
+  }
+}
+
+[x-cloak] {
+  display: none !important;
+}
+

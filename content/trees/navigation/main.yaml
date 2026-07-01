@@ -1,0 +1,15 @@
+tree:
+  - id: 16799117-2125-462f-b63f-035244aeadee
+    entry: c7bd0684-e120-409e-b539-73bce890e5eb
+  - id: 5e75528b-6b72-4576-b299-e2cf7cd80a20
+    title: Argumente
+    url: '/#argumente'
+  - id: 48c86120-674b-4295-ad6b-5f95b8fdeb0d
+    title: Komitee
+    url: '/#komitee'
+  - id: 3abc68c9-ba54-4830-83b3-ebf4fb1231aa
+    title: JAtelier
+    url: '/#jatelier'
+  - id: da7e0b64-93c7-4ccc-be44-8622592f9b61
+    title: FAQ
+    url: '/#faq'

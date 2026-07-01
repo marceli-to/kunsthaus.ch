@@ -3,13 +3,58 @@ tabs:
   main:
     display: Main
     sections:
-      - fields:
-          - handle: title
+      -
+        fields:
+          -
+            handle: title
             field:
               type: text
               required: true
               display: Title
-          - handle: content
+              validate:
+                - required
+          -
+            handle: blocks
             field:
-              type: markdown
-              display: Content
+              type: replicator
+              display: 'Content Blocks'
+              collapse: true
+              sets:
+                main:
+                  display: Main
+                  sets:
+                    editor:
+                      display: 'Rich Text'
+                      instructions: 'A rich text block'
+                      icon: text
+                      fields:
+                        -
+                          import: editor
+  settings:
+    display: Settings
+    sections:
+      -
+        display: Template
+        fields:
+          -
+            handle: template
+            field:
+              type: template
+              display: Template
+      -
+        display: SEO
+        fields:
+          -
+            import: seo
+  sidebar:
+    display: Sidebar
+    sections:
+      -
+        fields:
+          -
+            handle: slug
+            field:
+              type: slug
+              localizable: true
+              validate: 'max:200'
+              show_regenerate: true

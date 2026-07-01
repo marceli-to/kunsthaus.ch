@@ -1,0 +1,8 @@
+<button
+  type="button"
+  x-cloak
+  @click="menu = !menu"
+  x-show="!menu"
+  class="cursor-pointer w-30 h-30 md:w-36 md:h-36 xl:w-44 xl:h-44 flex items-center justify-center {{ class }}">
+  {{ partial:components/icons/burger class="w-20 md:w-24 md:h-24 xl:w-30 h-auto text-accent" }}
+</button>

@@ -1,0 +1,69 @@
+{
+  "_chunk-BX6QyPe0.js": {
+    "file": "assets/chunk-BX6QyPe0.js",
+    "name": "chunk"
+  },
+  "node_modules/@imgly/background-removal/dist/index.mjs": {
+    "file": "assets/dist-DMX_futP.js",
+    "name": "dist",
+    "src": "node_modules/@imgly/background-removal/dist/index.mjs",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.js"
+    ],
+    "dynamicImports": [
+      "node_modules/onnxruntime-web/dist/ort.webgpu.bundle.min.mjs",
+      "node_modules/onnxruntime-web/dist/ort.bundle.min.mjs"
+    ]
+  },
+  "node_modules/onnxruntime-web/dist/ort-wasm-simd-threaded.jsep.wasm": {
+    "file": "assets/ort-wasm-simd-threaded.jsep-D5Jk56-t.wasm",
+    "src": "node_modules/onnxruntime-web/dist/ort-wasm-simd-threaded.jsep.wasm"
+  },
+  "node_modules/onnxruntime-web/dist/ort.bundle.min.mjs": {
+    "file": "assets/ort.bundle.min-BXEqU19Y.js",
+    "name": "ort.bundle.min",
+    "src": "node_modules/onnxruntime-web/dist/ort.bundle.min.mjs",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BX6QyPe0.js",
+      "resources/js/app.js"
+    ],
+    "assets": [
+      "assets/ort.bundle.min-OfoG_cy9.mjs",
+      "assets/ort-wasm-simd-threaded.jsep-D5Jk56-t.wasm"
+    ]
+  },
+  "node_modules/onnxruntime-web/dist/ort.webgpu.bundle.min.mjs": {
+    "file": "assets/ort.webgpu.bundle.min-BD-Iu8QV.js",
+    "name": "ort.webgpu.bundle.min",
+    "src": "node_modules/onnxruntime-web/dist/ort.webgpu.bundle.min.mjs",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BX6QyPe0.js",
+      "resources/js/app.js"
+    ],
+    "assets": [
+      "assets/ort.webgpu.bundle.min-CEayb2S6.mjs",
+      "assets/ort-wasm-simd-threaded.jsep-D5Jk56-t.wasm"
+    ]
+  },
+  "resources/css/app.css": {
+    "file": "assets/app-yOYPCi1I.css",
+    "name": "app",
+    "names": [
+      "app.css"
+    ],
+    "src": "resources/css/app.css",
+    "isEntry": true
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-DZhR55RQ.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true,
+    "dynamicImports": [
+      "node_modules/@imgly/background-removal/dist/index.mjs"
+    ]
+  }
+}

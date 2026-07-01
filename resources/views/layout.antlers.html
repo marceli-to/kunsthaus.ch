@@ -1,0 +1,23 @@
+{{ partial:components/layout/html }}
+
+{{ partial:components/layout/head }}
+
+{{ partial:components/layout/body }}
+
+  {{ if is_homepage }}
+    {{ partial:components/layout/header/landing }}
+  {{ else }}
+    {{ partial:components/layout/header/pages }}
+  {{ /if }}
+
+  {{ partial:components/layout/main }}
+
+    {{ template_content }}
+
+  {{ /partial:components/layout/main }}
+
+  {{ partial:components/layout/footer }}
+
+{{ /partial:components/layout/body }}
+
+{{ /partial:components/layout/html }}
