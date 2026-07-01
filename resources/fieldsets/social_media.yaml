@@ -1,0 +1,18 @@
+title: 'Social Media'
+fields:
+  -
+    handle: instagram
+    field:
+      type: text
+      input_type: url
+      display: Instagram
+      placeholder: 'https://instagram.com'
+      localizable: false
+  -
+    handle: linkedin
+    field:
+      type: text
+      input_type: url
+      display: LinkedIn
+      placeholder: 'https://linkedin.com'
+      localizable: false

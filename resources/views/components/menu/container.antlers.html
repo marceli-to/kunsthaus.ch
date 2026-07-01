@@ -1,24 +1,52 @@
 <nav
   x-show="menu"
   x-cloak
-  x-transition:enter="transition ease-out duration-300"
+  x-transition:enter="transition ease-out duration-100"
   x-transition:enter-start="opacity-0"
   x-transition:enter-end="opacity-100"
-  x-transition:leave="transition ease-in duration-200"
+  x-transition:leave="transition ease-in duration-100"
   x-transition:leave-start="opacity-100"
   x-transition:leave-end="opacity-0"
   class="fixed top-0 left-0 bg-white w-full h-dvh">
   
-  {{ partial:components/layout/inner class="py-16 md:py-20 flex items-center justify-between" }}
+  {{ partial:components/layout/outer class="py-16 md:py-20 xl:py-30 flex items-center justify-between" }}
     {{ partial:components/logos/logo class="text-accent" }}
     {{ partial:components/menu/buttons/hide }}
-  {{ /partial:components/layout/inner }}
+  {{ /partial:components/layout/outer }}
 
-  {{ partial:components/layout/inner class="" }}
-    <ul class="flex flex-col">
+  {{ partial:components/layout/inner }}
+  
+    <ul class="flex flex-col gap-y-20 md:gap-y-32 xl:gap-y-40 my-40 md:my-64 xl:my-92">
       {{ nav:main }}
         {{ partial:components/menu/item }}
       {{ /nav:main }}
+    </ul>
+
+    <ul class="flex gap-16 md:gap-24 xl:gap-32">
+      {{ if social_media:instagram }}
+        <li>
+          <a 
+            href="{{ social_media:instagram }}" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            aria-label="Instagram"
+            class="block w-32 md:w-40 xl:w-52 h-32 md:h-40 xl:h-52 text-accent hover:text-accent/50 transition-colors">
+            {{ partial:components/icons/instagram class="w-full h-auto" }}
+          </a>
+        </li>
+      {{ /if }}
+      {{ if social_media:linkedin }}
+        <li>
+          <a 
+            href="{{ social_media:linkedin }}" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            aria-label="LinkedIn"
+            class="block w-32 md:w-40 xl:w-52 h-32 md:h-40 xl:h-52 text-accent hover:text-accent/50 transition-colors">
+            {{ partial:components/icons/linkedin class="w-full h-auto" }}
+          </a>
+        </li>
+      {{ /if }}
     </ul>
   {{ /partial:components/layout/inner }}
 

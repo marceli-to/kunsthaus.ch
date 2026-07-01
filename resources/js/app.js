@@ -1,10 +1,12 @@
 import Alpine from 'alpinejs';
+import collapse from '@alpinejs/collapse';
 import { createApp } from 'vue';
 import ImageGenerator from './components/ImageGenerator.vue';
 import { initLogoAnimation } from './modules/logo-animation';
 
 // Alpine handles lightweight UI state (menu toggles, transitions).
 window.Alpine = Alpine;
+Alpine.plugin(collapse);
 Alpine.start();
 
 // Crossfade the interchangeable last word on every [data-ja-logo] lockup.

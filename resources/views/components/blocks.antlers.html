@@ -1,0 +1,9 @@
+{{ if type == 'editor' }}
+  {{ editor }}
+{{ /if }}
+
+{{ if type == 'faq' }}
+  {{ partial:components/layout/inner }}
+    {{ partial:components/blocks/faq }}
+  {{ /partial:components/layout/inner }}
+{{ /if }}

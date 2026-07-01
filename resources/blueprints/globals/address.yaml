@@ -1,0 +1,7 @@
+title: Address
+fields:
+  -
+    handle: address
+    field:
+      type: textarea
+      display: Address

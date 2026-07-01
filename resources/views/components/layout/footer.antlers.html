@@ -1,1 +1,58 @@
-<footer></footer>
+<footer class="bg-accent text-white">
+  {{ partial:components/layout/inner class="py-20 md:py-32 xl:py-44 flex flex-col md:justify-between md:flex-row md:w-full gap-16 text-xxs md:text-xs" }}
+    <div class="flex flex-col gap-16 md:gap-24 xl:gap-32">
+      <div>
+        <a href="/" aria-label="Zur Startseite">
+          {{ partial:components/logos/logo class="text-white" fillClass="transparent" }}
+        </a>
+      </div>
+      <div>
+        {{ address:address | nl2br }}
+      </div>
+    </div>
+    <div class="flex flex-col gap-16 md:gap-24 xl:gap-32 md:justify-between">
+      <ul class="flex gap-12 md:gap-16 xl:gap-20 md:justify-end md:mt-16 xl:mt-24">
+        {{ if social_media:instagram }}
+          <li>
+            <a 
+              href="{{ social_media:instagram }}" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              aria-label="Instagram"
+              class="block w-24 md:w-32 xl:w-40 h-24 md:h-32 xl:h-40 text-white hover:text-white/50 transition-colors">
+              {{ partial:components/icons/instagram class="w-full h-auto" }}
+            </a>
+          </li>
+        {{ /if }}
+        {{ if social_media:linkedin }}
+          <li>
+            <a 
+              href="{{ social_media:linkedin }}" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              aria-label="LinkedIn"
+              class="block w-24 md:w-32 xl:w-40 h-24 md:h-32 xl:h-40 text-white hover:text-white/50 transition-colors">
+              {{ partial:components/icons/linkedin class="w-full h-auto" }}
+            </a>
+          </li>
+        {{ /if }}
+      </ul>
+      <div>
+        <nav>
+          <ul class="flex gap-x-12 md:gap-x-18 xl:gap-x-24">
+            {{ nav:privacy }}
+              <li>
+                <a 
+                  href="{{ url }}"
+                  class=" hover:text-white/50 transition-colors"
+                  aria-label="{{ title }}">
+                  {{ title }}
+                </a>
+              </li>
+            {{ /nav:privacy }}
+          </ul>
+        </nav>
+      </div>
+    </div>
+  {{ /partial:components/layout/inner }}
+</footer>

@@ -30,6 +30,13 @@ tabs:
                       fields:
                         -
                           import: editor
+                    faq:
+                      display: FAQ
+                      instructions: 'A question with a rich text answer'
+                      icon: help
+                      fields:
+                        -
+                          import: faq
   settings:
     display: Settings
     sections:
