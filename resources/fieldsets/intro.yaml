@@ -1,0 +1,13 @@
+title: Intro
+fields:
+  -
+    handle: title
+    field:
+      type: text
+      display: Title
+  - import: editor
+  -
+    handle: call_to_action
+    field:
+      type: textarea
+      display: 'Call to action'

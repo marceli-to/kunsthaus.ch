@@ -4,6 +4,35 @@ blueprint: page
 title: Landing
 blocks:
   -
+    id: wYHSGzCujNx3InzFy_gzR
+    title: 'Das Kunsthaus braucht unsere Hilfe'
+    editor:
+      -
+        type: paragraph
+        content:
+          - type: text
+            text: 'Trotz grosser eigener Anstrengungen benötigt das Kunsthaus jährlich 7,3 Mio. Franken mehr von der Stadt. Aktuell übersteigen die Kosten des Museumsbetriebs die Einnahmen, nicht zuletzt wegen des grossen Publikumserfolgs, und die anstehende Gebäudesanierung ist nicht finanziert.'
+      -
+        type: paragraph
+        content:
+          - type: text
+            text: 'Mit einem Ja sichern wir ein attraktives Kunsthaus, das für die Bevölkerung breit zugänglich bleibt. Gleichzeitig ermöglichen die zusätzlichen Mittel Verbesserungen in den Bereichen Ökologie, Sicherheit und Personal.'
+      -
+        type: paragraph
+        content:
+          - type: text
+            text: 'Das Kunsthaus gehört zu Zürich. Es ist über seine Geschichte, sein Publikum und seine Trägerschaft tief mit der Stadt verbunden. Die Begegnungen, die es über Milieus und Generationen hinweg ermöglicht, sind für unsere polarisierte Gesellschaft von grossem Wert. Als meistbesuchtes Kunstmuseum der Schweiz ist es zudem weit über die Stadtgrenzen hinaus von grosser Bedeutung für die Kulturlandschaft.'
+      -
+        type: paragraph
+        content:
+          - type: text
+            text: 'Der Zürcher Gemeinderat hat der Vorlage mit 100 Ja- gegen 16 Nein-Stimmen deutlich zugestimmt. Auch der Stadtrat empfiehlt die Vorlage zur Annahme. Die Parteien FDP, GLP, Mitte und SP haben bereits die Ja-Parole beschlossen.'
+    type: intro
+    enabled: true
+    call_to_action: |-
+      Gestalten Sie Ihr persönliches JA zum Kunsthaus! 
+      >> hier geht's zum JAtelier
+  -
     id: 170d8d9e-e0c7-4c22-97b2-2f414872b2a6
     items:
       -
@@ -132,7 +161,7 @@ blocks:
     anchor: '#faq'
     title: FAQ
 updated_by: 1
-updated_at: 1782910208
+updated_at: 1782912013
 ---
 The real site is built in the `default` Antlers template. The original
 prototype landing page is archived at docs/prototype/home.antlers.html.

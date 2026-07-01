@@ -23,20 +23,18 @@ tabs:
                 main:
                   display: Main
                   sets:
-                    editor:
-                      display: 'Rich Text'
-                      instructions: 'A rich text block'
-                      icon: text
+                    intro:
+                      display: Intro
+                      instructions: 'Add an intro section with a call to action'
+                      icon: hero-image-above-text
                       fields:
-                        -
-                          import: editor
+                        - import: intro
                     faq:
                       display: FAQ
                       instructions: 'A question with a rich text answer'
-                      icon: help
+                      icon: chevron-vertical
                       fields:
-                        -
-                          import: faq
+                        - import: faq
   settings:
     display: Settings
     sections:
@@ -51,8 +49,7 @@ tabs:
       -
         display: SEO
         fields:
-          -
-            import: seo
+          - import: seo
   sidebar:
     display: Sidebar
     sections:

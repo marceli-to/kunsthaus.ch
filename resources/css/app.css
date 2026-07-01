@@ -26,3 +26,7 @@
   display: none !important;
 }
 
+p:not(:last-child) {
+  @apply mb-16 md:mb-20 xl:mb-24;
+}
+
