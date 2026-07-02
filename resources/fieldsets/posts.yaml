@@ -1,0 +1,17 @@
+title: Posts
+sections:
+  -
+    display: 'New Section'
+    fields:
+      -
+        handle: title
+        field:
+          type: text
+          display: Title
+      -
+        handle: posts
+        field:
+          collections:
+            - blog
+          type: entries
+          display: Posts

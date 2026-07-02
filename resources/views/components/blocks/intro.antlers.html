@@ -4,15 +4,15 @@
     {{ if call_to_action }}
       <a 
         href="#jatelier" 
-        class="inline-flex md:block md:absolute md:z-10 md:-top-40 xl:-top-80 md:right-20 xl:right-40 2xl:right-0 font-sans-bold md:text-md xl:text-lg leading-[1.2] border-2 md:border-3 xl:border-4 text-accent border-accent bg-white max-w-xs px-12 py-8 md:px-16 md:py-10 xl:px-24 xl:py-12 mb-20 md:mb-0"
+        class="inline-flex md:block md:absolute md:z-10 md:-top-40 xl:-top-80 md:right-20 xl:right-40 2xl:right-0 font-sans-bold md:text-md xl:text-lg leading-[1.25] border-2 md:border-3 xl:border-4 text-accent border-accent bg-white max-w-xs px-12 py-8 md:px-16 md:py-10 xl:px-24 xl:py-12 mb-20 md:mb-0"
         aria-label="{{ call_to_action }}">
         {{ call_to_action }}
       </a>
     {{ /if }}
-
-    <h1 class="font-sans-bold text-lg md:text-2xl xl:text-4xl leading-[1.2] text-balance uppercase max-w-3xl mb-16 md:mb-24 xl:mb-32">
+    
+    {{ partial:components/headings/h1 class="text-balance uppercase max-w-3xl mb-16 md:mb-24 xl:mb-32" }}
       {{ title }}
-    </h1>
+    {{ /partial:components/headings/h1 }}
     
     {{ editor }}
 

@@ -2,8 +2,10 @@
   {{ partial:components/blocks/intro }}
 {{ /if }}
 
+{{ if type == 'posts' }}
+  {{ partial:components/blocks/posts }}
+{{ /if }}
+
 {{ if type == 'faq' }}
-  {{ partial:components/layout/inner }}
-    {{ partial:components/blocks/faq }}
-  {{ /partial:components/layout/inner }}
+  {{ partial:components/blocks/faq }}
 {{ /if }}

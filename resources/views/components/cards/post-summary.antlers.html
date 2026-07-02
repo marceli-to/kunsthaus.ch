@@ -1,0 +1,35 @@
+<article class="grid grid-cols-1 md:grid-cols-12 gap-16 md:gap-32 xl:gap-y-48 xl:gap-x-80 items-center">
+
+  <a 
+    href="{{ url }}" 
+    class="md:col-span-6 xl:col-span-5 block aspect-square overflow-hidden no-underline"
+    aria-label="{{ title }}">
+    {{ partial:components/media/image
+      :image="teaser_image"
+      alt="{{ teaser_image:alt ?? title }}"
+      preset="1x1"
+      sizes="(min-width: 1280px) 41vw, (min-width: 768px) 50vw, 100vw" }}
+  </a>
+
+  <div class="md:col-span-6 xl:col-span-7">
+
+    {{ partial:components/headings/h3 class="text-accent text-md md:text-lg xl:text-xl leading-[1.15] text-pretty mb-12 md:mb-16 xl:mb-20" }}
+      {{ title }}
+    {{ /partial:components/headings/h3 }}
+
+    <div class="mb-12 md:mb-16 xl:mb-20">
+      {{ summary }}
+    </div>
+
+    <div>
+      <a 
+        href="{{ url }}" 
+        class="inline-flex w-auto bg-accent text-white font-sans-bold leading-none px-16 py-12 md:px-16 md:py-12 xl:px-20 xl:py-16 no-underline hover:underline underline-offset-2 xl:underline-offset-4 decoration-2"
+        aria-label="{{ title }}">
+        mehr erfahren
+      </a>
+    </div>
+
+  </div>
+
+</article>

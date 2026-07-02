@@ -18,6 +18,7 @@ tabs:
             field:
               type: date
               required: true
+              default: now
               display: Date
               validate:
                 - required
@@ -47,10 +48,9 @@ tabs:
                     editor:
                       display: 'Rich Text'
                       instructions: 'A rich text block'
-                      icon: text
+                      icon: text-formatting-markdown
                       fields:
-                        -
-                          import: editor
+                        - import: editor
                     image:
                       display: Image
                       instructions: 'A single image block'
@@ -103,8 +103,7 @@ tabs:
       -
         display: SEO
         fields:
-          -
-            import: seo
+          - import: seo
   sidebar:
     display: Sidebar
     sections:

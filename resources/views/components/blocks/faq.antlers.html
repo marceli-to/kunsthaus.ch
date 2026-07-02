@@ -1,37 +1,45 @@
-<div 
-  x-data="{ active: null }" 
-  @click.outside="active = null" 
-  class="flex flex-col gap-y-12 md:gap-y-16 xl:gap-y-20 py-20 md:py-40 xl:py-60 {{ class }}"
-  id="{{ anchor }}">
-  {{ items }}
-    <div class="border-2 md:border-3 xl:border-4 border-accent">
+{{ partial:components/layout/inner class="py-20 md:py-40 xl:py-60" }}
+  <section>
+    {{ partial:components/headings/h2 class="text-accent mb-16 md:mb-24 xl:mb-32" }}
+      FAQ
+    {{ /partial:components/headings/h2 }}
+    <div 
+      x-data="{ active: null }" 
+      @click.outside="active = null" 
+      class="flex flex-col gap-y-12 md:gap-y-16 xl:gap-y-20 scroll-mt-40 md:scroll-mt-80 xl:scroll-mt-120 {{ class }}"
+      id="{{ anchor }}">
 
-      <button
-        type="button"
-        @click="active = active === '{{ id }}' ? null : '{{ id }}'"
-        :aria-expanded="active === '{{ id }}'"
-        class="flex items-center justify-between gap-10 w-full px-12 md:px-16 xl:px-20 py-8 md:py-12 xl:py-16 text-left cursor-pointer">
-        
-        <span class="font-sans-bold text-accent">
-          {{ title }}
-        </span>
-        
-        <span class="shrink-0 text-accent">
-          <span x-show="active !== '{{ id }}'">
-            {{ partial:components/icons/chevron-down class="w-12 xl:w-14 h-auto" }}
-          </span>
-          <span x-show="active === '{{ id }}'" x-cloak>
-            {{ partial:components/icons/cross size="sm" class="w-12 xl:w-14 h-auto" }}
-          </span>
-        </span>
+      {{ items }}
+        <div class="border-2 md:border-3 xl:border-4 border-accent">
 
-      </button>
+          <button
+            type="button"
+            @click="active = active === '{{ id }}' ? null : '{{ id }}'"
+            :aria-expanded="active === '{{ id }}'"
+            class="flex items-center justify-between gap-10 w-full px-12 md:px-16 xl:px-20 py-8 md:py-12 xl:py-16 text-left cursor-pointer">
+            
+            <span class="font-sans-bold text-accent text-pretty pr-8 md:pr-12 xl:pr-16">
+              {{ title }}
+            </span>
+            
+            <span class="shrink-0 text-accent">
+              <span x-show="active !== '{{ id }}'">
+                {{ partial:components/icons/chevron-down class="w-12 xl:w-14 h-auto" }}
+              </span>
+              <span x-show="active === '{{ id }}'" x-cloak>
+                {{ partial:components/icons/cross size="sm" class="w-12 xl:w-14 h-auto" }}
+              </span>
+            </span>
 
-      <div x-show="active === '{{ id }}'" x-collapse x-cloak>
-        <div class="border-t-2 md:border-t-3 xl:border-t-4 border-accent px-12 md:px-16 xl:px-20 py-8 md:py-12 xl:py-16">
-          {{ answer }}
+          </button>
+
+          <div x-show="active === '{{ id }}'" x-collapse x-cloak>
+            <div class="border-t-2 md:border-t-3 xl:border-t-4 border-accent px-12 md:px-16 xl:px-20 py-8 md:py-12 xl:py-16">
+              {{ answer }}
+            </div>
+          </div>
         </div>
-      </div>
+      {{ /items }}
     </div>
-  {{ /items }}
-</div>
+  </section>
+{{ /partial:components/layout/inner }}

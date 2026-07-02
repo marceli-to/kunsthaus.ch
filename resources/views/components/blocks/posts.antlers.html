@@ -1,0 +1,21 @@
+{{ partial:components/layout/inner class="py-20 md:py-40 xl:py-60" }}
+  
+<section>
+    
+    {{ partial:components/headings/h2 class="text-accent mb-16 md:mb-24 xl:mb-32" }}
+      {{ title }}
+    {{ /partial:components/headings/h2 }}
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24 xl:gap-32">
+      {{ posts }}
+        {{ partial:components/cards/post-teaser }}
+      {{ /posts }}
+    </div>
+
+  <div class="mt-24 md:mt-36 xl:mt-48">
+    {{ partial:components/button href="/aktuelles" }}Alle Blogbeiträge{{ /partial:components/button }}
+  </div>
+
+  </section>
+
+{{ /partial:components/layout/inner }}

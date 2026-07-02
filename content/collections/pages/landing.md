@@ -33,6 +33,16 @@ blocks:
       Gestalten Sie Ihr persönliches JA zum Kunsthaus! 
       >> hier geht's zum JAtelier
   -
+    id: CDBFwHdVC9_0daMVBg5Bd
+    type: posts
+    enabled: true
+    title: Aktuelles
+    posts:
+      - de23caf7-b2a5-46aa-b4e9-3cc16172d11e
+      - b99f4297-5437-420a-9e83-e2d8ca4c7eca
+      - 493a25c0-b7a9-44df-b789-605ddb9ad3c9
+      - c3e2669a-3a8d-473d-9310-d6546a28e149
+  -
     id: 170d8d9e-e0c7-4c22-97b2-2f414872b2a6
     items:
       -
@@ -158,10 +168,10 @@ blocks:
         enabled: true
     type: faq
     enabled: true
-    anchor: '#faq'
+    anchor: faq
     title: FAQ
 updated_by: 1
-updated_at: 1782912013
+updated_at: 1782979824
 ---
 The real site is built in the `default` Antlers template. The original
 prototype landing page is archived at docs/prototype/home.antlers.html.

@@ -26,15 +26,21 @@ tabs:
                     intro:
                       display: Intro
                       instructions: 'Add an intro section with a call to action'
-                      icon: hero-image-above-text
+                      icon: fieldtype-textarea
                       fields:
                         - import: intro
                     faq:
                       display: FAQ
                       instructions: 'A question with a rich text answer'
-                      icon: chevron-vertical
+                      icon: collapse
                       fields:
                         - import: faq
+                    posts:
+                      display: Posts
+                      instructions: 'Add a preview for blog posts'
+                      icon: layout-grid
+                      fields:
+                        - import: posts
   settings:
     display: Settings
     sections:

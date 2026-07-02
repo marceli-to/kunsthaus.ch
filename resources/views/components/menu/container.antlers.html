@@ -10,7 +10,9 @@
   class="fixed top-0 left-0 z-50 bg-white w-full h-dvh">
   
   {{ partial:components/layout/outer class="py-16 md:py-20 xl:py-30 flex items-center justify-between" }}
-    {{ partial:components/logos/logo class="text-accent" }}
+    <a href="/" aria-label="Zur Startseite">
+      {{ partial:components/logos/logo class="text-accent" }}
+    </a>
     {{ partial:components/menu/buttons/hide }}
   {{ /partial:components/layout/outer }}
 

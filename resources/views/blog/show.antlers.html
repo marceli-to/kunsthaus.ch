@@ -1,15 +1,44 @@
-{{ hero_image }}
-  <img src="{{ url }}" alt="{{ alt ?? title }}">
-{{ /hero_image }}
+{{ partial:components/layout/inner class="py-20 md:py-40 xl:py-60" }}
 
-<time datetime="{{ date format='Y-m-d' }}">{{ date format='j.F Y' }}</time>
+  {{ hero_image }}
+    {{ partial:components/media/image
+      :image="hero_image"
+      alt="{{ alt ?? title }}"
+      preset="16x9"
+      sizes="(min-width: 1440px) 1440px, 100vw"
+      eager="true"
+      wrapperClass="mb-24 md:mb-36 xl:mb-48" }}
+  {{ /hero_image }}
 
-<h1>{{ title }}</h1>
+  <article>
 
-{{ if summary }}
-  <p>{{ summary }}</p>
-{{ /if }}
+    <time datetime="{{ date format='Y-m-d' }}" class="block mb-4 md:mb-6 xl:mb-8">
+      {{ date | iso_format("D. MMMM YYYY") }}
+    </time>
 
-{{ blocks }}
-  {{ partial:components/blocks }}
-{{ /blocks }}
+    {{ partial:components/headings/h1 class="text-accent mb-24 md:mb-36 xl:mb-48 text-md! md:text-xl! xl:text-3xl!" }}
+      {{ title }}
+    {{ /partial:components/headings/h1 }}
+
+    {{ blocks }}
+      {{ if type == 'editor' }}
+        <div class="mb-24 md:mb-36 xl:mb-48 last:mb-0 max-w-5xl">
+          {{ editor }}
+        </div>
+      {{ /if }}
+
+      {{ if type == 'image' }}
+        {{ partial:components/media/image
+          :image="image"
+          alt="{{ image:alt ?? title }}"
+          :caption="caption"
+          preset="16x9"
+          sizes="(min-width: 1440px) 1440px, 100vw"
+          wrapperClass="mb-24 md:mb-32 xl:mb-40 last:mb-0"
+          captionClass="mt-4 md:mt-8 xl:mt-12 text-xxs md:text-xs xl:text-sm" }}
+      {{ /if }}
+    {{ /blocks }}
+
+  </article>
+
+{{ /partial:components/layout/inner }}
