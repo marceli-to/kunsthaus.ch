@@ -1,3 +1,29 @@
-<a href="{{ href }}" class="inline-flex w-auto bg-accent text-white font-sans-bold leading-none px-16 py-12 md:px-16 md:py-12 xl:px-20 xl:py-16 no-underline hover:underline underline-offset-2 xl:underline-offset-4 decoration-2 {{ class }}">
-  {{ slot }}
-</a>
+{{#
+  Button / CTA component.
+
+  @param href    - When set, renders an <a>; otherwise a <button type="button">.
+  @param variant - 'primary' (default, accent bg) or 'inverted' (white bg, for
+                   use on the accent background, e.g. the post teaser card).
+  @param on      - Alpine @click expression for the <button> variant.
+  @param label   - aria-label.
+  @param class   - Extra classes.
+  @param slot    - Button label / content.
+
+  `btn` marks it exempt from the `article a:not(.btn)` underline rule.
+#}}
+{{ if href }}
+  <a
+    href="{{ href }}"
+    {{ if label }}aria-label="{{ label }}"{{ /if }}
+    class="btn inline-flex w-auto font-sans-bold leading-none px-16 py-12 md:px-16 md:py-12 xl:px-20 xl:py-16 no-underline hover:underline underline-offset-2 xl:underline-offset-4 decoration-2 {{ variant == 'inverted' ? 'bg-white text-accent' : 'bg-accent text-white' }} {{ class }}">
+    {{ slot }}
+  </a>
+{{ else }}
+  <button
+    type="button"
+    {{ if on }}@click="{{ on }}"{{ /if }}
+    {{ if label }}aria-label="{{ label }}"{{ /if }}
+    class="btn inline-flex w-auto font-sans-bold leading-none px-16 py-12 md:px-16 md:py-12 xl:px-20 xl:py-16 no-underline hover:underline underline-offset-2 xl:underline-offset-4 decoration-2 cursor-pointer {{ variant == 'inverted' ? 'bg-white text-accent' : 'bg-accent text-white' }} {{ class }}">
+    {{ slot }}
+  </button>
+{{ /if }}

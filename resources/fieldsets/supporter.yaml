@@ -6,12 +6,12 @@ fields:
       type: text
       display: Title
   -
-    handle: praesidium_title
+    handle: presidium_title
     field:
       type: text
       display: 'Co-Präsidium Title'
   -
-    handle: praesidium
+    handle: presidium
     field:
       type: replicator
       display: Co-Präsidium
@@ -47,12 +47,12 @@ fields:
                 input_type: url
                 display: 'LinkedIn URL'
   -
-    handle: komitee_title
+    handle: committee_title
     field:
       type: text
       display: 'Komitee Title'
   -
-    handle: komitee
+    handle: committee
     field:
       type: replicator
       display: Komitee

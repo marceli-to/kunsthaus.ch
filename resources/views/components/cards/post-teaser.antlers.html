@@ -9,11 +9,6 @@
   </div>
 
   <div>
-    <a 
-      href="{{ url }}" 
-      class="btn inline-flex w-auto bg-white text-accent font-sans-bold leading-none px-16 py-12 md:px-16 md:py-12 xl:px-20 xl:py-16 no-underline hover:underline underline-offset-2 xl:underline-offset-4 decoration-2"
-      aria-label="{{ title }} ">
-      mehr erfahren
-    </a>
+    {{ partial:components/button href="{{ url }}" variant="inverted" label="{{ title }}" }}mehr erfahren{{ /partial:components/button }}
   </div>
 </article>

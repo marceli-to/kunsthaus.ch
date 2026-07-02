@@ -9,25 +9,27 @@
     }}
   {{ /if }}
 
-  {{ partial:components/headings/h3 size="sm" class="text-accent leading-[1.15] mb-8 md:mb-12 xl:mb-16" }}
+  {{ partial:components/headings/h3 size="xs" class="mb-6 md:mb-8 xl:mb-12" }}
     {{ name }}
   {{ /partial:components/headings/h3 }}
 
   {{ if quote }}
-    <p class="text-accent mb-12 md:mb-16 xl:mb-20">
+    <p class="mb-8 md:mb-12 xl:mb-16">
       {{ quote | nl2br }}
     </p>
   {{ /if }}
 
   {{ if linkedin_url }}
-    <a
-      href="{{ linkedin_url }}"
-      target="_blank"
-      rel="noopener noreferrer"
-      class="mt-auto inline-flex text-accent hover:opacity-70 transition-opacity"
-      aria-label="{{ name }} auf LinkedIn">
-      {{ partial:components/icons/linkedin class="w-24 md:w-28 xl:w-32 h-auto" }}
-    </a>
+    <div>
+      <a
+        href="{{ linkedin_url }}"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex text-accent hover:opacity-70 transition-opacity"
+        aria-label="{{ name }} auf LinkedIn">
+        {{ partial:components/icons/linkedin class="w-20 md:w-24 xl:w-28 h-auto" }}
+      </a>
+    </div>
   {{ /if }}
 
 </article>

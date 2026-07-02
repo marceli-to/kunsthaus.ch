@@ -143,8 +143,156 @@ blocks:
         enabled: true
   - id: 95jWhYNftVMTMtDd2HvB7
     title: 'Wir alle sagen JA zum Kunsthaus und JA zu Zürich.'
-    praesidium_title: 'Co-Präsidium des Komitees «JA zum Kunsthaus»'
-    komitee_title: 'Komitee «JA zum Kunsthaus»'
+    presidium_title: 'Co-Präsidium des Komitees «JA zum Kunsthaus»'
+    presidium:
+      - id: XGmm6jFdWR1WTM--HJ5gG
+        image: supporter/anna-muster.png
+        name: 'Anna Muster'
+        quote: 'Ein starkes Kunsthaus gehört zu Zürich – dafür sage ich mit Überzeugung Ja.'
+        linkedin_url: 'https://linkedin.com'
+        type: member
+        enabled: true
+      - id: LIehdMLOX0n1771DRLRmZ
+        image: supporter/pippiloti-rist.png
+        name: 'Pippiloti Rist'
+        quote: 'Kultur verbindet über Generationen hinweg. Deshalb unterstütze ich diese Vorlage.'
+        linkedin_url: 'https://linkedin.com'
+        type: member
+        enabled: true
+      - id: XcdeXFlAMNlPiEqVllgC6
+        image: supporter/reto-zogg.png
+        name: 'Reto Zogg'
+        quote: 'Das Kunsthaus ist ein Aushängeschild für Zürich – weit über die Stadtgrenzen hinaus.'
+        type: member
+        enabled: true
+      - id: 9CBPIhimDIA2c7kYEPjGw
+        image: supporter/familie-muster.png
+        name: 'Familie Muster'
+        quote: 'Für uns als Familie ist das Kunsthaus ein Ort der Begegnung und Inspiration.'
+        type: member
+        enabled: true
+    committee_title: 'Komitee «JA zum Kunsthaus»'
+    committee:
+      - id: 3TJ9wNAdfiKYwLiDmzOgk
+        name: 'Peter Meier'
+        position: 'Gemeinderätin'
+        type: member
+        enabled: true
+      - id: KYi8PuyDSjtPiqZV34nI1
+        name: 'Sarah Müller'
+        position: 'Unternehmer'
+        type: member
+        enabled: true
+      - id: g5opSALTpnaKHacwH85qc
+        name: 'Thomas Weber'
+        position: 'Kunsthistorikerin'
+        type: member
+        enabled: true
+      - id: 9hkXeRVvhpywAMQlPWDsE
+        name: 'Maria Schmid'
+        position: 'Architekt'
+        type: member
+        enabled: true
+      - id: i7OfURqX3M0yq_0T0mj1L
+        name: 'Daniel Keller'
+        position: 'Kulturmanagerin'
+        type: member
+        enabled: true
+      - id: oPHcc3YZUL6Z8f8d_y30g
+        name: 'Laura Huber'
+        position: 'Rechtsanwalt'
+        type: member
+        enabled: true
+      - id: 6G5UR0LGOKg45ZZJJbAg0
+        name: 'Martin Frei'
+        position: 'Galeristin'
+        type: member
+        enabled: true
+      - id: 0_eS-LS1KTSPfnG15cv_1
+        name: 'Nina Baumann'
+        position: 'Professorin'
+        type: member
+        enabled: true
+      - id: ChDhVkdRiilX0QPBB2Pkv
+        name: 'Stefan Steiner'
+        position: 'Stadtrat'
+        type: member
+        enabled: true
+      - id: GiK7BrENBbkfo3UsXlSTM
+        name: 'Julia Graf'
+        position: 'Kuratorin'
+        type: member
+        enabled: true
+      - id: PRGoeZc25KykHRW2ozuPx
+        name: 'Andreas Zimmermann'
+        position: 'Ökonomin'
+        type: member
+        enabled: true
+      - id: mT_sd7SVGNG91mlvkGHM-
+        name: 'Corinne Brunner'
+        position: 'Journalist'
+        type: member
+        enabled: true
+      - id: druk8QFwBjPJ-I2jqmjOT
+        name: 'Marco Widmer'
+        position: 'Musikerin'
+        type: member
+        enabled: true
+      - id: umbaQZOBFX4IveLjH444C
+        name: 'Petra Fischer'
+        position: 'Verlegerin'
+        type: member
+        enabled: true
+      - id: db_nFzYMFnYrWBFUIwKcM
+        name: 'Reto Gerber'
+        position: 'Designer'
+        type: member
+        enabled: true
+      - id: MljoAYxl0klml1987jnyG
+        name: 'Sandra Kunz'
+        position: 'Ärztin'
+        type: member
+        enabled: true
+      - id: epn6ue6tU0drdT6WOnz7z
+        name: 'Beat Bühler'
+        position: 'Politologe'
+        type: member
+        enabled: true
+      - id: a0lTmKVq0xh1-3BcS9c5P
+        name: 'Claudia Roth'
+        position: 'Lehrerin'
+        type: member
+        enabled: true
+      - id: xvUVOsMF7Y1cJMCkW0nC9
+        name: 'Urs Suter'
+        position: 'Bauingenieur'
+        type: member
+        enabled: true
+      - id: bv0DAskw9CWSGWxKHrx2w
+        name: 'Monika Marti'
+        position: 'Sozialarbeiterin'
+        type: member
+        enabled: true
+      - id: plePODRlkrrZTdIMq6-Gf
+        name: 'Lukas Hofer'
+        position: 'Kulturvermittler'
+        type: member
+        enabled: true
+      - id: zDNW6ja0-wNX-4olWcdYg
+        name: 'Franziska Vogel'
+        position: 'Historikerin'
+        type: member
+        enabled: true
+      - id: d_CRPRmU2u8l3MVYQ_SwL
+        name: 'Michael Egli'
+        position: 'Fotograf'
+        type: member
+        enabled: true
+      - id: nkol2geK0vKGgwELEptsJ
+        name: 'Regula Wyss'
+        position: 'Grafikerin'
+        type: member
+        enabled: true
     type: supporter
     enabled: true
   -
