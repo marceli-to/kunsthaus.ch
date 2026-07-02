@@ -1,6 +1,10 @@
-<header class="w-full">
+<header class="sticky top-0 z-50">
   {{ partial:components/layout/outer class="py-16 md:py-20 xl:py-30 flex items-center justify-between" }}
-    <a href="/" aria-label="Zur Startseite">
+    <a
+      href="/"
+      aria-label="Zur Startseite"
+      data-shy-logo
+      class="transition-opacity duration-300 ease-out motion-reduce:transition-none data-[shy-hidden]:opacity-0 data-[shy-hidden]:pointer-events-none">
       {{ partial:components/logos/logo class="text-accent" }}
     </a>
     {{ partial:components/menu/buttons/show }}

@@ -1,0 +1,33 @@
+<article class="flex flex-col">
+
+  {{ if image }}
+    {{ partial:components/media/image
+      :image="image"
+      :alt="name"
+      sizes="(min-width: 768px) 25vw, 100vw"
+      wrapperClass="mb-12 md:mb-16 xl:mb-20"
+    }}
+  {{ /if }}
+
+  {{ partial:components/headings/h3 size="sm" class="text-accent leading-[1.15] mb-8 md:mb-12 xl:mb-16" }}
+    {{ name }}
+  {{ /partial:components/headings/h3 }}
+
+  {{ if quote }}
+    <p class="text-accent mb-12 md:mb-16 xl:mb-20">
+      {{ quote | nl2br }}
+    </p>
+  {{ /if }}
+
+  {{ if linkedin_url }}
+    <a
+      href="{{ linkedin_url }}"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="mt-auto inline-flex text-accent hover:opacity-70 transition-opacity"
+      aria-label="{{ name }} auf LinkedIn">
+      {{ partial:components/icons/linkedin class="w-24 md:w-28 xl:w-32 h-auto" }}
+    </a>
+  {{ /if }}
+
+</article>

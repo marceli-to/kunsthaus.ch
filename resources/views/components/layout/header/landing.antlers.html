@@ -1,6 +1,10 @@
-<header class="w-full absolute top-0 left-0">
+<header class="w-full fixed top-0 left-0 z-50">
   {{ partial:components/layout/outer class="py-16 md:py-20 xl:py-30 flex items-center justify-between" }}
-    {{ partial:components/logos/logo class="text-accent" }}
+    <span
+      data-shy-logo
+      class="inline-flex transition-opacity duration-300 ease-out motion-reduce:transition-none data-[shy-hidden]:opacity-0 data-[shy-hidden]:pointer-events-none">
+      {{ partial:components/logos/logo class="text-accent" }}
+    </span>
     {{ partial:components/menu/buttons/show }}
   {{ /partial:components/layout/outer }}
 </header>

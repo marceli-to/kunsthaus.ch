@@ -141,6 +141,12 @@ blocks:
         text: 'Ein Nein hätte einschneidende Folgen: Vermittlungsangebote müssten reduziert, Stellen abgebaut und Gebäudeteile geschlossen werden. Ohne die notwendige Sanierung könnten die Sicherheit der Besucherinnen und Besucher, der Schutz des Kulturguts und der Betrieb des Museums langfristig nicht gewährleistet werden.'
         type: bubble
         enabled: true
+  - id: 95jWhYNftVMTMtDd2HvB7
+    title: 'Wir alle sagen JA zum Kunsthaus und JA zu Zürich.'
+    praesidium_title: 'Co-Präsidium des Komitees «JA zum Kunsthaus»'
+    komitee_title: 'Komitee «JA zum Kunsthaus»'
+    type: supporter
+    enabled: true
   -
     id: 170d8d9e-e0c7-4c22-97b2-2f414872b2a6
     items:
@@ -270,7 +276,7 @@ blocks:
     anchor: faq
     title: FAQ
 updated_by: 1
-updated_at: 1782984400
+updated_at: 1782994576
 ---
 The real site is built in the `default` Antlers template. The original
 prototype landing page is archived at docs/prototype/home.antlers.html.

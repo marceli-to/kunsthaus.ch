@@ -1,0 +1,76 @@
+title: Supporter
+fields:
+  -
+    handle: title
+    field:
+      type: text
+      display: Title
+  -
+    handle: praesidium_title
+    field:
+      type: text
+      display: 'Co-Präsidium Title'
+  -
+    handle: praesidium
+    field:
+      type: replicator
+      display: Co-Präsidium
+      collapse: true
+      sets:
+        member:
+          display: Member
+          fields:
+            -
+              handle: image
+              field:
+                type: assets
+                container: assets
+                max_files: 1
+                display: Image
+            -
+              handle: name
+              field:
+                type: text
+                display: Name
+                required: true
+                validate:
+                  - required
+            -
+              handle: quote
+              field:
+                type: textarea
+                display: Quote
+            -
+              handle: linkedin_url
+              field:
+                type: text
+                input_type: url
+                display: 'LinkedIn URL'
+  -
+    handle: komitee_title
+    field:
+      type: text
+      display: 'Komitee Title'
+  -
+    handle: komitee
+    field:
+      type: replicator
+      display: Komitee
+      collapse: true
+      sets:
+        member:
+          display: Member
+          fields:
+            -
+              handle: name
+              field:
+                type: text
+                display: Name
+                required: true
+                validate:
+                  - required
+            -
+              handle: position
+              field:
+                type: text
+                display: Position

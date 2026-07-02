@@ -1,0 +1,64 @@
+<section id="komitee">
+
+  {{ partial:components/layout/inner class="pb-20 md:pb-40 xl:pb-60 pt-12 md:pt-32 xl:pt-52" }}
+
+    {{ if title }}
+      {{ partial:components/headings/h2 class="text-accent text-balance max-w-5xl mb-16 md:mb-24 xl:mb-32" }}
+        {{ title }}
+      {{ /partial:components/headings/h2 }}
+    {{ /if }}
+
+    {{ if praesidium_title }}
+      {{ partial:components/headings/h3 class="text-accent text-balance mb-16 md:mb-24 xl:mb-32" }}
+        {{ praesidium_title }}
+      {{ /partial:components/headings/h3 }}
+    {{ /if }}
+
+    {{ if praesidium }}
+      <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-16 md:gap-24 xl:gap-32 mb-32 md:mb-52 xl:mb-72">
+        {{ praesidium }}
+          {{ partial:components/cards/member
+            :image="image"
+            :name="name"
+            :quote="quote"
+            :linkedin_url="linkedin_url"
+          }}
+        {{ /praesidium }}
+      </div>
+    {{ /if }}
+
+    {{ if komitee_title }}
+      {{ partial:components/headings/h3 class="text-accent text-balance mb-16 md:mb-24 xl:mb-32" }}
+        {{ komitee_title }}
+      {{ /partial:components/headings/h3 }}
+    {{ /if }}
+
+    {{ if komitee }}
+      <div x-data="{ expanded: false }">
+
+        <ul class="grid grid-cols-1 md:grid-cols-2 gap-x-16 md:gap-x-24 xl:gap-x-32 gap-y-4 md:gap-y-6 xl:gap-y-8 text-accent list-disc pl-16 md:pl-20">
+          {{ komitee }}
+            <li {{ if count > 18 }}x-show="expanded" x-cloak{{ /if }}>
+              {{ name }}{{ if position }}, {{ position }}{{ /if }}
+            </li>
+          {{ /komitee }}
+        </ul>
+
+        {{ if total_results > 18 }}
+          <div class="mt-24 md:mt-36 xl:mt-48">
+            <button
+              type="button"
+              @click="expanded = !expanded"
+              class="inline-flex w-auto bg-accent text-white font-sans-bold leading-none px-16 py-12 md:px-16 md:py-12 xl:px-20 xl:py-16 no-underline hover:underline underline-offset-2 xl:underline-offset-4 decoration-2 cursor-pointer">
+              <span x-show="!expanded">alle einblenden</span>
+              <span x-show="expanded" x-cloak>weniger anzeigen</span>
+            </button>
+          </div>
+        {{ /if }}
+
+      </div>
+    {{ /if }}
+
+  {{ /partial:components/layout/inner }}
+
+</section>

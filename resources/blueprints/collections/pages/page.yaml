@@ -53,6 +53,12 @@ tabs:
                       icon: layout-grid
                       fields:
                         - import: posts
+                    supporter:
+                      display: Supporter
+                      instructions: 'Co-Präsidium cards and Komitee member list'
+                      icon: user-group
+                      fields:
+                        - import: supporter
   settings:
     display: Settings
     sections:
