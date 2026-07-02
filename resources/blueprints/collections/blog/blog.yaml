@@ -93,14 +93,6 @@ tabs:
     display: Settings
     sections:
       -
-        display: Template
-        fields:
-          -
-            handle: template
-            field:
-              type: template
-              display: Template
-      -
         display: SEO
         fields:
           - import: seo
@@ -116,3 +108,11 @@ tabs:
               localizable: true
               validate: 'max:200'
               show_regenerate: true
+      -
+        display: Template
+        fields:
+          -
+            handle: template
+            field:
+              type: template
+              display: Template
