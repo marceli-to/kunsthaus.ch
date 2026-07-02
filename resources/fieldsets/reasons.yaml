@@ -1,0 +1,31 @@
+title: Reasons
+fields:
+  -
+    handle: title
+    field:
+      type: text
+      display: Title
+  -
+    handle: bubbles
+    field:
+      type: replicator
+      display: Bubbles
+      collapse: true
+      sets:
+        bubble:
+          display: Bubble
+          fields:
+            -
+              handle: text
+              field:
+                type: textarea
+                display: Text
+                required: true
+                validate:
+                  - required
+  -
+    handle: subtitle
+    field:
+      type: text
+      display: Subtitle
+  - import: editor

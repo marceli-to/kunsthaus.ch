@@ -79,12 +79,68 @@ blocks:
         type: paragraph
         content:
           - type: text
-            text: 'Die höheren Kosten gehen wesentlich auf den grossen Erfolg des erweiterten Museums zurück. Seit der Eröffnung des Chipperfield-Neubaus besucht jährlich über eine halbe Million Menschen das Kunsthaus. Das liegt deutlich über den ursprünglichen Prognosen. Gleichzeitig wurden die Kosten für den Betrieb der verdoppelten Ausstellungsfläche und das erweiterte Programm zu tief eingeschätzt.'
-          - type: hardBreak
+            text: 'Die höheren Kosten gehen wesentlich auf den grossen Erfolg des erweiterten Museums zurück. Seit der Eröffnung des '
+          -
+            type: text
+            marks:
+              -
+                type: link
+                attrs:
+                  href: 'https://google.com'
+                  rel: null
+                  target: _blank
+                  title: null
+            text: Chipperfield-Neubaus
+          - type: text
+            text: ' besucht jährlich über eine halbe Million Menschen das Kunsthaus. Das liegt deutlich über den ursprünglichen Prognosen. Gleichzeitig wurden die Kosten für den Betrieb der verdoppelten Ausstellungsfläche und das erweiterte Programm zu tief eingeschätzt.'
+      -
+        type: paragraph
+        content:
           - type: text
             text: 'Hinzu kommen die allgemeine Teuerung, höhere Energiepreise, zusätzliche Anforderungen im Bereich Sicherheit sowie faire Anstellungsbedingungen im Rahmen eines Gesamtarbeitsvertrags. Bei den Gebäuden wurden die Beiträge zudem in der Vergangenheit zu tief angesetzt.'
     type: explainer
     enabled: true
+  -
+    id: vJMU2RbG3el7UnCNIgbKG
+    title: 'Darum ist die Erhöhung sinnvoll'
+    subtitle: 'Ja zum Kunsthaus. Ja zu Zürich.'
+    editor:
+      -
+        type: paragraph
+        content:
+          - type: text
+            text: 'Mit einem Ja sichern wir ein Kunsthaus, das offen, vielfältig und zugänglich bleibt – für Zürich, für die Bevölkerung und für kommende Generationen.'
+    type: reasons
+    enabled: true
+    bubbles:
+      - id: iJRP7Gb7viRpA64X-qrAi
+        text: 'Das Kunsthaus weist einen hohen Eigenfinanzierungsgrad aus. Die Zürcher Kunstgesellschaft wird die private Finanzierung im gleichen Umfang erhöhen wie die städtischen Beiträge. Jeder zusätzliche öffentliche Franken löst damit zusätzliche private Mittel aus.'
+        type: bubble
+        enabled: true
+      - id: 1huc0SmC1-qEV1fXViZhn
+        text: 'Das Kunsthaus ist seit über hundert Jahren eine wichtige Zürcher Institution mit grosser Strahlkraft und ein Museum, das bei der Bevölkerung sehr beliebt ist.'
+        type: bubble
+        enabled: true
+      - id: _qU1BqHvy-6s6rFdhpTg-
+        text: 'Die Beitragserhöhung finanziert den notwendigen Personalbestand. Gleichzeitig werden die Mehrkosten für verbesserte Arbeitsbedingungen gemäss Gesamtarbeitsvertrag abgedeckt.'
+        type: bubble
+        enabled: true
+      - id: Ip-q3-cSSR8vOrPRMB1YI
+        text: 'Nur dank öffentlichen Beiträgen kann das Kunsthaus ein vielfältiges und qualitativ hochwertiges Angebot für die breite Bevölkerung zugänglich machen. Zusätzlich zum bereits bestehenden Gratiseintritt in die Sammlung am Mittwoch sollen bei einem Ja künftig viermal pro Jahr für Zürcherinnen und Zürcher auch die Ausstellungen kostenlos zugänglich sein.'
+        type: bubble
+        enabled: true
+      - id: SatMRYT4NHZukiIBm9eoD
+        text: 'Die anstehenden Sanierungen verbessern die Gebäude ökologisch und sorgen dafür, dass sie langfristig sicher und zeitgemäss betrieben werden können.'
+        type: bubble
+        enabled: true
+      - id: Lct9gwzpE_pvbX_DMTYP1
+        text: 'Das Kunsthaus stärkt Zürich als Kultur- und Kunststadt. Davon profitieren auch die lokale Kunstszene, weitere Kulturinstitutionen, Galerien, Projekträume und die freie Szene.'
+        type: bubble
+        enabled: true
+      - id: 6zXhzaXP_YvjvETtUq9GL
+        text: 'Ein Nein hätte einschneidende Folgen: Vermittlungsangebote müssten reduziert, Stellen abgebaut und Gebäudeteile geschlossen werden. Ohne die notwendige Sanierung könnten die Sicherheit der Besucherinnen und Besucher, der Schutz des Kulturguts und der Betrieb des Museums langfristig nicht gewährleistet werden.'
+        type: bubble
+        enabled: true
   -
     id: 170d8d9e-e0c7-4c22-97b2-2f414872b2a6
     items:
@@ -214,7 +270,7 @@ blocks:
     anchor: faq
     title: FAQ
 updated_by: 1
-updated_at: 1782983473
+updated_at: 1782984400
 ---
 The real site is built in the `default` Antlers template. The original
 prototype landing page is archived at docs/prototype/home.antlers.html.

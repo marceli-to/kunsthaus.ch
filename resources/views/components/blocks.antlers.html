@@ -6,6 +6,10 @@
   {{ partial:components/blocks/explainer }}
 {{ /if }}
 
+{{ if type == 'reasons' }}
+  {{ partial:components/blocks/reasons }}
+{{ /if }}
+
 {{ if type == 'posts' }}
   {{ partial:components/blocks/posts }}
 {{ /if }}

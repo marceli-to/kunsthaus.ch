@@ -1,0 +1,13 @@
+{{# @param text  The bubble text #}}
+{{# @param side  'left' or 'right' — controls alignment and tail position #}}
+<div class="relative bg-white text-accent font-sans-bold text-pretty leading-[1.25] max-w-md md:max-w-2xl px-16 md:px-20 xl:px-24 py-12 md:py-16 xl:py-20 {{ if side == 'right' }}ml-auto{{ else }}mr-auto{{ /if }}">
+
+  {{ text | nl2br }}
+
+  {{ if side == 'right' }}
+    <div class="absolute top-full right-16 md:right-24 w-0 h-0 border-t-[20px] md:border-t-[28px] border-t-white border-l-[20px] md:border-l-[36px] border-l-transparent"></div>
+  {{ else }}
+    <div class="absolute top-full left-16 md:left-24 w-0 h-0 border-t-[20px] md:border-t-[28px] border-t-white border-r-[20px] md:border-r-[36px] border-r-transparent"></div>
+  {{ /if }}
+
+</div>

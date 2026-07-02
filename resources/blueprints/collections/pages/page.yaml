@@ -35,6 +35,12 @@ tabs:
                       icon: fieldtype-text
                       fields:
                         - import: explainer
+                    reasons:
+                      display: Reasons
+                      instructions: 'Reasons with speech bubbles and a closing statement'
+                      icon: comment
+                      fields:
+                        - import: reasons
                     faq:
                       display: FAQ
                       instructions: 'A question with a rich text answer'

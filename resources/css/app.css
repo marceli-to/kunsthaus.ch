@@ -39,3 +39,10 @@ article ul {
   @apply list-disc m-0 ml-20 md:ml-24 xl:ml-28;
 }
 
+article li {
+  @apply list-item mb-2 md:mb-4 xl:mb-8;
+}
+
+article a:not(.btn) {
+  @apply underline underline-offset-2 xl:underline-offset-4 decoration-1 xl:decoration-2 hover:no-underline;
+}

@@ -1,0 +1,31 @@
+<section class="bg-accent text-white">
+
+  {{ partial:components/layout/inner class="pb-20 md:pb-40 xl:pb-60 pt-12 md:pt-32 xl:pt-52" }}
+
+    {{ partial:components/headings/h2 class="text-balance mb-20 md:mb-40 xl:mb-60" }}
+      {{ title }}
+    {{ /partial:components/headings/h2 }}
+
+    {{ if bubbles }}
+      <div class="flex flex-col gap-y-32 md:gap-y-48 xl:gap-y-60 mb-32 md:mb-52 xl:mb-72 max-w-6xl mx-auto">
+        {{ bubbles }}
+          {{ if count % 2 == 1 }}
+            {{ partial:components/cards/bubble :text="text" side="left" }}
+          {{ else }}
+            {{ partial:components/cards/bubble :text="text" side="right" }}
+          {{ /if }}
+        {{ /bubbles }}
+      </div>
+    {{ /if }}
+
+    {{ partial:components/headings/h2 class="text-balance mb-8 md:mb-12 xl:mb-16" }}
+      {{ subtitle }}
+    {{ /partial:components/headings/h2 }}
+
+    <div class="max-w-4xl">
+      {{ editor }}
+    </div>
+
+  {{ /partial:components/layout/inner }}
+
+</section>
