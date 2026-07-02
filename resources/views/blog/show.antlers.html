@@ -20,24 +20,29 @@
       {{ title }}
     {{ /partial:components/headings/h1 }}
 
-    {{ blocks }}
-      {{ if type == 'editor' }}
-        <div class="mb-24 md:mb-36 xl:mb-48 last:mb-0 max-w-5xl">
-          {{ editor }}
-        </div>
-      {{ /if }}
+    <div class="flex flex-col gap-y-24 md:gap-y-36 xl:gap-y-48">
 
-      {{ if type == 'image' }}
-        {{ partial:components/media/image
-          :image="image"
-          alt="{{ image:alt ?? title }}"
-          :caption="caption"
-          preset="16x9"
-          sizes="(min-width: 1440px) 1440px, 100vw"
-          wrapperClass="mb-24 md:mb-32 xl:mb-40 last:mb-0"
-          captionClass="mt-4 md:mt-8 xl:mt-12 text-xxs md:text-xs xl:text-sm" }}
-      {{ /if }}
-    {{ /blocks }}
+      {{ blocks }}
+
+        {{ if type == 'editor' }}
+          <div class="max-w-5xl">
+            {{ editor }}
+          </div>
+        {{ /if }}
+
+        {{ if type == 'image' }}
+          {{ partial:components/media/image
+            :image="image"
+            alt="{{ image:alt ?? title }}"
+            :caption="caption"
+            preset="16x9"
+            sizes="(min-width: 1440px) 1440px, 100vw"
+            captionClass="mt-4 md:mt-8 xl:mt-12 text-xxs md:text-xs xl:text-sm" }}
+        {{ /if }}
+
+      {{ /blocks }}
+      
+    </div>
 
   </article>
 
