@@ -11,21 +11,22 @@
   @param width - Override image width
   @param eager - Load eagerly (default: false)
 #}}
+{{ pfx = preset ? ('-' &= preset) : '' }}
 <figure class="{{ wrapperClass }}">
   <picture>
     <source
       type="image/webp"
-      srcset="{{ glide:image preset="{{ preset ? 'md-{{ preset }}-webp' : 'md-webp' }}" }} 768w,
-              {{ glide:image preset="{{ preset ? 'lg-{{ preset }}-webp' : 'lg-webp' }}" }} 1280w,
-              {{ glide:image preset="{{ preset ? 'xl-{{ preset }}-webp' : 'xl-webp' }}" }} 1440w,
-              {{ glide:image preset="{{ preset ? '2xl-{{ preset }}-webp' : '2xl-webp' }}" }} 1680w"
+      srcset="{{ glide:image :preset="'md' &= pfx &= '-webp'" }} 768w,
+              {{ glide:image :preset="'lg' &= pfx &= '-webp'" }} 1280w,
+              {{ glide:image :preset="'xl' &= pfx &= '-webp'" }} 1440w,
+              {{ glide:image :preset="'2xl' &= pfx &= '-webp'" }} 1680w"
       sizes="{{ sizes ?? '100vw' }}">
     <img
-      src="{{ glide:image preset="{{ preset ? 'lg-{{ preset }}' : 'lg' }}" }}"
-      srcset="{{ glide:image preset="{{ preset ? 'md-{{ preset }}' : 'md' }}" }} 768w,
-              {{ glide:image preset="{{ preset ? 'lg-{{ preset }}' : 'lg' }}" }} 1280w,
-              {{ glide:image preset="{{ preset ? 'xl-{{ preset }}' : 'xl' }}" }} 1440w,
-              {{ glide:image preset="{{ preset ? '2xl-{{ preset }}' : '2xl' }}" }} 1680w"
+      src="{{ glide:image :preset="'lg' &= pfx" }}"
+      srcset="{{ glide:image :preset="'md' &= pfx" }} 768w,
+              {{ glide:image :preset="'lg' &= pfx" }} 1280w,
+              {{ glide:image :preset="'xl' &= pfx" }} 1440w,
+              {{ glide:image :preset="'2xl' &= pfx" }} 1680w"
       sizes="{{ sizes ?? '100vw' }}"
       alt="{{ alt }}"
       height="{{ height ?? image:height }}"
