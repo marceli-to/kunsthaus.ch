@@ -18,7 +18,9 @@
 
   {{ partial:components/layout/inner }}
   
-    <ul class="flex flex-col gap-y-20 md:gap-y-32 xl:gap-y-40 my-40 md:my-64 xl:my-92">
+  <div class="flex flex-col gap-y-40 md:gap-y-64 xl:gap-y-96 mt-15 md:mt-39 xl:mt-57">
+    
+    <ul class="flex flex-col gap-y-20 md:gap-y-32 xl:gap-y-40">
       {{ nav:main }}
         {{ partial:components/menu/item }}
       {{ /nav:main }}
@@ -50,6 +52,9 @@
         </li>
       {{ /if }}
     </ul>
+
+  </div>
+
   {{ /partial:components/layout/inner }}
 
 </nav>
