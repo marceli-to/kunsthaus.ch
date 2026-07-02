@@ -1,0 +1,8 @@
+title: Explainer
+fields:
+  -
+    handle: title
+    field:
+      type: text
+      display: Title
+  - import: editor

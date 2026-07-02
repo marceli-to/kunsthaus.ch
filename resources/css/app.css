@@ -26,11 +26,16 @@
   display: none !important;
 }
 
-p:not(:last-child) {
+p:not(:last-child),
+ul:not(:last-child) {
   @apply mb-16 md:mb-20 xl:mb-24;
 }
 
 strong, b {
   @apply font-sans-bold;
+}
+
+article ul {
+  @apply list-disc m-0 ml-20 md:ml-24 xl:ml-28;
 }
 

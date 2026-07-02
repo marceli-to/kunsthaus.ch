@@ -43,6 +43,49 @@ blocks:
       - 493a25c0-b7a9-44df-b789-605ddb9ad3c9
       - c3e2669a-3a8d-473d-9310-d6546a28e149
   -
+    id: AE0iHqgcCg0ywSQVQyQZa
+    title: 'Worum geht es?'
+    editor:
+      -
+        type: paragraph
+        content:
+          - type: text
+            text: 'Das Kunsthaus wird von zwei Organisationen getragen. Die Abstimmungsvorlage sieht für beide höhere Beiträge vor:'
+      -
+        type: bulletList
+        content:
+          -
+            type: listItem
+            content:
+              -
+                type: paragraph
+                content:
+                  - type: text
+                    text: 'Die Zürcher Kunstgesellschaft betreibt das Museum. Sie soll neu 17,6 statt 13,6 Mio. Franken pro Jahr erhalten. Das entspricht einer Erhöhung um 4 Mio. Franken.'
+          -
+            type: listItem
+            content:
+              -
+                type: paragraph
+                content:
+                  - type: text
+                    text: 'Die Stiftung Zürcher Kunsthaus unterhält die Gebäude. Sie soll neu 8,2 statt 4,9 Mio. Franken pro Jahr erhalten. Das entspricht einer Erhöhung um 3,3 Mio. Franken.'
+      -
+        type: paragraph
+        content:
+          - type: text
+            text: 'Die Zürcher Kunstgesellschaft schreibt heute Defizite. Die Stiftung Zürcher Kunsthaus wird mit den heutigen Beiträgen die notwendige Gesamtsanierung der Gebäude nicht finanzieren können.'
+      -
+        type: paragraph
+        content:
+          - type: text
+            text: 'Die höheren Kosten gehen wesentlich auf den grossen Erfolg des erweiterten Museums zurück. Seit der Eröffnung des Chipperfield-Neubaus besucht jährlich über eine halbe Million Menschen das Kunsthaus. Das liegt deutlich über den ursprünglichen Prognosen. Gleichzeitig wurden die Kosten für den Betrieb der verdoppelten Ausstellungsfläche und das erweiterte Programm zu tief eingeschätzt.'
+          - type: hardBreak
+          - type: text
+            text: 'Hinzu kommen die allgemeine Teuerung, höhere Energiepreise, zusätzliche Anforderungen im Bereich Sicherheit sowie faire Anstellungsbedingungen im Rahmen eines Gesamtarbeitsvertrags. Bei den Gebäuden wurden die Beiträge zudem in der Vergangenheit zu tief angesetzt.'
+    type: explainer
+    enabled: true
+  -
     id: 170d8d9e-e0c7-4c22-97b2-2f414872b2a6
     items:
       -
@@ -171,7 +214,7 @@ blocks:
     anchor: faq
     title: FAQ
 updated_by: 1
-updated_at: 1782979824
+updated_at: 1782983473
 ---
 The real site is built in the `default` Antlers template. The original
 prototype landing page is archived at docs/prototype/home.antlers.html.

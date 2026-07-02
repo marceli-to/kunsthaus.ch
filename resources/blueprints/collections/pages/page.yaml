@@ -29,6 +29,12 @@ tabs:
                       icon: fieldtype-textarea
                       fields:
                         - import: intro
+                    explainer:
+                      display: Explainer
+                      instructions: 'A titled rich text section explaining the vote'
+                      icon: fieldtype-text
+                      fields:
+                        - import: explainer
                     faq:
                       display: FAQ
                       instructions: 'A question with a rich text answer'

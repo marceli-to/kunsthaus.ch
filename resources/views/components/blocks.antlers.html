@@ -2,6 +2,10 @@
   {{ partial:components/blocks/intro }}
 {{ /if }}
 
+{{ if type == 'explainer' }}
+  {{ partial:components/blocks/explainer }}
+{{ /if }}
+
 {{ if type == 'posts' }}
   {{ partial:components/blocks/posts }}
 {{ /if }}

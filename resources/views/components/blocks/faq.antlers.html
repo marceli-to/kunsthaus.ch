@@ -1,8 +1,11 @@
-{{ partial:components/layout/inner class="py-20 md:py-40 xl:py-60" }}
-  <section>
+<section>
+
+  {{ partial:components/layout/inner class="pb-20 md:pb-40 xl:pb-60 pt-12 md:pt-32 xl:pt-52" }}
+
     {{ partial:components/headings/h2 class="text-accent mb-16 md:mb-24 xl:mb-32" }}
       FAQ
     {{ /partial:components/headings/h2 }}
+
     <div 
       x-data="{ active: null }" 
       @click.outside="active = null" 
@@ -41,5 +44,7 @@
         </div>
       {{ /items }}
     </div>
-  </section>
-{{ /partial:components/layout/inner }}
+
+  {{ /partial:components/layout/inner }}
+
+</section>
