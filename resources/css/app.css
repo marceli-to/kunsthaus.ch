@@ -4,6 +4,7 @@
 @import "./partials/font-sizes.css";
 /* Layered so Tailwind utilities can override the cropper's default styling */
 @import "vue-advanced-cropper/dist/style.css" layer(components);
+@import "./partials/cropper.css";
 
 @source "../views";
 @source "../../content";
@@ -25,7 +26,7 @@
 }
 
 [x-cloak] {
-  display: none !important;
+  @apply hidden!;
 }
 
 p:not(:last-child),

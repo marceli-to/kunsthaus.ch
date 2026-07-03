@@ -57,7 +57,7 @@ defineExpose({
 				@move="emit('move', $event)"
 				@move-end="emit('move-end')">
 				<StencilPreview
-					class="ring-1 ring-white"
+					class="ring-1 ring-accent"
 					:image="image"
 					:coordinates="coordinates"
 					:width="stencilCoordinates.width"

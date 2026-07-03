@@ -1,0 +1,11 @@
+/* The cropper defaults to a black backdrop/veil; on our accent-blue section a
+  white wash reads better. (These rules are unlayered, so they beat the
+  cropper's components-layer defaults.) */
+.vue-advanced-cropper__background,
+.vue-advanced-cropper__foreground {
+  @apply bg-white;
+}
+
+.vue-advanced-cropper__foreground {
+  @apply opacity-70;
+}
