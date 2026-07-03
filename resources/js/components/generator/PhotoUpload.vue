@@ -2,6 +2,8 @@
 import { ref } from 'vue';
 import { Cropper } from 'vue-advanced-cropper';
 import Stencil from './Stencil.vue';
+import UploadButton from '../form/UploadButton.vue';
+import FormCheckbox from '../form/FormCheckbox.vue';
 
 // Photo step: upload button → fixed-aspect cropper (with live sign overlay) →
 // change/remove actions and the optional background-removal toggle. All source
@@ -26,17 +28,10 @@ const props = defineProps({
 
 const removeBg = defineModel('removeBg', { type: Boolean, default: false });
 
-const emit = defineEmits(['select', 'change-photo', 'clear', 'toggle-bg']);
+const emit = defineEmits(['select', 'clear', 'toggle-bg']);
 
-const fileInput = ref(null);
+const uploadButton = ref(null);
 const cropperRef = ref(null);
-
-function onFileChange(event) {
-	const file = event.target.files?.[0];
-	// Reset the input so picking the same file again still fires "change".
-	event.target.value = '';
-	if (file) emit('select', file);
-}
 
 // The parent reads the cropper result here when generating.
 defineExpose({
@@ -46,30 +41,19 @@ defineExpose({
 
 <template>
 	<div>
-		<p class="font-sans-bold text-md md:text-lg mb-16">Ihr Foto</p>
+    <h4 class="font-sans-bold text-sm md:text-md xl:text-lg mb-8 md:mb-12">
+      Ihr Foto
+    </h4>
 
-		<input
-			ref="fileInput"
-			type="file"
+		<UploadButton
+			ref="uploadButton"
+			label="Foto hochladen"
 			:accept="acceptAttr"
-			class="hidden"
-			@change="onFileChange">
+			:hint="acceptHint"
+			:class="{ hidden: hasPortrait || cutoutBusy }"
+			@select="emit('select', $event)" />
 
-		<template v-if="!hasPortrait && !cutoutBusy">
-			<button
-				type="button"
-				class="font-sans-bold leading-none px-16 py-12 xl:px-20 xl:py-16 bg-white text-accent cursor-pointer"
-				@click="fileInput?.click()">
-				Foto hochladen
-			</button>
-			<p
-				v-if="acceptHint"
-				class="mt-8 text-tiny text-white/60">
-				{{ acceptHint }}
-			</p>
-		</template>
-
-		<div v-else>
+		<div v-if="hasPortrait || cutoutBusy">
 			<!-- Crop stage: vue-advanced-cropper with a fixed-aspect custom stencil. The sign overlay lives inside the stencil (Stencil.vue). -->
 			<div class="relative w-full max-w-sm border border-white">
 				<Cropper
@@ -97,7 +81,6 @@ defineExpose({
 							:style="{ width: cutoutProgress + '%' }">
 						</div>
 					</div>
-					<p class="text-tiny text-white/70">Läuft lokal auf Ihrem Gerät</p>
 				</div>
 			</div>
 
@@ -112,7 +95,7 @@ defineExpose({
 					type="button"
 					:disabled="cutoutBusy"
 					class="font-sans-bold underline underline-offset-2 hover:no-underline cursor-pointer disabled:opacity-50"
-					@click="fileInput?.click()">
+					@click="uploadButton?.open()">
 					Foto ändern
 				</button>
 				<button
@@ -124,17 +107,13 @@ defineExpose({
 				</button>
 			</div>
 
-			<label
+			<FormCheckbox
 				v-if="bgRemovalEnabled"
-				class="mt-16 flex items-start gap-8">
-				<input
-					v-model="removeBg"
-					type="checkbox"
-					:disabled="cutoutBusy"
-					class="mt-2 accent-white"
-					@change="emit('toggle-bg')">
-				<span>Hintergrund entfernen <span class="text-white/60">(im Browser, Ihr Foto bleibt lokal)</span></span>
-			</label>
+				v-model="removeBg"
+				:input-attrs="{ disabled: cutoutBusy, onChange: () => emit('toggle-bg') }"
+				class="mt-16">
+				Hintergrund entfernen <span class="text-white/60">(im Browser, Ihr Foto bleibt lokal)</span>
+			</FormCheckbox>
 		</div>
 	</div>
 </template>

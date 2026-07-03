@@ -1,7 +1,7 @@
 {{#
   Resolves a heading `size` token to responsive text-size utilities.
   Single source of truth for the heading type scale, shared by h1/h2/h3.
-  @param size - one of: xl | lg | md | sm
+  @param size - one of: xl | lg | md | sm | xs
 #}}{{ switch(
   (size == 'xl') => 'text-lg md:text-2xl xl:text-4xl',
   (size == 'lg') => 'text-md md:text-xl xl:text-3xl',

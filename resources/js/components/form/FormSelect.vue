@@ -1,0 +1,50 @@
+<script setup>
+// Styled <select> with a custom chevron. Bound with v-model. `options` is an
+// array of { key, label }; `placeholder` is the disabled first entry. Pass an
+// `error` string to show a validation message below the field.
+const modelValue = defineModel({ type: String, default: '' });
+
+defineProps({
+	options: { type: Array, default: () => [] },
+	placeholder: { type: String, default: 'Bitte wählen…' },
+	error: { type: String, default: '' },
+});
+</script>
+
+<template>
+	<div>
+		<div class="relative">
+			<select
+				v-model="modelValue"
+				class="w-full appearance-none bg-transparent border border-white px-12 py-10 pr-40 text-white focus:outline-none focus:ring-1 focus:ring-white">
+				<option
+					value=""
+					disabled
+					class="text-black">
+					{{ placeholder }}
+				</option>
+				<option
+					v-for="o in options"
+					:key="o.key"
+					:value="o.key"
+					class="text-black">
+					{{ o.label }}
+				</option>
+			</select>
+			<span class="pointer-events-none absolute right-12 top-1/2 -translate-y-1/2 text-white">
+				<svg
+					viewBox="0 0 12 7"
+					fill="none"
+					xmlns="http://www.w3.org/2000/svg"
+					class="w-12 h-auto">
+					<path d="M0.876953 0.5C0.977777 0.5 1.05475 0.530412 1.13281 0.608398L5.43555 4.93555L5.78906 5.29102L10.4717 0.608398C10.5493 0.5308 10.6158 0.50883 10.6963 0.511719C10.7906 0.515167 10.872 0.547734 10.958 0.633789C11.0361 0.711877 11.0664 0.788789 11.0664 0.889648C11.0663 0.990272 11.0359 1.06658 10.958 1.14453L6.03906 6.06348C5.9849 6.11764 5.94222 6.14356 5.91406 6.15527C5.87854 6.17004 5.83866 6.17869 5.79004 6.17871C5.76558 6.17871 5.74323 6.17591 5.72266 6.17188L5.66504 6.15527L5.6123 6.125C5.59155 6.11053 5.56793 6.09039 5.54102 6.06348L0.59668 1.12012C0.522843 1.04628 0.496654 0.97665 0.5 0.881836C0.503794 0.774532 0.53981 0.690659 0.62207 0.608398C0.699995 0.530589 0.776363 0.500076 0.876953 0.5Z" fill="currentColor" stroke="currentColor"/>
+				</svg>
+			</span>
+		</div>
+		<p
+			v-if="error"
+			class="text-tiny mt-4">
+			{{ error }}
+		</p>
+	</div>
+</template>

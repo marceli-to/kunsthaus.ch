@@ -308,7 +308,7 @@ blocks:
         content:
           - type: text
             text: 'Laden Sie ein Bild von sich hoch, wählen Sie einen passenden Kunststil – und erstellen Sie daraus Ihr persönliches Kampagnenbild.'
-    steps_title: 'So funktioniert es:'
+    subtitle_process: 'So funktioniert es:'
     steps:
       - id: xnkxpk2w
         title: 'Bild hochladen'

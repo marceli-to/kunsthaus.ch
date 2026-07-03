@@ -153,7 +153,7 @@ function reset() {
 
 		<div
 			v-else
-			class="grid gap-32">
+			class="grid xl:gap-24">
 			<PersonalFields
 				v-model:last-name="form.lastName"
 				v-model:first-name="form.firstName"
@@ -196,7 +196,7 @@ function reset() {
 					:disabled="!canGenerate"
 					class="font-sans-bold leading-none px-20 py-14 xl:px-24 xl:py-16 bg-white text-accent cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
 					@click="generate">
-					{{ generating ? 'Wird erstellt…' : 'erstellen' }}
+					{{ generating ? 'Bild wird erstellt…' : 'Bild erstellen' }}
 				</button>
 			</div>
 		</div>

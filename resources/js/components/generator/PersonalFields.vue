@@ -1,4 +1,7 @@
 <script setup>
+import FormLabel from '../form/FormLabel.vue';
+import FormInput from '../form/FormInput.vue';
+
 // Name / Vorname / E-Mail inputs. Two-way bound via v-model:field on the parent.
 const lastName = defineModel('lastName', { type: String, default: '' });
 const firstName = defineModel('firstName', { type: String, default: '' });
@@ -7,66 +10,57 @@ const email = defineModel('email', { type: String, default: '' });
 defineProps({
 	fieldErrors: { type: Object, default: () => ({}) },
 });
-
-const inputClass = 'w-full bg-transparent border border-white px-12 py-10 text-white placeholder-white/50 focus:outline-none focus:ring-1 focus:ring-white';
 </script>
 
 <template>
-	<fieldset class="grid gap-16">
-		<legend class="font-sans-bold text-md md:text-lg mb-8">Persönliche Daten</legend>
+  <h4 class="font-sans-bold text-sm md:text-md xl:text-lg">
+    Persönliche Daten
+  </h4>
+
+	<div class="grid gap-20 md:gap-24 xl:gap-28">
 
 		<div>
-			<label
+			<FormLabel
 				for="ja-last"
-				class="font-sans-bold block mb-8">
-				Name*
-			</label>
-			<input
+				required>
+				Name
+			</FormLabel>
+			<FormInput
 				id="ja-last"
 				v-model="lastName"
 				type="text"
 				maxlength="40"
 				autocomplete="family-name"
-				:class="inputClass">
-			<p
-				v-if="fieldErrors.last_name"
-				class="text-tiny mt-4">
-				{{ fieldErrors.last_name[0] }}
-			</p>
+				:error="fieldErrors.last_name?.[0]" />
 		</div>
 
 		<div>
-			<label
+			<FormLabel
 				for="ja-first"
-				class="font-sans-bold block mb-8">
-				Vorname*
-			</label>
-			<input
+				required>
+				Vorname
+			</FormLabel>
+			<FormInput
 				id="ja-first"
 				v-model="firstName"
 				type="text"
 				maxlength="40"
 				autocomplete="given-name"
-				:class="inputClass">
-			<p
-				v-if="fieldErrors.first_name"
-				class="text-tiny mt-4">
-				{{ fieldErrors.first_name[0] }}
-			</p>
+				:error="fieldErrors.first_name?.[0]" />
 		</div>
 
 		<div>
-			<label
+			<FormLabel
 				for="ja-email"
-				class="font-sans-bold block mb-8">
-				E-Mail*
-			</label>
-			<input
+				required>
+				E-Mail
+			</FormLabel>
+			<FormInput
 				id="ja-email"
 				v-model="email"
 				type="email"
-				autocomplete="email"
-				:class="inputClass">
+				autocomplete="email" />
 		</div>
-	</fieldset>
+	</div>
+
 </template>
