@@ -70,7 +70,7 @@ to a permissively-licensed model (BiRefNet/MODNet, MIT/Apache). The cutout is ga
 
 Confirm/submit + `GeneratedImage` record + immediate download/email (Phase 4), Runway moderation
 in the CP (Phase 5), publish notification via cron-driven queue (Phase 6), live gallery + consent
-wording (Phase 7), Turnstile/captcha. All marked in code with `PROD:`.
+wording (Phase 7). All marked in code with `PROD:`.
 
 ## Deployment target
 

@@ -14,5 +14,3 @@ Route::get('/generator', GeneratorController::class);
 // 10 requests/min per IP — public upload+processing endpoint.
 Route::post('/generate', GenerateController::class)
     ->middleware('throttle:10,1');
-
-// PROD: Cloudflare Turnstile verification belongs in front of /generate.

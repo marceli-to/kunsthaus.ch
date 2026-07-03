@@ -2,6 +2,8 @@
 @import "tailwindcss";
 @import "./partials/spacing.css";
 @import "./partials/font-sizes.css";
+/* Layered so Tailwind utilities can override the cropper's default styling */
+@import "vue-advanced-cropper/dist/style.css" layer(components);
 
 @source "../views";
 @source "../../content";

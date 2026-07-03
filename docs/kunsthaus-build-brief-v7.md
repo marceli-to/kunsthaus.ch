@@ -90,7 +90,6 @@ Deleting a record deletes **all** its stored files.
 
 ### Phase 3 — Guardrails
 - Rate-limit `/api/generate` per IP (public upload+processing endpoint).
-- `// PROD:` markers for Cloudflare Turnstile (stub now).
 
 ### Phase 4 — Confirm / submit + immediate delivery
 - After preview, a "Use this image" button reveals a minimal form: **email (required)** + **consent checkbox** ("I have the right to use this photo and the name entered, and I agree my image may be published and that you'll email me a copy").
@@ -140,7 +139,7 @@ Essentially **zero variable cost**: no AI/image-generation spend, and client-sid
 ## Out of scope (do NOT build; leave `// PROD:` markers)
 - Any AI / LLM / generative image features (explicitly excluded by the client).
 - Server-side background removal / ML (incompatible with shared hosting).
-- Turnstile/captcha (stub the hook).
+- Turnstile/captcha.
 - Real branding, copy, fonts, legal/imprint text, analytics.
 - Inertia 3, multi-site, GraphQL delivery.
 
