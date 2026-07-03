@@ -1,0 +1,42 @@
+title: JAtelier
+fields:
+  -
+    handle: heading
+    field:
+      type: text
+      display: Wortmarke
+      default: JAtelier
+      instructions: 'Grosse Wortmarke oben im Abschnitt.'
+  -
+    handle: lead
+    field:
+      type: text
+      display: Lead
+      instructions: 'Fettgedruckte Einleitungszeile, z. B. «Gestalten Sie Ihr persönliches JA».'
+  - import: editor
+  -
+    handle: steps_title
+    field:
+      type: text
+      display: 'Titel «Ablauf»'
+      default: 'So funktioniert es:'
+  -
+    handle: steps
+    field:
+      type: grid
+      display: Schritte
+      mode: stacked
+      add_row: 'Schritt hinzufügen'
+      instructions: 'Die nummerierten Schritte (1., 2., 3. …) werden automatisch durchnummeriert.'
+      fields:
+        -
+          handle: title
+          field:
+            type: text
+            display: Titel
+            required: true
+        -
+          handle: text
+          field:
+            type: textarea
+            display: Text

@@ -20,8 +20,7 @@ initShyLogo();
 const el = document.getElementById('image-generator');
 
 if (el) {
-    createApp(ImageGenerator, {
-        // Server decides whether the client-side cutout is offered at all.
-        bgRemovalEnabled: el.dataset.bgRemoval === '1' || el.dataset.bgRemoval === 'true',
-    }).mount(el);
+    // The component fetches its own config (styles, bg-removal, geometry) from
+    // /api/generator on mount — no props to wire here.
+    createApp(ImageGenerator).mount(el);
 }

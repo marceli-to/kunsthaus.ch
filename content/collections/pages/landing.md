@@ -141,7 +141,8 @@ blocks:
         text: 'Ein Nein hätte einschneidende Folgen: Vermittlungsangebote müssten reduziert, Stellen abgebaut und Gebäudeteile geschlossen werden. Ohne die notwendige Sanierung könnten die Sicherheit der Besucherinnen und Besucher, der Schutz des Kulturguts und der Betrieb des Museums langfristig nicht gewährleistet werden.'
         type: bubble
         enabled: true
-  - id: 95jWhYNftVMTMtDd2HvB7
+  -
+    id: 95jWhYNftVMTMtDd2HvB7
     title: 'Wir alle sagen JA zum Kunsthaus und JA zu Zürich.'
     presidium_title: 'Co-Präsidium des Komitees «JA zum Kunsthaus»'
     presidium:
@@ -175,126 +176,152 @@ blocks:
     committee:
       - id: 3TJ9wNAdfiKYwLiDmzOgk
         name: 'Peter Meier'
-        position: 'Gemeinderätin'
+        position: Gemeinderätin
         type: member
         enabled: true
       - id: KYi8PuyDSjtPiqZV34nI1
         name: 'Sarah Müller'
-        position: 'Unternehmer'
+        position: Unternehmer
         type: member
         enabled: true
       - id: g5opSALTpnaKHacwH85qc
         name: 'Thomas Weber'
-        position: 'Kunsthistorikerin'
+        position: Kunsthistorikerin
         type: member
         enabled: true
       - id: 9hkXeRVvhpywAMQlPWDsE
         name: 'Maria Schmid'
-        position: 'Architekt'
+        position: Architekt
         type: member
         enabled: true
       - id: i7OfURqX3M0yq_0T0mj1L
         name: 'Daniel Keller'
-        position: 'Kulturmanagerin'
+        position: Kulturmanagerin
         type: member
         enabled: true
       - id: oPHcc3YZUL6Z8f8d_y30g
         name: 'Laura Huber'
-        position: 'Rechtsanwalt'
+        position: Rechtsanwalt
         type: member
         enabled: true
       - id: 6G5UR0LGOKg45ZZJJbAg0
         name: 'Martin Frei'
-        position: 'Galeristin'
+        position: Galeristin
         type: member
         enabled: true
       - id: 0_eS-LS1KTSPfnG15cv_1
         name: 'Nina Baumann'
-        position: 'Professorin'
+        position: Professorin
         type: member
         enabled: true
       - id: ChDhVkdRiilX0QPBB2Pkv
         name: 'Stefan Steiner'
-        position: 'Stadtrat'
+        position: Stadtrat
         type: member
         enabled: true
       - id: GiK7BrENBbkfo3UsXlSTM
         name: 'Julia Graf'
-        position: 'Kuratorin'
+        position: Kuratorin
         type: member
         enabled: true
       - id: PRGoeZc25KykHRW2ozuPx
         name: 'Andreas Zimmermann'
-        position: 'Ökonomin'
+        position: Ökonomin
         type: member
         enabled: true
       - id: mT_sd7SVGNG91mlvkGHM-
         name: 'Corinne Brunner'
-        position: 'Journalist'
+        position: Journalist
         type: member
         enabled: true
       - id: druk8QFwBjPJ-I2jqmjOT
         name: 'Marco Widmer'
-        position: 'Musikerin'
+        position: Musikerin
         type: member
         enabled: true
       - id: umbaQZOBFX4IveLjH444C
         name: 'Petra Fischer'
-        position: 'Verlegerin'
+        position: Verlegerin
         type: member
         enabled: true
       - id: db_nFzYMFnYrWBFUIwKcM
         name: 'Reto Gerber'
-        position: 'Designer'
+        position: Designer
         type: member
         enabled: true
       - id: MljoAYxl0klml1987jnyG
         name: 'Sandra Kunz'
-        position: 'Ärztin'
+        position: Ärztin
         type: member
         enabled: true
       - id: epn6ue6tU0drdT6WOnz7z
         name: 'Beat Bühler'
-        position: 'Politologe'
+        position: Politologe
         type: member
         enabled: true
       - id: a0lTmKVq0xh1-3BcS9c5P
         name: 'Claudia Roth'
-        position: 'Lehrerin'
+        position: Lehrerin
         type: member
         enabled: true
       - id: xvUVOsMF7Y1cJMCkW0nC9
         name: 'Urs Suter'
-        position: 'Bauingenieur'
+        position: Bauingenieur
         type: member
         enabled: true
       - id: bv0DAskw9CWSGWxKHrx2w
         name: 'Monika Marti'
-        position: 'Sozialarbeiterin'
+        position: Sozialarbeiterin
         type: member
         enabled: true
       - id: plePODRlkrrZTdIMq6-Gf
         name: 'Lukas Hofer'
-        position: 'Kulturvermittler'
+        position: Kulturvermittler
         type: member
         enabled: true
       - id: zDNW6ja0-wNX-4olWcdYg
         name: 'Franziska Vogel'
-        position: 'Historikerin'
+        position: Historikerin
         type: member
         enabled: true
       - id: d_CRPRmU2u8l3MVYQ_SwL
         name: 'Michael Egli'
-        position: 'Fotograf'
+        position: Fotograf
         type: member
         enabled: true
       - id: nkol2geK0vKGgwELEptsJ
         name: 'Regula Wyss'
-        position: 'Grafikerin'
+        position: Grafikerin
         type: member
         enabled: true
     type: supporter
     enabled: true
+  -
+    id: JAtelierHomeBlock01
+    type: jatelier
+    enabled: true
+    heading: JAtelier
+    lead: 'Gestalten Sie Ihr persönliches JA'
+    editor:
+      -
+        type: paragraph
+        content:
+          - type: text
+            text: 'Laden Sie ein Bild von sich hoch, wählen Sie einen passenden Kunststil – und erstellen Sie daraus Ihr persönliches Kampagnenbild.'
+    steps_title: 'So funktioniert es:'
+    steps:
+      - id: xnkxpk2w
+        title: 'Bild hochladen'
+        text: 'Laden Sie ein Foto von sich hoch. Am besten eignet sich ein Portraitbild, möglichst frontal aufgenommen. Verwendet wird vor allem der Bereich von Gesicht und Oberkörper.'
+      - id: 81DM7pea
+        title: 'Kunststil auswählen'
+        text: 'Wählen Sie im Dropdown einen Zeichnungs- oder Malstil, der zu Ihnen passt. Daraus entsteht Ihr persönliches «JA für das Kunsthaus».'
+      - id: oRFCkijx
+        title: 'Bild erstellen'
+        text: 'Das JAtelier kombiniert Ihr Foto mit Ihrem individuellen JA. Das fertige Bild wird auf der Website publiziert.'
+      - id: jAEYarP9
+        title: 'Bild herunterladen und teilen'
+        text: 'Laden Sie Ihr Bild herunter und zeigen Sie Ihrem Umfeld, dass Ihnen das Kunsthaus am Herzen liegt. Teilen Sie Ihr JA auf Social Media, per WhatsApp oder direkt mit Freundinnen, Freunden und Bekannten.'
   -
     id: 170d8d9e-e0c7-4c22-97b2-2f414872b2a6
     items:
@@ -424,7 +451,7 @@ blocks:
     anchor: faq
     title: FAQ
 updated_by: 1
-updated_at: 1782994576
+updated_at: 1783087335
 ---
 The real site is built in the `default` Antlers template. The original
 prototype landing page is archived at docs/prototype/home.antlers.html.

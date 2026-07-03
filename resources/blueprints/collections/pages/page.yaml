@@ -59,6 +59,12 @@ tabs:
                       icon: user-group
                       fields:
                         - import: supporter
+                    jatelier:
+                      display: JAtelier
+                      instructions: 'The image generator: explainer + steps and the upload/style/create form'
+                      icon: image
+                      fields:
+                        - import: jatelier
   settings:
     display: Settings
     sections:

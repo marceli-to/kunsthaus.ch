@@ -16,8 +16,8 @@ tabs:
               container: ja_styles
               max_files: 1
               required: true
-              display: 'JA-Asset (transparentes PNG)'
-              instructions: 'Transparentes PNG des Wortes «JA» in dieser Technik.'
+              display: 'JA'
+              instructions: 'PNG des Wortes «JA» in dieser Technik.'
           - handle: order
             field:
               type: integer

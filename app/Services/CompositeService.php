@@ -42,29 +42,48 @@ class CompositeService
         $canvas = $this->manager->create($cfg['canvas']['width'], $cfg['canvas']['height'])
             ->fill($cfg['canvas']['background']);
 
-        // 2. Portrait — EXIF-orient, strip metadata (via re-decode), cover-fit.
+        // 2. Portrait — EXIF-orient, strip metadata (via re-decode), cover-fit
+        // into its fixed box. Top gravity keeps the face when cropping a tall
+        // photo; the JA card below overlaps the lower part.
         $p = $cfg['portrait'];
         $portrait = $this->manager->read($portraitPath)
             ->orient()
-            ->cover($p['width'], $p['height']);
+            ->cover($p['width'], $p['height'], $p['gravity'] ?? 'center');
         $canvas->place($portrait, 'top-left', $p['x'], $p['y']);
 
-        // 3. Chosen "JA" style PNG — contain-fit (keep aspect, keep alpha).
+        // 3. Chosen "JA" style card — cover-fit its fixed (square) box and draw
+        // ON TOP of the portrait so it reads as a held sign.
         $j = $cfg['ja'];
-        $ja = $this->manager->read($jaPngPath)->scaleDown($j['width'], $j['height']);
-        // Centre the scaled JA within its zone.
-        $jaX = $j['x'] + (int) (($j['width'] - $ja->width()) / 2);
-        $jaY = $j['y'] + (int) (($j['height'] - $ja->height()) / 2);
-        $canvas->place($ja, 'top-left', $jaX, $jaY);
+        $ja = $this->manager->read($jaPngPath)->cover($j['width'], $j['height']);
+        $canvas->place($ja, 'top-left', $j['x'], $j['y']);
 
-        // 4. Name + branding text.
+        // 4. Name line — "{Vorname} {Name} SAGT", uppercase, accent blue.
+        // Auto-shrink so long names never overflow the canvas.
         $name = trim($firstName.' '.$lastName);
         if ($name !== '') {
-            $this->writeText($canvas, $name, $cfg['name']);
+            $nameCfg = $cfg['name'];
+            $line = $name.($nameCfg['suffix'] ?? '');
+            if ($nameCfg['uppercase'] ?? false) {
+                $line = mb_strtoupper($line, 'UTF-8');
+            }
+            $nameCfg['size'] = $this->fitFontSize(
+                $line,
+                base_path($nameCfg['font']),
+                (int) $nameCfg['size'],
+                (int) ($nameCfg['max_width'] ?? $cfg['canvas']['width']),
+                (int) ($nameCfg['min_size'] ?? 12),
+            );
+            $this->writeText($canvas, $line, $nameCfg);
         }
-        $this->writeText($canvas, $cfg['branding']['text'], $cfg['branding']);
 
-        // 5. Flatten to JPEG on the public temp "previews" disk by UUID.
+        // 5. Fixed footer logo lockup — contain-fit into its box, centred.
+        $f = $cfg['footer'];
+        $footer = $this->manager->read(base_path($f['image']))->scaleDown($f['width'], $f['height']);
+        $footerX = $f['x'] + (int) (($f['width'] - $footer->width()) / 2);
+        $footerY = $f['y'] + (int) (($f['height'] - $footer->height()) / 2);
+        $canvas->place($footer, 'top-left', $footerX, $footerY);
+
+        // 6. Flatten to JPEG on the public temp "previews" disk by UUID.
         // PROD: previews are pre-consent — serve via a signed/expiring route off
         // a private disk rather than a public URL, and let app:prune-previews
         // (Phase 4) sweep anything older than ~24h.
@@ -81,6 +100,23 @@ class CompositeService
         $url = rtrim(config('app.url'), '/')."/storage/{$relativeDir}/{$previewId}.jpg";
 
         return [$previewId, $url];
+    }
+
+    /**
+     * Largest font size (≤ $startSize, ≥ $minSize) at which $text fits within
+     * $maxWidth for the given TTF. Keeps long names from overflowing the canvas.
+     */
+    private function fitFontSize(string $text, string $fontPath, int $startSize, int $maxWidth, int $minSize): int
+    {
+        for ($size = $startSize; $size > $minSize; $size--) {
+            $box = imagettfbbox($size, 0, $fontPath, $text);
+            $width = abs($box[2] - $box[0]);
+            if ($width <= $maxWidth) {
+                return $size;
+            }
+        }
+
+        return $minSize;
     }
 
     /**

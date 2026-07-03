@@ -35,13 +35,14 @@ class GenerateController extends Controller
             ],
             'ja_style' => ['required', 'string', 'max:64'],
             'first_name' => ['required', 'string', 'max:40'],
-            'last_name' => ['nullable', 'string', 'max:40'],
+            'last_name' => ['required', 'string', 'max:40'],
         ], [
-            'portrait.required' => 'Bitte wähle ein Foto.',
+            'portrait.required' => 'Bitte wählen Sie ein Foto.',
             'portrait.image' => 'Die Datei muss ein Bild sein.',
             'portrait.dimensions' => 'Das Bild ist zu klein (min. '.$cfg['min_dimension'].'px).',
             'portrait.max' => 'Das Bild ist zu gross (max. '.round($cfg['max_kb'] / 1024).' MB).',
-            'first_name.required' => 'Bitte gib einen Vornamen ein.',
+            'first_name.required' => 'Bitte geben Sie einen Vornamen ein.',
+            'last_name.required' => 'Bitte geben Sie einen Namen ein.',
         ]);
 
         // Resolve the JA PNG server-side from the known key — never trust a
