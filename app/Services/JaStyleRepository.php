@@ -13,58 +13,58 @@ use Statamic\Facades\Entry;
  */
 class JaStyleRepository
 {
-    /**
-     * All published styles as plain arrays: { key, label, url }.
-     *
-     * @return Collection<int, array{key: string, label: string, url: string}>
-     */
-    public function all(): Collection
-    {
-        return Entry::query()
-            ->where('collection', 'ja_styles')
-            ->get()
-            ->filter(fn ($entry) => $entry->published())
-            ->map(fn ($entry) => [
-                'key' => $entry->slug(),
-                'label' => (string) $entry->get('title'),
-                'url' => $this->assetUrl($entry),
-                'order' => (int) ($entry->get('order') ?? 0),
-            ])
-            ->filter(fn ($s) => $s['url'] !== '')
-            ->sortBy('order')
-            ->values()
-            ->map(fn ($s) => ['key' => $s['key'], 'label' => $s['label'], 'url' => $s['url']]);
-    }
+	/**
+	 * All published styles as plain arrays: { key, label, url }.
+	 *
+	 * @return Collection<int, array{key: string, label: string, url: string}>
+	 */
+	public function all(): Collection
+	{
+		return Entry::query()
+			->where('collection', 'ja_styles')
+			->get()
+			->filter(fn ($entry) => $entry->published())
+			->map(fn ($entry) => [
+				'key' => $entry->slug(),
+				'label' => (string) $entry->get('title'),
+				'url' => $this->assetUrl($entry),
+				'order' => (int) ($entry->get('order') ?? 0),
+			])
+			->filter(fn ($s) => $s['url'] !== '')
+			->sortBy('order')
+			->values()
+			->map(fn ($s) => ['key' => $s['key'], 'label' => $s['label'], 'url' => $s['url']]);
+	}
 
-    /**
-     * Absolute filesystem path to a style's PNG, or null if the key is unknown.
-     * Used by the composite pipeline.
-     */
-    public function pathForKey(string $key): ?string
-    {
-        $entry = Entry::query()
-            ->where('collection', 'ja_styles')
-            ->where('slug', $key)
-            ->get()
-            ->first(fn ($entry) => $entry->published());
+	/**
+	 * Absolute filesystem path to a style's PNG, or null if the key is unknown.
+	 * Used by the composite pipeline.
+	 */
+	public function pathForKey(string $key): ?string
+	{
+		$entry = Entry::query()
+			->where('collection', 'ja_styles')
+			->where('slug', $key)
+			->get()
+			->first(fn ($entry) => $entry->published());
 
-        if (! $entry) {
-            return null;
-        }
+		if (!$entry) {
+			return null;
+		}
 
-        $asset = $entry->augmentedValue('asset')->value();
-        $asset = is_iterable($asset) ? collect($asset)->first() : $asset;
+		$asset = $entry->augmentedValue('asset')->value();
+		$asset = is_iterable($asset) ? collect($asset)->first() : $asset;
 
-        $path = $asset?->resolvedPath();
+		$path = $asset?->resolvedPath();
 
-        return ($path && is_file($path)) ? $path : null;
-    }
+		return ($path && is_file($path)) ? $path : null;
+	}
 
-    private function assetUrl($entry): string
-    {
-        $asset = $entry->augmentedValue('asset')->value();
-        $asset = is_iterable($asset) ? collect($asset)->first() : $asset;
+	private function assetUrl($entry): string
+	{
+		$asset = $entry->augmentedValue('asset')->value();
+		$asset = is_iterable($asset) ? collect($asset)->first() : $asset;
 
-        return $asset?->url() ?? '';
-    }
+		return $asset?->url() ?? '';
+	}
 }

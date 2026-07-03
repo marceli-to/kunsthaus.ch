@@ -2,288 +2,288 @@
 
 return [
 
-    /*
-    |--------------------------------------------------------------------------
-    | License Key
-    |--------------------------------------------------------------------------
-    |
-    | The license key for the corresponding domain from your Statamic account.
-    | Without a key entered, your app will be considered to be in Trial Mode.
-    |
-    | https://statamic.dev/licensing#trial-mode
-    |
-    */
+	/*
+	|--------------------------------------------------------------------------
+	| License Key
+	|--------------------------------------------------------------------------
+	|
+	| The license key for the corresponding domain from your Statamic account.
+	| Without a key entered, your app will be considered to be in Trial Mode.
+	|
+	| https://statamic.dev/licensing#trial-mode
+	|
+	*/
 
-    'license_key' => env('STATAMIC_LICENSE_KEY'),
+	'license_key' => env('STATAMIC_LICENSE_KEY'),
 
-    /*
-    |--------------------------------------------------------------------------
-    | Enable Multi-site
-    |--------------------------------------------------------------------------
-    |
-    | Whether Statamic's multi-site functionality should be enabled. It is
-    | assumed Statamic Pro is also enabled. To get started, you can run
-    | the `php please multisite` command to update your content file
-    | structure, after which you can manage your sites in the CP.
-    |
-    | https://statamic.dev/multi-site
-    |
-    */
+	/*
+	|--------------------------------------------------------------------------
+	| Enable Multi-site
+	|--------------------------------------------------------------------------
+	|
+	| Whether Statamic's multi-site functionality should be enabled. It is
+	| assumed Statamic Pro is also enabled. To get started, you can run
+	| the `php please multisite` command to update your content file
+	| structure, after which you can manage your sites in the CP.
+	|
+	| https://statamic.dev/multi-site
+	|
+	*/
 
-    'multisite' => false,
+	'multisite' => false,
 
-    /*
-    |--------------------------------------------------------------------------
-    | Default Addons Paths
-    |--------------------------------------------------------------------------
-    |
-    | When generating addons via `php please make:addon`, this path will be
-    | used by default. You can still specify custom repository paths in
-    | your composer.json, but this is the path used by the generator.
-    |
-    */
+	/*
+	|--------------------------------------------------------------------------
+	| Default Addons Paths
+	|--------------------------------------------------------------------------
+	|
+	| When generating addons via `php please make:addon`, this path will be
+	| used by default. You can still specify custom repository paths in
+	| your composer.json, but this is the path used by the generator.
+	|
+	*/
 
-    'addons_path' => base_path('addons'),
+	'addons_path' => base_path('addons'),
 
-    /*
-    |--------------------------------------------------------------------------
-    | Blueprints Path
-    |--------------------------------------------------------------------------
-    |
-    | Where your blueprint YAML files are stored.
-    |
-    */
+	/*
+	|--------------------------------------------------------------------------
+	| Blueprints Path
+	|--------------------------------------------------------------------------
+	|
+	| Where your blueprint YAML files are stored.
+	|
+	*/
 
-    'blueprints_path' => resource_path('blueprints'),
+	'blueprints_path' => resource_path('blueprints'),
 
-    /*
-    |--------------------------------------------------------------------------
-    | Fieldsets Path
-    |--------------------------------------------------------------------------
-    |
-    | Where your fieldset YAML files are stored.
-    |
-    */
+	/*
+	|--------------------------------------------------------------------------
+	| Fieldsets Path
+	|--------------------------------------------------------------------------
+	|
+	| Where your fieldset YAML files are stored.
+	|
+	*/
 
-    'fieldsets_path' => resource_path('fieldsets'),
+	'fieldsets_path' => resource_path('fieldsets'),
 
-    /*
-    |--------------------------------------------------------------------------
-    | Send the Powered-By Header
-    |--------------------------------------------------------------------------
-    |
-    | Websites like builtwith.com use the X-Powered-By header to determine
-    | what technologies are used on a particular site. By default, we'll
-    | send this header, but you are absolutely allowed to disable it.
-    |
-    */
+	/*
+	|--------------------------------------------------------------------------
+	| Send the Powered-By Header
+	|--------------------------------------------------------------------------
+	|
+	| Websites like builtwith.com use the X-Powered-By header to determine
+	| what technologies are used on a particular site. By default, we'll
+	| send this header, but you are absolutely allowed to disable it.
+	|
+	*/
 
-    'send_powered_by_header' => true,
+	'send_powered_by_header' => true,
 
-    /*
-    |--------------------------------------------------------------------------
-    | Date Format
-    |--------------------------------------------------------------------------
-    |
-    | This format will be used whenever a Carbon date is cast to a string on
-    | front-end routes. It doesn't affect how dates are formatted in the CP.
-    | You can customize this format using PHP's date string constants.
-    | Setting this value to null will use Carbon's default format.
-    |
-    | https://www.php.net/manual/en/function.date.php
-    |
-    */
+	/*
+	|--------------------------------------------------------------------------
+	| Date Format
+	|--------------------------------------------------------------------------
+	|
+	| This format will be used whenever a Carbon date is cast to a string on
+	| front-end routes. It doesn't affect how dates are formatted in the CP.
+	| You can customize this format using PHP's date string constants.
+	| Setting this value to null will use Carbon's default format.
+	|
+	| https://www.php.net/manual/en/function.date.php
+	|
+	*/
 
-    'date_format' => 'F jS, Y',
+	'date_format' => 'F jS, Y',
 
-    /*
-    |--------------------------------------------------------------------------
-    | Timezone
-    |--------------------------------------------------------------------------
-    |
-    | Statamic will use this timezone when displaying dates on the front-end.
-    | You can use any timezone supported by PHP. When set to null it will
-    | fall back to the timezone defined in your `app.php` config file.
-    |
-    | https://www.php.net/manual/en/timezones.php
-    |
-    */
+	/*
+	|--------------------------------------------------------------------------
+	| Timezone
+	|--------------------------------------------------------------------------
+	|
+	| Statamic will use this timezone when displaying dates on the front-end.
+	| You can use any timezone supported by PHP. When set to null it will
+	| fall back to the timezone defined in your `app.php` config file.
+	|
+	| https://www.php.net/manual/en/timezones.php
+	|
+	*/
 
-    'display_timezone' => null,
+	'display_timezone' => null,
 
-    /*
-    |--------------------------------------------------------------------------
-    | Localize Dates in Modifiers
-    |--------------------------------------------------------------------------
-    |
-    | When using date-related modifiers, Carbon instances will be in UTC.
-    | Enabling this setting will ensure that dates get localized into
-    | the timezone defined in `display_timezone`. Otherwise you'll
-    | need to manually localize dates in all of your templates.
-    |
-    */
+	/*
+	|--------------------------------------------------------------------------
+	| Localize Dates in Modifiers
+	|--------------------------------------------------------------------------
+	|
+	| When using date-related modifiers, Carbon instances will be in UTC.
+	| Enabling this setting will ensure that dates get localized into
+	| the timezone defined in `display_timezone`. Otherwise you'll
+	| need to manually localize dates in all of your templates.
+	|
+	*/
 
-    'localize_dates_in_modifiers' => false,
+	'localize_dates_in_modifiers' => false,
 
-    /*
-    |--------------------------------------------------------------------------
-    | Default Character Set
-    |--------------------------------------------------------------------------
-    |
-    | Statamic will use this character set when performing specific string
-    | encoding and decoding operations; This does not apply everywhere.
-    |
-    */
+	/*
+	|--------------------------------------------------------------------------
+	| Default Character Set
+	|--------------------------------------------------------------------------
+	|
+	| Statamic will use this character set when performing specific string
+	| encoding and decoding operations; This does not apply everywhere.
+	|
+	*/
 
-    'charset' => 'UTF-8',
+	'charset' => 'UTF-8',
 
-    /*
-    |--------------------------------------------------------------------------
-    | Track Last Update
-    |--------------------------------------------------------------------------
-    |
-    | Statamic will automatically set an `updated_at` timestamp (along with
-    | `updated_by`, where applicable) when specific content is updated.
-    | In some situations, you may wish disable this functionality.
-    |
-    */
+	/*
+	|--------------------------------------------------------------------------
+	| Track Last Update
+	|--------------------------------------------------------------------------
+	|
+	| Statamic will automatically set an `updated_at` timestamp (along with
+	| `updated_by`, where applicable) when specific content is updated.
+	| In some situations, you may wish disable this functionality.
+	|
+	*/
 
-    'track_last_update' => true,
+	'track_last_update' => true,
 
-    /*
-    |--------------------------------------------------------------------------
-    | Enable Cache Tags
-    |--------------------------------------------------------------------------
-    |
-    | Sometimes you'll want to be able to disable the {{ cache }} tags in
-    | Antlers, so here is where you can do that. Otherwise, it will be
-    | enabled all the time.
-    |
-    */
+	/*
+	|--------------------------------------------------------------------------
+	| Enable Cache Tags
+	|--------------------------------------------------------------------------
+	|
+	| Sometimes you'll want to be able to disable the {{ cache }} tags in
+	| Antlers, so here is where you can do that. Otherwise, it will be
+	| enabled all the time.
+	|
+	*/
 
-    'cache_tags_enabled' => env('STATAMIC_CACHE_TAGS_ENABLED', true),
+	'cache_tags_enabled' => env('STATAMIC_CACHE_TAGS_ENABLED', true),
 
-    /*
-    |--------------------------------------------------------------------------
-    | Intensive Operations
-    |--------------------------------------------------------------------------
-    |
-    | Sometimes Statamic requires extra resources to complete intensive
-    | operations. Here you may configure system resource limits for
-    | those rare times when we need to turn things up to eleven!
-    |
-    */
+	/*
+	|--------------------------------------------------------------------------
+	| Intensive Operations
+	|--------------------------------------------------------------------------
+	|
+	| Sometimes Statamic requires extra resources to complete intensive
+	| operations. Here you may configure system resource limits for
+	| those rare times when we need to turn things up to eleven!
+	|
+	*/
 
-    'php_memory_limit' => '-1',
-    'php_max_execution_time' => '0',
-    'ajax_timeout' => '600000',
-    'pcre_backtrack_limit' => '-1',
+	'php_memory_limit' => '-1',
+	'php_max_execution_time' => '0',
+	'ajax_timeout' => '600000',
+	'pcre_backtrack_limit' => '-1',
 
-    /*
-    |--------------------------------------------------------------------------
-    | Debugbar Integration
-    |--------------------------------------------------------------------------
-    |
-    | Statamic integrates with Laravel Debugbar to bring more detail to your
-    | debugging experience. Here you may adjust various default options.
-    |
-    */
+	/*
+	|--------------------------------------------------------------------------
+	| Debugbar Integration
+	|--------------------------------------------------------------------------
+	|
+	| Statamic integrates with Laravel Debugbar to bring more detail to your
+	| debugging experience. Here you may adjust various default options.
+	|
+	*/
 
-    'debugbar' => [
-        'pretty_print_variables' => true,
-    ],
+	'debugbar' => [
+		'pretty_print_variables' => true,
+	],
 
-    /*
-    |--------------------------------------------------------------------------
-    | ASCII
-    |--------------------------------------------------------------------------
-    |
-    | During various string manipulations (e.g. slugification), Statamic will
-    | need to make ASCII character conversions. Here you may define whether
-    | or not extra characters get converted. e.g. "%" becomes "percent".
-    |
-    */
+	/*
+	|--------------------------------------------------------------------------
+	| ASCII
+	|--------------------------------------------------------------------------
+	|
+	| During various string manipulations (e.g. slugification), Statamic will
+	| need to make ASCII character conversions. Here you may define whether
+	| or not extra characters get converted. e.g. "%" becomes "percent".
+	|
+	*/
 
-    'ascii_replace_extra_symbols' => false,
+	'ascii_replace_extra_symbols' => false,
 
-    /*
-    |--------------------------------------------------------------------------
-    | Update References on Change
-    |--------------------------------------------------------------------------
-    |
-    | With this enabled, Statamic will attempt to update references to assets
-    | and terms when moving, renaming, replacing, deleting, etc. This will
-    | be queued, but it can disabled as needed for performance reasons.
-    |
-    */
+	/*
+	|--------------------------------------------------------------------------
+	| Update References on Change
+	|--------------------------------------------------------------------------
+	|
+	| With this enabled, Statamic will attempt to update references to assets
+	| and terms when moving, renaming, replacing, deleting, etc. This will
+	| be queued, but it can disabled as needed for performance reasons.
+	|
+	*/
 
-    'update_references' => true,
+	'update_references' => true,
 
-    /*
-    |--------------------------------------------------------------------------
-    | Always Augment to Query
-    |--------------------------------------------------------------------------
-    |
-    | By default, Statamic will augment relationship fields with max_items: 1
-    | to the result of a query, for example an Entry instance. Setting this
-    | to true will augment to the query builder instead of the result.
-    |
-    */
+	/*
+	|--------------------------------------------------------------------------
+	| Always Augment to Query
+	|--------------------------------------------------------------------------
+	|
+	| By default, Statamic will augment relationship fields with max_items: 1
+	| to the result of a query, for example an Entry instance. Setting this
+	| to true will augment to the query builder instead of the result.
+	|
+	*/
 
-    'always_augment_to_query' => false,
+	'always_augment_to_query' => false,
 
-    /*
-    |--------------------------------------------------------------------------
-    | Row ID handle
-    |--------------------------------------------------------------------------
-    |
-    | Rows in Grid, Replicator, and Bard fields will be given a unique ID using
-    | the "id" field. You may need your own field named "id", in which case
-    | you may customize the handle of the field that Statamic will use.
-    |
-    */
+	/*
+	|--------------------------------------------------------------------------
+	| Row ID handle
+	|--------------------------------------------------------------------------
+	|
+	| Rows in Grid, Replicator, and Bard fields will be given a unique ID using
+	| the "id" field. You may need your own field named "id", in which case
+	| you may customize the handle of the field that Statamic will use.
+	|
+	*/
 
-    'row_id_handle' => 'id',
+	'row_id_handle' => 'id',
 
-    /*
-    |--------------------------------------------------------------------------
-    | Fake SQL Queries
-    |--------------------------------------------------------------------------
-    |
-    | Enable while using the flat-file Stache driver to show fake "SQL" query
-    | approximations in your database debugging tools — including Debugbar,
-    | Laravel Telescope, and Ray with the ray()->showQueries() helper.
-    |
-    */
+	/*
+	|--------------------------------------------------------------------------
+	| Fake SQL Queries
+	|--------------------------------------------------------------------------
+	|
+	| Enable while using the flat-file Stache driver to show fake "SQL" query
+	| approximations in your database debugging tools — including Debugbar,
+	| Laravel Telescope, and Ray with the ray()->showQueries() helper.
+	|
+	*/
 
-    'fake_sql_queries' => config('app.debug'),
+	'fake_sql_queries' => config('app.debug'),
 
-    /*
-    |--------------------------------------------------------------------------
-    | Layout
-    |--------------------------------------------------------------------------
-    |
-    | Define the default layout that will be used by views.
-    |
-    */
+	/*
+	|--------------------------------------------------------------------------
+	| Layout
+	|--------------------------------------------------------------------------
+	|
+	| Define the default layout that will be used by views.
+	|
+	*/
 
-    'layout' => env('STATAMIC_LAYOUT', 'layout'),
+	'layout' => env('STATAMIC_LAYOUT', 'layout'),
 
-    /*
-    |--------------------------------------------------------------------------
-    | Blueprint Templates
-    |--------------------------------------------------------------------------
-    |
-    | When an entry's template is set to `@blueprint`, Statamic will look for
-    | a view named `{collection}.{blueprint}`. You may override this logic
-    | on a per-collection basis here.
-    |
-    | https://statamic.dev/content-modeling/collections#templates
-    |
-    */
+	/*
+	|--------------------------------------------------------------------------
+	| Blueprint Templates
+	|--------------------------------------------------------------------------
+	|
+	| When an entry's template is set to `@blueprint`, Statamic will look for
+	| a view named `{collection}.{blueprint}`. You may override this logic
+	| on a per-collection basis here.
+	|
+	| https://statamic.dev/content-modeling/collections#templates
+	|
+	*/
 
-    'blueprint_templates' => [
-        //
-    ],
+	'blueprint_templates' => [
+		//
+	],
 
 ];

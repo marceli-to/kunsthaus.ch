@@ -2,98 +2,98 @@
 
 return [
 
-    /*
-    |--------------------------------------------------------------------------
-    | API
-    |--------------------------------------------------------------------------
-    |
-    | Whether the API should be enabled, and through what route. You
-    | can enable or disable the whole API, and expose individual
-    | resources per environment, depending on your site needs.
-    |
-    | https://statamic.dev/content-api#enable-the-api
-    |
-    */
+	/*
+	|--------------------------------------------------------------------------
+	| API
+	|--------------------------------------------------------------------------
+	|
+	| Whether the API should be enabled, and through what route. You
+	| can enable or disable the whole API, and expose individual
+	| resources per environment, depending on your site needs.
+	|
+	| https://statamic.dev/content-api#enable-the-api
+	|
+	*/
 
-    'enabled' => env('STATAMIC_API_ENABLED', false),
+	'enabled' => env('STATAMIC_API_ENABLED', false),
 
-    'resources' => [
-        'collections' => false,
-        'navs' => false,
-        'taxonomies' => false,
-        'assets' => false,
-        'globals' => false,
-        'forms' => false,
-        'users' => false,
-    ],
+	'resources' => [
+		'collections' => false,
+		'navs' => false,
+		'taxonomies' => false,
+		'assets' => false,
+		'globals' => false,
+		'forms' => false,
+		'users' => false,
+	],
 
-    'route' => env('STATAMIC_API_ROUTE', 'api'),
+	'route' => env('STATAMIC_API_ROUTE', 'api'),
 
-    /*
-    |--------------------------------------------------------------------------
-    | Authentication
-    |--------------------------------------------------------------------------
-    |
-    | By default, the API will be publicly accessible. However, you may define
-    | an API token here which will be used to authenticate requests.
-    |
-    */
+	/*
+	|--------------------------------------------------------------------------
+	| Authentication
+	|--------------------------------------------------------------------------
+	|
+	| By default, the API will be publicly accessible. However, you may define
+	| an API token here which will be used to authenticate requests.
+	|
+	*/
 
-    'auth_token' => env('STATAMIC_API_AUTH_TOKEN'),
+	'auth_token' => env('STATAMIC_API_AUTH_TOKEN'),
 
-    /*
-    |--------------------------------------------------------------------------
-    | Middleware
-    |--------------------------------------------------------------------------
-    |
-    | Define the middleware / middleware group that will be applied to the
-    | API route group. If you want to externally expose this API, here
-    | you can configure a middleware-based authentication layer.
-    |
-    */
+	/*
+	|--------------------------------------------------------------------------
+	| Middleware
+	|--------------------------------------------------------------------------
+	|
+	| Define the middleware / middleware group that will be applied to the
+	| API route group. If you want to externally expose this API, here
+	| you can configure a middleware-based authentication layer.
+	|
+	*/
 
-    'middleware' => env('STATAMIC_API_MIDDLEWARE', 'api'),
+	'middleware' => env('STATAMIC_API_MIDDLEWARE', 'api'),
 
-    /*
-    |--------------------------------------------------------------------------
-    | Pagination
-    |--------------------------------------------------------------------------
-    |
-    | The numbers of items to show on each paginated page.
-    |
-    */
+	/*
+	|--------------------------------------------------------------------------
+	| Pagination
+	|--------------------------------------------------------------------------
+	|
+	| The numbers of items to show on each paginated page.
+	|
+	*/
 
-    'pagination_size' => 50,
+	'pagination_size' => 50,
 
-    /*
-    |--------------------------------------------------------------------------
-    | Caching
-    |--------------------------------------------------------------------------
-    |
-    | By default, Statamic will cache each endpoint until the specified
-    | expiry, or until content is changed. See the documentation for
-    | more details on how to customize your cache implementation.
-    |
-    | https://statamic.dev/content-api#caching
-    |
-    */
+	/*
+	|--------------------------------------------------------------------------
+	| Caching
+	|--------------------------------------------------------------------------
+	|
+	| By default, Statamic will cache each endpoint until the specified
+	| expiry, or until content is changed. See the documentation for
+	| more details on how to customize your cache implementation.
+	|
+	| https://statamic.dev/content-api#caching
+	|
+	*/
 
-    'cache' => [
-        'expiry' => 60,
-    ],
+	'cache' => [
+		'expiry' => 60,
+	],
 
-    /*
-    |--------------------------------------------------------------------------
-    | Exclude Keys
-    |--------------------------------------------------------------------------
-    |
-    | Here you may provide an array of keys to be excluded from API responses.
-    | For example, you may want to hide things like edit_url, api_url, etc.
-    |
-    */
+	/*
+	|--------------------------------------------------------------------------
+	| Exclude Keys
+	|--------------------------------------------------------------------------
+	|
+	| Here you may provide an array of keys to be excluded from API responses.
+	| For example, you may want to hide things like edit_url, api_url, etc.
+	|
+	*/
 
-    'excluded_keys' => [
-        //
-    ],
+	'excluded_keys' => [
+		//
+	],
 
 ];
