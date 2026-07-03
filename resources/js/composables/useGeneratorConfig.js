@@ -11,6 +11,13 @@ export function useGeneratorConfig() {
 		portrait: { x: 90, y: 40, w: 900, h: 563 },
 		ja: { x: 310, y: 650, w: 460, h: 460 },
 	});
+	// Upload limits mirror config/composite.php's `upload` block (via /api/generator);
+	// these fallbacks match it so hints/validation work before the config loads.
+	const uploadLimits = ref({
+		max_kb: 12288,
+		min_dimension: 200,
+		mimes: ['jpeg', 'jpg', 'png', 'webp'],
+	});
 	const configError = ref('');
 
 	async function loadConfig() {
@@ -20,10 +27,11 @@ export function useGeneratorConfig() {
 			styles.value = json.styles ?? [];
 			bgRemovalEnabled.value = !!json.bg_removal;
 			if (json.geometry) geometry.value = json.geometry;
+			if (json.upload) uploadLimits.value = json.upload;
 		} catch {
 			configError.value = 'Der Generator konnte nicht geladen werden.';
 		}
 	}
 
-	return { styles, bgRemovalEnabled, geometry, configError, loadConfig };
+	return { styles, bgRemovalEnabled, geometry, uploadLimits, configError, loadConfig };
 }

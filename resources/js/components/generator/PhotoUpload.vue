@@ -18,6 +18,10 @@ const props = defineProps({
 	overlayStyle: { type: Object, default: () => ({}) },
 	defaultSize: { type: Function, required: true },
 	defaultPosition: { type: Function, required: true },
+	// Upload hint (accepted types + max size) + the input's accept attribute,
+	// both sourced from config.
+	acceptHint: { type: String, default: '' },
+	acceptAttr: { type: String, default: 'image/*' },
 });
 
 const removeBg = defineModel('removeBg', { type: Boolean, default: false });
@@ -47,17 +51,23 @@ defineExpose({
 		<input
 			ref="fileInput"
 			type="file"
-			accept="image/*"
+			:accept="acceptAttr"
 			class="hidden"
 			@change="onFileChange">
 
-		<button
-			v-if="!hasPortrait && !cutoutBusy"
-			type="button"
-			class="font-sans-bold leading-none px-16 py-12 xl:px-20 xl:py-16 bg-white text-accent cursor-pointer"
-			@click="fileInput?.click()">
-			Foto hochladen
-		</button>
+		<template v-if="!hasPortrait && !cutoutBusy">
+			<button
+				type="button"
+				class="font-sans-bold leading-none px-16 py-12 xl:px-20 xl:py-16 bg-white text-accent cursor-pointer"
+				@click="fileInput?.click()">
+				Foto hochladen
+			</button>
+			<p
+				v-if="acceptHint"
+				class="mt-8 text-tiny text-white/60">
+				{{ acceptHint }}
+			</p>
+		</template>
 
 		<div v-else>
 			<!-- Crop stage: vue-advanced-cropper with a fixed-aspect custom stencil. The sign overlay lives inside the stencil (Stencil.vue). -->
@@ -72,7 +82,9 @@ defineExpose({
 						overlayStyle: overlayStyle,
 					}"
 					:default-size="defaultSize"
-					:default-position="defaultPosition" />
+					:default-position="defaultPosition"
+					:resize-image="false"
+					:move-image="false" />
 
 				<!-- Cutout progress -->
 				<div

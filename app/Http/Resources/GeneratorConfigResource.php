@@ -7,11 +7,12 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
  * Boot payload for the JAtelier generator island: the "JA" styles, whether the
- * client-side background removal is offered, and the composite geometry (so the
- * browser crop frame matches the final image). The geometry's single source of
- * truth is config/composite.php — exposed here rather than duplicated client-side.
+ * client-side background removal is offered, the composite geometry (so the
+ * browser crop frame matches the final image) and the upload limits (so the
+ * client can hint + pre-validate). The single source of truth is
+ * config/composite.php — exposed here rather than duplicated client-side.
  *
- * @property array{styles: mixed, bg_removal: bool, portrait: array, ja: array} $resource
+ * @property array{styles: mixed, bg_removal: bool, portrait: array, ja: array, upload: array} $resource
  */
 class GeneratorConfigResource extends JsonResource
 {
@@ -24,6 +25,7 @@ class GeneratorConfigResource extends JsonResource
 	{
 		$portrait = $this->resource['portrait'];
 		$ja = $this->resource['ja'];
+		$upload = $this->resource['upload'];
 
 		return [
 			'styles' => $this->resource['styles'],
@@ -31,6 +33,11 @@ class GeneratorConfigResource extends JsonResource
 			'geometry' => [
 				'portrait' => ['x' => $portrait['x'], 'y' => $portrait['y'], 'w' => $portrait['width'], 'h' => $portrait['height']],
 				'ja' => ['x' => $ja['x'], 'y' => $ja['y'], 'w' => $ja['width'], 'h' => $ja['height']],
+			],
+			'upload' => [
+				'max_kb' => $upload['max_kb'],
+				'min_dimension' => $upload['min_dimension'],
+				'mimes' => array_values($upload['mimes']),
 			],
 		];
 	}

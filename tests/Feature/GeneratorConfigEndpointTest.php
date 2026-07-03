@@ -67,6 +67,20 @@ class GeneratorConfigEndpointTest extends TestCase
 			]);
 	}
 
+	public function test_upload_limits_mirror_the_composite_config(): void
+	{
+		$this->bindStyles(collect([]));
+
+		$response = $this->getJson('/api/generator');
+
+		$upload = config('composite.upload');
+
+		$response->assertOk()
+			->assertJsonPath('upload.max_kb', $upload['max_kb'])
+			->assertJsonPath('upload.min_dimension', $upload['min_dimension'])
+			->assertJsonPath('upload.mimes', array_values($upload['mimes']));
+	}
+
 	public function test_bg_removal_flag_is_cast_to_a_boolean(): void
 	{
 		$this->bindStyles(collect([]));

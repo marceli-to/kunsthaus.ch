@@ -1,10 +1,29 @@
 import { ref, onBeforeUnmount } from 'vue';
 import { useBackgroundRemoval } from './useBackgroundRemoval';
 
+// Reads a file's pixel dimensions (via a throwaway object URL).
+function readImageSize(file) {
+	return new Promise((resolve, reject) => {
+		const url = URL.createObjectURL(file);
+		const img = new Image();
+		img.onload = () => {
+			URL.revokeObjectURL(url);
+			resolve({ width: img.naturalWidth, height: img.naturalHeight });
+		};
+		img.onerror = () => {
+			URL.revokeObjectURL(url);
+			reject(new Error('decode failed'));
+		};
+		img.src = url;
+	});
+}
+
 // Owns the portrait source: file selection, the preview object URL (revoked on
 // replace/unmount), and optional client-side background removal. `removeBg` and
-// `bgRemovalEnabled` are refs the caller controls (the checkbox + config flag).
-export function usePortraitSource({ removeBg, bgRemovalEnabled, onError }) {
+// `bgRemovalEnabled` are refs the caller controls (the checkbox + config flag);
+// `uploadLimits` mirrors the server's config/composite.php upload rules so we
+// can reject bad files before the round-trip.
+export function usePortraitSource({ removeBg, bgRemovalEnabled, uploadLimits, onError }) {
 	const { cutoutBusy, cutoutProgress, removeBackgroundFrom } = useBackgroundRemoval();
 
 	const portraitPreview = ref('');     // object URL of the source (original or cutout)
@@ -36,10 +55,39 @@ export function usePortraitSource({ removeBg, bgRemovalEnabled, onError }) {
 		}
 	}
 
+	// Mirrors the server rules (mimes, max size, min dimension) so a bad upload
+	// fails fast in the browser instead of after the generate round-trip.
+	// Returns an error message, or '' when the file is acceptable.
+	async function validateFile(file) {
+		const limits = uploadLimits.value;
+
+		const ext = file.name.split('.').pop()?.toLowerCase() ?? '';
+		const isImage = file.type.startsWith('image/');
+		if (!isImage || (limits.mimes.length && !limits.mimes.includes(ext))) {
+			return 'Bitte wählen Sie ein Bild (' + limits.mimes.join(', ').toUpperCase() + ').';
+		}
+
+		if (file.size > limits.max_kb * 1024) {
+			return 'Das Bild ist zu gross (max. ' + Math.round(limits.max_kb / 1024) + ' MB).';
+		}
+
+		try {
+			const { width, height } = await readImageSize(file);
+			if (Math.min(width, height) < limits.min_dimension) {
+				return 'Das Bild ist zu klein (min. ' + limits.min_dimension + 'px).';
+			}
+		} catch {
+			return 'Die Bilddatei konnte nicht gelesen werden.';
+		}
+
+		return '';
+	}
+
 	async function selectFile(file) {
 		if (!file) return;
-		if (!file.type.startsWith('image/')) {
-			onError?.('Bitte wählen Sie eine Bilddatei.');
+		const problem = await validateFile(file);
+		if (problem) {
+			onError?.(problem);
 			return;
 		}
 		onError?.('');

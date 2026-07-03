@@ -10,8 +10,19 @@ import StyleSelect from './generator/StyleSelect.vue';
 import ResultPreview from './generator/ResultPreview.vue';
 
 // ── Config + geometry ──────────────────────────────────────────────────────
-const { styles, bgRemovalEnabled, geometry, configError, loadConfig } = useGeneratorConfig();
+const { styles, bgRemovalEnabled, geometry, uploadLimits, configError, loadConfig } = useGeneratorConfig();
 const { cropAspect, overlayStyle, signOverlapsPortrait, defaultSize, defaultPosition } = useGeometry(geometry);
+
+// Accepted-types + max-size hint shown under "Foto hochladen". Collapse the
+// jpeg/jpg duplicate for display; keep the max size in whole MB.
+const acceptHint = computed(() => {
+	const l = uploadLimits.value;
+	const types = l.mimes.map((m) => (m === 'jpg' ? 'jpeg' : m));
+	const label = [...new Set(types)].join(', ').toUpperCase();
+	return label + ' · max. ' + Math.round(l.max_kb / 1024) + ' MB';
+});
+// `accept` attribute for the file input (extension list).
+const acceptAttr = computed(() => uploadLimits.value.mimes.map((m) => '.' + m).join(','));
 
 // ── Form state ─────────────────────────────────────────────────────────────
 // DEV: prefill personal data on local hosts only (never in production).
@@ -50,6 +61,7 @@ const {
 } = usePortraitSource({
 	removeBg,
 	bgRemovalEnabled,
+	uploadLimits,
 	onError: (msg) => { error.value = msg; },
 });
 
@@ -161,6 +173,8 @@ function reset() {
 				:overlay-style="overlayStyle"
 				:default-size="defaultSize"
 				:default-position="defaultPosition"
+				:accept-hint="acceptHint"
+				:accept-attr="acceptAttr"
 				@select="selectFile"
 				@clear="clearPortrait"
 				@toggle-bg="applyPortrait" />

@@ -18,6 +18,7 @@ class GeneratorConfigController extends Controller
 			'bg_removal' => config('composite.bg_removal'),
 			'portrait' => config('composite.portrait'),
 			'ja' => config('composite.ja'),
+			'upload' => config('composite.upload'),
 		]);
 	}
 }
