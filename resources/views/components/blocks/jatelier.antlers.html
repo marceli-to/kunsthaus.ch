@@ -7,7 +7,6 @@
 
     <div class="grid md:grid-cols-2 gap-20 md:gap-40 xl:gap-60">
 
-      {{# Linke Spalte: Erklärung + Ablauf #}}
       <div>
         {{ if lead }}
           {{ partial:components/headings/h3 size="sm" class="text-pretty mb-12 md:mb-16" }}{{ lead }}{{ /partial:components/headings/h3 }}
@@ -33,13 +32,10 @@
         {{ /if }}
       </div>
 
-      {{# Rechte Spalte: Generator (Vue-Island) #}}
       <div>
-        {{# The generator's config (styles, bg-removal, composite geometry) is
-            fetched from /api/generator on mount — nothing to serialise here. #}}
-        <div id="image-generator">
+        <!-- <div id="image-generator">
           <noscript>Bitte aktivieren Sie JavaScript, um Ihr persönliches JA zu gestalten.</noscript>
-        </div>
+        </div> -->
       </div>
 
     </div>
