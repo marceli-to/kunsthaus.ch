@@ -5,7 +5,6 @@ import Stencil from './Stencil.vue';
 import H4 from '../H4.vue';
 import BaseButton from '../BaseButton.vue';
 import UploadButton from '../form/UploadButton.vue';
-import FormCheckbox from '../form/FormCheckbox.vue';
 
 // Photo step: upload button → fixed-aspect cropper (with live sign overlay) →
 // change/remove actions and the optional background-removal toggle. All source
@@ -49,7 +48,7 @@ defineExpose({
 
 		<template v-if="hasPortrait || cutoutBusy">
 			<div>
-				<div class="relative w-full max-w-sm border border-white">
+				<div class="relative w-fit max-w-full border border-white">
 					<Cropper
 						ref="cropperRef"
 						:src="portraitPreview"
@@ -78,29 +77,32 @@ defineExpose({
 					</template>
 				</div>
 
+				<!-- Helper caption + inline background-removal action -->
+				<template v-if="!cutoutBusy">
+					<p class="mt-8 md:mt-12 text-xs md:text-sm">
+						Verschieben Sie den Rahmen, um den Bildausschnitt festzulegen.<template v-if="bgRemovalEnabled"> Optional können Sie den Hintergrund <button
+							type="button"
+							class="decoration-1 underline underline-offset-2 md:underline-offset-4 hover:no-underline cursor-pointer"
+							@click="removeBg = !removeBg; emit('toggle-bg')">{{ removeBg ? 'wiederherstellen' : 'entfernen' }}</button>.</template>
+					</p>
+				</template>
+
 				<div class="mt-16 md:mt-24 flex gap-16 md:gap-24">
 					<BaseButton
+						size="sm"
 						:disabled="cutoutBusy"
 						@click="uploadButton?.open()">
 						Foto ändern
 					</BaseButton>
 					<template v-if="!cutoutBusy">
 						<BaseButton
-							variant="outline"
+							size="sm"
+							variant="ghost"
 							@click="emit('clear')">
 							Entfernen
 						</BaseButton>
 					</template>
 				</div>
-
-				<template v-if="bgRemovalEnabled">
-					<FormCheckbox
-						v-model="removeBg"
-						:input-attrs="{ disabled: cutoutBusy, onChange: () => emit('toggle-bg') }"
-						class="mt-16">
-						Hintergrund entfernen <span class="text-white/60">(im Browser, Ihr Foto bleibt lokal)</span>
-					</FormCheckbox>
-				</template>
 			</div>
 		</template>
 	</div>

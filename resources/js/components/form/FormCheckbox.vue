@@ -19,7 +19,7 @@ defineProps({
 			type="checkbox"
 			class="peer sr-only">
 		<span
-			class="mt-2 grid size-20 shrink-0 place-items-center border border-white text-accent transition-colors peer-focus-visible:ring-1 peer-focus-visible:ring-white peer-disabled:opacity-50"
+			class="mt-2 grid size-20 md:size-24 shrink-0 place-items-center border-2 border-white text-accent transition-colors peer-focus-visible:ring-1 peer-focus-visible:ring-white peer-disabled:opacity-50"
 			:class="modelValue ? 'bg-white' : 'bg-transparent'">
 			<svg
 				v-show="modelValue"

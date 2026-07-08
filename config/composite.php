@@ -40,7 +40,7 @@ return [
 	// portrait on top, the (smaller) JA card below it.
 	'portrait' => [
 		'x' => 199,       // (1080 - 682) / 2 — centred column
-		'y' => 0,         // bleeds to the top edge
+		'y' => 28,        // stack is centred vertically → equal 28px top/bottom margins
 		'width' => 682,
 		'height' => 420,  // 682 / 420 ≈ 16:10 landscape
 	],
@@ -49,7 +49,7 @@ return [
 	// flush below the portrait, sharing the same centred 682px column.
 	'ja' => [
 		'x' => 199,
-		'y' => 420,       // flush under the portrait band (0 + 420)
+		'y' => 448,       // flush under the portrait band (28 + 420)
 		'width' => 682,
 		'height' => 682,
 	],
@@ -59,7 +59,7 @@ return [
 	// template: "ANDREAS HUGI sagt").
 	'name' => [
 		'x' => 540,          // centre x (text is centre-anchored)
-		'y' => 1130,
+		'y' => 1158,
 		'size' => 34,        // ≈ 32pt in the template artboard; nudge to taste
 		'color' => '0000ff', // accent blue
 		'font' => 'resources/fonts/FuturaPT-Medium.ttf',
@@ -75,7 +75,7 @@ return [
 	// template; height 114 keeps the 1362×276 logo aspect.
 	'footer' => [
 		'x' => 259,          // (1080 - 563) / 2 — centred
-		'y' => 1180,
+		'y' => 1208,         // footer bottom = 1208 + 114 = 1322 → 28px bottom margin
 		'width' => 563,
 		'height' => 114,
 		'image' => 'resources/composite/footer-logo.png',

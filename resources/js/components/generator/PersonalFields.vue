@@ -19,26 +19,13 @@ defineProps({
   <div class="grid gap-20 md:gap-24 xl:gap-28">
 
 		<div>
-			<FormLabel for="ja-last"	required>
-				Name
-			</FormLabel>
-			<FormInput
-				id="ja-last"
-				v-model="lastName"
-				type="text"
-				maxlength="40"
-				autocomplete="family-name"
-				:error="fieldErrors.last_name?.[0]" />
-		</div>
-
-		<div>
 			<FormLabel
-				for="ja-first"
+				for="firstname"
 				required>
 				Vorname
 			</FormLabel>
 			<FormInput
-				id="ja-first"
+				id="firstname"
 				v-model="firstName"
 				type="text"
 				maxlength="40"
@@ -47,11 +34,24 @@ defineProps({
 		</div>
 
 		<div>
-			<FormLabel for="ja-email"	required>
+			<FormLabel for="lastname" required>
+				Name
+			</FormLabel>
+			<FormInput
+				id="lastname"
+				v-model="lastName"
+				type="text"
+				maxlength="40"
+				autocomplete="family-name"
+				:error="fieldErrors.last_name?.[0]" />
+		</div>
+
+		<div>
+			<FormLabel for="email"	required>
 				E-Mail
 			</FormLabel>
 			<FormInput
-				id="ja-email"
+				id="email"
 				v-model="email"
 				type="email"
 				autocomplete="email" />

@@ -19,7 +19,7 @@ defineEmits(['reset']);
 			height="1350"
 			class="w-full h-auto border-2 border-white bg-white">
 
-		<div class="grid grid-cols-2 gap-12">
+		<div class="flex gap-16 md:gap-24">
 			<BaseButton
 				:href="url"
 				download="ja-zum-kunsthaus.jpg">
@@ -27,7 +27,7 @@ defineEmits(['reset']);
 			</BaseButton>
 
 			<BaseButton
-				variant="outline"
+				variant="ghost"
 				@click="$emit('reset')">
 				Neues Bild
 			</BaseButton>
