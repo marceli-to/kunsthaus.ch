@@ -16,7 +16,7 @@ defineProps({
 		<div class="relative">
 			<select
 				v-model="modelValue"
-				class="w-full appearance-none bg-transparent border border-white px-12 py-10 pr-40 text-white focus:outline-none focus:ring-1 focus:ring-white">
+				class="w-full appearance-none bg-transparent border-2 border-white px-8 md:px-12 py-10 md:py-12 pr-32! text-white focus:outline-none!">
 				<option
 					value=""
 					disabled
@@ -31,7 +31,7 @@ defineProps({
 					{{ o.label }}
 				</option>
 			</select>
-			<span class="pointer-events-none absolute right-12 top-1/2 -translate-y-1/2 text-white">
+			<span class="pointer-events-none absolute right-16 top-1/2 -translate-y-1/2 text-white">
 				<svg
 					viewBox="0 0 12 7"
 					fill="none"
@@ -41,10 +41,10 @@ defineProps({
 				</svg>
 			</span>
 		</div>
-		<p
-			v-if="error"
-			class="text-tiny mt-4">
-			{{ error }}
-		</p>
+		<template v-if="error">
+			<p class="text-tiny mt-4">
+				{{ error }}
+			</p>
+		</template>
 	</div>
 </template>

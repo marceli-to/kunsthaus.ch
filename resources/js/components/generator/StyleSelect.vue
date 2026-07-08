@@ -1,4 +1,5 @@
 <script setup>
+import H4 from '../H4.vue';
 import FormSelect from '../form/FormSelect.vue';
 
 // Sign-style dropdown. Two-way bound via v-model; options come from config.
@@ -12,9 +13,7 @@ defineProps({
 
 <template>
 	<div>
-		<h4 class="font-sans-bold text-sm md:text-md xl:text-lg mb-8 md:mb-12">
-      Stil wählen
-    </h4>
+		<H4>Stil wählen</H4>
 
 		<FormSelect
 			v-model="modelValue"

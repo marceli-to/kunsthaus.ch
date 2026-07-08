@@ -1,4 +1,6 @@
 <script setup>
+import BaseButton from '../BaseButton.vue';
+
 // Final preview: the generated image plus download / start-over actions.
 defineProps({
 	url: { type: String, required: true },
@@ -8,25 +10,29 @@ defineEmits(['reset']);
 </script>
 
 <template>
-	<div class="flex flex-col gap-24">
+	<div class="flex flex-col gap-24 max-w-md">
+
 		<img
 			:src="url"
 			alt="Ihr «JA zum Kunsthaus» Bild"
-			class="w-full max-w-md self-center border-2 border-white bg-white">
-		<div class="flex flex-wrap gap-12">
-			<a
+			width="1080"
+			height="1350"
+			class="w-full h-auto border-2 border-white bg-white">
+
+		<div class="grid grid-cols-2 gap-12">
+			<BaseButton
 				:href="url"
-				download="ja-zum-kunsthaus.jpg"
-				class="font-sans-bold leading-none px-16 py-12 xl:px-20 xl:py-16 bg-white text-accent">
+				download="ja-zum-kunsthaus.jpg">
 				Herunterladen
-			</a>
-			<button
-				type="button"
-				class="font-sans-bold leading-none px-16 py-12 xl:px-20 xl:py-16 border-2 border-white text-white cursor-pointer"
+			</BaseButton>
+
+			<BaseButton
+				variant="outline"
 				@click="$emit('reset')">
 				Neues Bild
-			</button>
+			</BaseButton>
+
 		</div>
-		<p class="text-tiny text-white/70">Vorschau — noch nicht gespeichert oder veröffentlicht (Bestätigung folgt).</p>
+		<p class="text-sm">Vorschau — noch nicht gespeichert oder veröffentlicht (Bestätigung folgt).</p>
 	</div>
 </template>

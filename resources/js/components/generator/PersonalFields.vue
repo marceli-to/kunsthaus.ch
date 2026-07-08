@@ -1,4 +1,5 @@
 <script setup>
+import H4 from '../H4.vue';
 import FormLabel from '../form/FormLabel.vue';
 import FormInput from '../form/FormInput.vue';
 
@@ -13,16 +14,12 @@ defineProps({
 </script>
 
 <template>
-  <h4 class="font-sans-bold text-sm md:text-md xl:text-lg">
-    Persönliche Daten
-  </h4>
+	<H4>Persönliche Daten</H4>
 
-	<div class="grid gap-20 md:gap-24 xl:gap-28">
+  <div class="grid gap-20 md:gap-24 xl:gap-28">
 
 		<div>
-			<FormLabel
-				for="ja-last"
-				required>
+			<FormLabel for="ja-last"	required>
 				Name
 			</FormLabel>
 			<FormInput
@@ -50,9 +47,7 @@ defineProps({
 		</div>
 
 		<div>
-			<FormLabel
-				for="ja-email"
-				required>
+			<FormLabel for="ja-email"	required>
 				E-Mail
 			</FormLabel>
 			<FormInput

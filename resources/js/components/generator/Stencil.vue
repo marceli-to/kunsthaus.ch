@@ -65,12 +65,13 @@ defineExpose({
 					:transitions="transitions" />
 			</DraggableArea>
 		</BoundingBox>
-		<img
-			v-if="overlayUrl"
-			:src="overlayUrl"
-			alt=""
-			draggable="false"
-			class="pointer-events-none absolute"
-			:style="overlayStyle" />
+		<template v-if="overlayUrl">
+			<img
+				:src="overlayUrl"
+				alt=""
+				draggable="false"
+				class="pointer-events-none absolute"
+				:style="overlayStyle" />
+		</template>
 	</div>
 </template>

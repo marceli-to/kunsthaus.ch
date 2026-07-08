@@ -2,6 +2,8 @@
 import { ref } from 'vue';
 import { Cropper } from 'vue-advanced-cropper';
 import Stencil from './Stencil.vue';
+import H4 from '../H4.vue';
+import BaseButton from '../BaseButton.vue';
 import UploadButton from '../form/UploadButton.vue';
 import FormCheckbox from '../form/FormCheckbox.vue';
 
@@ -20,10 +22,6 @@ const props = defineProps({
 	overlayStyle: { type: Object, default: () => ({}) },
 	defaultSize: { type: Function, required: true },
 	defaultPosition: { type: Function, required: true },
-	// Upload hint (accepted types + max size) + the input's accept attribute,
-	// both sourced from config.
-	acceptHint: { type: String, default: '' },
-	acceptAttr: { type: String, default: 'image/*' },
 });
 
 const removeBg = defineModel('removeBg', { type: Boolean, default: false });
@@ -41,79 +39,69 @@ defineExpose({
 
 <template>
 	<div>
-    <h4 class="font-sans-bold text-sm md:text-md xl:text-lg mb-8 md:mb-12">
-      Ihr Foto
-    </h4>
+		<H4>Ihr Foto</H4>
 
 		<UploadButton
 			ref="uploadButton"
 			label="Foto hochladen"
-			:accept="acceptAttr"
-			:hint="acceptHint"
 			:class="{ hidden: hasPortrait || cutoutBusy }"
 			@select="emit('select', $event)" />
 
-		<div v-if="hasPortrait || cutoutBusy">
-			<!-- Crop stage: vue-advanced-cropper with a fixed-aspect custom stencil. The sign overlay lives inside the stencil (Stencil.vue). -->
-			<div class="relative w-full max-w-sm border border-white">
-				<Cropper
-					ref="cropperRef"
-					:src="portraitPreview"
-					:stencil-component="Stencil"
-					:stencil-props="{
-						aspectRatio: cropAspect,
-						overlayUrl: overlayUrl,
-						overlayStyle: overlayStyle,
-					}"
-					:default-size="defaultSize"
-					:default-position="defaultPosition"
-					:resize-image="false"
-					:move-image="false" />
+		<template v-if="hasPortrait || cutoutBusy">
+			<div>
+				<div class="relative w-full max-w-sm border border-white">
+					<Cropper
+						ref="cropperRef"
+						:src="portraitPreview"
+						:stencil-component="Stencil"
+						:stencil-props="{
+							aspectRatio: cropAspect,
+							overlayUrl: overlayUrl,
+							overlayStyle: overlayStyle,
+						}"
+						:default-size="defaultSize"
+						:default-position="defaultPosition"
+						:resize-image="false"
+						:move-image="false" />
 
-				<!-- Cutout progress -->
-				<div
-					v-if="cutoutBusy"
-					class="absolute inset-0 flex flex-col items-center justify-center gap-8 bg-accent/85 text-white">
-					<p class="font-sans-bold">Hintergrund entfernen…</p>
-					<div class="h-1 w-40 overflow-hidden bg-white/30">
-						<div
-							class="h-full bg-white transition-all"
-							:style="{ width: cutoutProgress + '%' }">
+					<!-- Cutout progress -->
+					<template v-if="cutoutBusy">
+						<div class="absolute inset-0 flex flex-col items-center justify-center gap-8 bg-accent/85 text-white">
+							<p class="font-sans-bold">Hintergrund entfernen…</p>
+							<div class="h-1 w-40 overflow-hidden bg-white/30">
+								<div
+									class="h-full bg-white transition-all"
+									:style="{ width: cutoutProgress + '%' }">
+								</div>
+							</div>
 						</div>
-					</div>
+					</template>
 				</div>
+
+				<div class="mt-16 md:mt-24 flex gap-16 md:gap-24">
+					<BaseButton
+						:disabled="cutoutBusy"
+						@click="uploadButton?.open()">
+						Foto ändern
+					</BaseButton>
+					<template v-if="!cutoutBusy">
+						<BaseButton
+							variant="outline"
+							@click="emit('clear')">
+							Entfernen
+						</BaseButton>
+					</template>
+				</div>
+
+				<template v-if="bgRemovalEnabled">
+					<FormCheckbox
+						v-model="removeBg"
+						:input-attrs="{ disabled: cutoutBusy, onChange: () => emit('toggle-bg') }"
+						class="mt-16">
+						Hintergrund entfernen <span class="text-white/60">(im Browser, Ihr Foto bleibt lokal)</span>
+					</FormCheckbox>
+				</template>
 			</div>
-
-			<p
-				v-if="!cutoutBusy"
-				class="mt-8 text-tiny text-white/60">
-				Rahmen verschieben oder an den Ecken ziehen, um den Ausschnitt zu wählen.
-			</p>
-
-			<div class="mt-12 flex gap-16">
-				<button
-					type="button"
-					:disabled="cutoutBusy"
-					class="font-sans-bold underline underline-offset-2 hover:no-underline cursor-pointer disabled:opacity-50"
-					@click="uploadButton?.open()">
-					Foto ändern
-				</button>
-				<button
-					v-if="!cutoutBusy"
-					type="button"
-					class="text-white/70 underline underline-offset-2 hover:no-underline cursor-pointer"
-					@click="emit('clear')">
-					Entfernen
-				</button>
-			</div>
-
-			<FormCheckbox
-				v-if="bgRemovalEnabled"
-				v-model="removeBg"
-				:input-attrs="{ disabled: cutoutBusy, onChange: () => emit('toggle-bg') }"
-				class="mt-16">
-				Hintergrund entfernen <span class="text-white/60">(im Browser, Ihr Foto bleibt lokal)</span>
-			</FormCheckbox>
-		</div>
+		</template>
 	</div>
 </template>

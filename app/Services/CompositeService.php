@@ -57,15 +57,16 @@ class CompositeService
 		$ja = $this->manager->read($jaPngPath)->cover($j['width'], $j['height']);
 		$canvas->place($ja, 'top-left', $j['x'], $j['y']);
 
-		// 4. Name line — "{Vorname} {Name} SAGT", uppercase, accent blue.
+		// 4. Name line — "{Vorname} {Name} sagt", accent blue. The name is
+		// uppercased; the " sagt" suffix stays lowercase (per the template).
 		// Auto-shrink so long names never overflow the canvas.
 		$name = trim($firstName.' '.$lastName);
 		if ($name !== '') {
 			$nameCfg = $cfg['name'];
-			$line = $name.($nameCfg['suffix'] ?? '');
 			if ($nameCfg['uppercase'] ?? false) {
-				$line = mb_strtoupper($line, 'UTF-8');
+				$name = mb_strtoupper($name, 'UTF-8');
 			}
+			$line = $name.($nameCfg['suffix'] ?? '');
 			$nameCfg['size'] = $this->fitFontSize(
 				$line,
 				base_path($nameCfg['font']),

@@ -39,43 +39,45 @@ return [
 	// change these numbers and the crop frame follows. Layout is STACKED:
 	// portrait on top, the (smaller) JA card below it.
 	'portrait' => [
-		'x' => 90,
-		'y' => 40,
-		'width' => 900,
-		'height' => 563, // 900 / 563 ≈ 16:10
+		'x' => 199,       // (1080 - 682) / 2 — centred column
+		'y' => 0,         // bleeds to the top edge
+		'width' => 682,
+		'height' => 420,  // 682 / 420 ≈ 16:10 landscape
 	],
 
 	// Chosen "JA" style card (square 684² tile) — cover-fit into this box,
-	// centred below the portrait.
+	// flush below the portrait, sharing the same centred 682px column.
 	'ja' => [
-		'x' => 310,
-		'y' => 650,
-		'width' => 460,
-		'height' => 460,
+		'x' => 199,
+		'y' => 420,       // flush under the portrait band (0 + 420)
+		'width' => 682,
+		'height' => 682,
 	],
 
-	// Rendered name line: "{Vorname} {Name} SAGT" — centre-anchored, accent
-	// blue, uppercase.
+	// Rendered name line: "{Vorname} {Name} sagt" — centre-anchored, accent
+	// blue. The NAME is uppercased; the " sagt" suffix stays lowercase (per the
+	// template: "ANDREAS HUGI sagt").
 	'name' => [
 		'x' => 540,          // centre x (text is centre-anchored)
-		'y' => 1150,
-		'size' => 40,
+		'y' => 1130,
+		'size' => 34,        // ≈ 32pt in the template artboard; nudge to taste
 		'color' => '0000ff', // accent blue
 		'font' => 'resources/fonts/FuturaPT-Medium.ttf',
 		'align' => 'center',
-		'uppercase' => true,
-		'suffix' => ' SAGT',
+		'uppercase' => true, // applies to the name only, not the suffix
+		'suffix' => ' sagt',
 		'max_width' => 940, // long names auto-shrink to fit within this width
 		'min_size' => 22,   // don't shrink below this
 	],
 
 	// Fixed footer logo lockup ("JA ZUM KUNSTHAUS. ZU ZÜRICH.") — contain-fit
-	// into this box (keeps aspect), centred, near the bottom.
+	// into this box (keeps aspect), centred, near the bottom. 563px wide per the
+	// template; height 114 keeps the 1362×276 logo aspect.
 	'footer' => [
-		'x' => 300,
-		'y' => 1225,
-		'width' => 480,
-		'height' => 100,
+		'x' => 259,          // (1080 - 563) / 2 — centred
+		'y' => 1180,
+		'width' => 563,
+		'height' => 114,
 		'image' => 'resources/composite/footer-logo.png',
 	],
 

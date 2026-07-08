@@ -1,13 +1,18 @@
 <script setup>
 import { ref } from 'vue';
+import BaseButton from '../BaseButton.vue';
 
 // File-upload button: a styled button that opens a hidden <input type="file">
 // and emits the chosen file via `select`. `accept` sets the input filter;
 // `hint` shows accepted types / max size below the button.
+//
+// The accept/hint defaults mirror the server rules in config/composite.php
+// (enforced there and mirrored for fail-fast validation in usePortraitSource).
+// They are hardcoded on purpose — update them here if those rules change.
 defineProps({
 	label: { type: String, default: 'Datei hochladen' },
-	accept: { type: String, default: 'image/*' },
-	hint: { type: String, default: '' },
+	accept: { type: String, default: '.jpeg,.jpg,.png,.webp' },
+	hint: { type: String, default: 'JPEG, PNG, WEBP · max. 12 MB' },
 });
 
 const emit = defineEmits(['select']);
@@ -34,14 +39,15 @@ defineExpose({ open: () => fileInput.value?.click() });
 			class="hidden"
 			@change="onFileChange">
 
-		<button
-			type="button"
-			class="font-sans-bold leading-none px-16 py-12 xl:px-20 xl:py-16 bg-white text-accent cursor-pointer"
-			@click="fileInput?.click()">
+		<BaseButton @click="fileInput?.click()">
 			{{ label }}
-		</button>
-		<p v-if="hint" class="mt-8 md:mt-12 text-xxs md:text-xs xl:text-sm">
-			{{ hint }}
-		</p>
+		</BaseButton>
+
+		<template v-if="hint">
+			<p class="mt-8 md:mt-12 text-xxs md:text-xs xl:text-sm">
+				{{ hint }}
+			</p>
+		</template>
+    
 	</div>
 </template>

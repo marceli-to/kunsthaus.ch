@@ -4,6 +4,7 @@ import { useGeneratorConfig } from '../composables/useGeneratorConfig';
 import { useGeometry } from '../composables/useGeometry';
 import { usePortraitSource } from '../composables/usePortraitSource';
 import { useCropExport } from '../composables/useCropExport';
+import BaseButton from './BaseButton.vue';
 import PersonalFields from './generator/PersonalFields.vue';
 import PhotoUpload from './generator/PhotoUpload.vue';
 import StyleSelect from './generator/StyleSelect.vue';
@@ -13,26 +14,16 @@ import ResultPreview from './generator/ResultPreview.vue';
 const { styles, bgRemovalEnabled, geometry, uploadLimits, configError, loadConfig } = useGeneratorConfig();
 const { cropAspect, overlayStyle, signOverlapsPortrait, defaultSize, defaultPosition } = useGeometry(geometry);
 
-// Accepted-types + max-size hint shown under "Foto hochladen". Collapse the
-// jpeg/jpg duplicate for display; keep the max size in whole MB.
-const acceptHint = computed(() => {
-	const l = uploadLimits.value;
-	const types = l.mimes.map((m) => (m === 'jpg' ? 'jpeg' : m));
-	const label = [...new Set(types)].join(', ').toUpperCase();
-	return label + ' · max. ' + Math.round(l.max_kb / 1024) + ' MB';
-});
-// `accept` attribute for the file input (extension list).
-const acceptAttr = computed(() => uploadLimits.value.mimes.map((m) => '.' + m).join(','));
+// Note: the accepted-types/max-size shown under "Foto hochladen" are hardcoded
+// in UploadButton.vue. The server (config/composite.php) remains the source of
+// truth for enforcement — mirrored client-side by usePortraitSource for
+// fail-fast validation via `uploadLimits`.
 
 // ── Form state ─────────────────────────────────────────────────────────────
-// DEV: prefill personal data on local hosts only (never in production).
-const isLocalHost = /(^|\.)(test|localhost)$/.test(window.location.hostname)
-	|| window.location.hostname === '127.0.0.1';
-
 const form = reactive({
-	lastName: isLocalHost ? 'Stadelmann' : '',   // "Name"
-	firstName: isLocalHost ? 'Marcel' : '',      // "Vorname"
-	email: isLocalHost ? 'marcel.stadelmann@gmail.com' : '',
+	lastName: '',   // "Name"
+	firstName: '',  // "Vorname"
+	email: '',
 	signStyle: '', // sent as "ja_style"
 	removeBg: false,
 });
@@ -146,59 +137,59 @@ function reset() {
 
 <template>
 	<div class="text-white">
-		<ResultPreview
-			v-if="previewUrl"
-			:url="previewUrl"
-			@reset="reset" />
 
-		<div
-			v-else
-			class="grid xl:gap-24">
-			<PersonalFields
-				v-model:last-name="form.lastName"
-				v-model:first-name="form.firstName"
-				v-model:email="form.email"
-				:field-errors="fieldErrors" />
+		<template v-if="previewUrl">
+			<ResultPreview
+				:url="previewUrl"
+				@reset="reset" />
+		</template>
 
-			<PhotoUpload
-				ref="photoUpload"
-				v-model:remove-bg="form.removeBg"
-				:portrait-preview="portraitPreview"
-				:has-portrait="hasPortrait"
-				:cutout-busy="cutoutBusy"
-				:cutout-progress="cutoutProgress"
-				:bg-removal-enabled="bgRemovalEnabled"
-				:crop-aspect="cropAspect"
-				:overlay-url="overlayUrl"
-				:overlay-style="overlayStyle"
-				:default-size="defaultSize"
-				:default-position="defaultPosition"
-				:accept-hint="acceptHint"
-				:accept-attr="acceptAttr"
-				@select="selectFile"
-				@clear="clearPortrait"
-				@toggle-bg="applyPortrait" />
+		<template v-else>
+			<div class="space-y-20 md:space-y-32 xl:space-y-48">
+				<PersonalFields
+					v-model:last-name="form.lastName"
+					v-model:first-name="form.firstName"
+					v-model:email="form.email"
+					:field-errors="fieldErrors" />
 
-			<StyleSelect
-				v-model="form.signStyle"
-				:styles="styles"
-				:field-errors="fieldErrors" />
+				<PhotoUpload
+					ref="photoUpload"
+					v-model:remove-bg="form.removeBg"
+					:portrait-preview="portraitPreview"
+					:has-portrait="hasPortrait"
+					:cutout-busy="cutoutBusy"
+					:cutout-progress="cutoutProgress"
+					:bg-removal-enabled="bgRemovalEnabled"
+					:crop-aspect="cropAspect"
+					:overlay-url="overlayUrl"
+					:overlay-style="overlayStyle"
+					:default-size="defaultSize"
+					:default-position="defaultPosition"
+					@select="selectFile"
+					@clear="clearPortrait"
+					@toggle-bg="applyPortrait" />
 
-			<!-- Actions -->
-			<div>
-				<p
-					v-if="error"
-					class="mb-16 border border-white px-12 py-10 text-white">
-					{{ error }}
-				</p>
-				<button
-					type="button"
-					:disabled="!canGenerate"
-					class="font-sans-bold leading-none px-20 py-14 xl:px-24 xl:py-16 bg-white text-accent cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
-					@click="generate">
-					{{ generating ? 'Bild wird erstellt…' : 'Bild erstellen' }}
-				</button>
+				<StyleSelect
+					v-model="form.signStyle"
+					:styles="styles"
+					:field-errors="fieldErrors" />
+
+				<!-- Actions -->
+				<div>
+					<template v-if="error">
+						<p class="mb-16 border border-white px-12 py-10 text-white">
+							{{ error }}
+						</p>
+					</template>
+					<BaseButton
+						size="lg"
+						:disabled="!canGenerate"
+						@click="generate">
+						{{ generating ? 'Bild wird erstellt…' : 'Bild erstellen' }}
+					</BaseButton>
+				</div>
 			</div>
-		</div>
+		</template>
+    
 	</div>
 </template>
