@@ -34,7 +34,7 @@ tabs:
               container: assets
               max_files: 1
               display: 'Hero Image'
-              instructions: 'Grosses Bild im Kopfbereich des Beitrags.'
+              instructions: 'Ideal ratio is 16/9'
           -
             handle: blocks
             field:
@@ -63,6 +63,7 @@ tabs:
                             container: assets
                             max_files: 1
                             display: Image
+                            instructions: 'Ideal ratio is 16/9'
                         -
                           handle: caption
                           field:
@@ -88,7 +89,7 @@ tabs:
               container: assets
               max_files: 1
               display: 'Teaser Image'
-              instructions: 'Bild für Listen und Teaser.'
+              instructions: 'Image for teaser and list view. Use a square for best results.'
   settings:
     display: Settings
     sections:

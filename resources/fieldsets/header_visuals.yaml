@@ -7,26 +7,29 @@ fields:
       display: 'Header Visuals'
       collapse: true
       sets:
-        visual:
-          display: Visual
-          fields:
-            -
-              handle: mobile
-              field:
-                type: assets
-                container: assets
-                max_files: 1
-                display: Mobile
-                required: true
-                validate:
-                  - required
-            -
-              handle: desktop
-              field:
-                type: assets
-                container: assets
-                max_files: 1
-                display: Desktop
-                required: true
-                validate:
-                  - required
+        main:
+          display: Hauptbereich
+          sets:
+            visual:
+              display: Visual
+              fields:
+                -
+                  handle: mobile
+                  field:
+                    type: assets
+                    container: assets
+                    max_files: 1
+                    display: Mobile
+                    validate:
+                      - required
+                    instructions: 'Ideal ratio is 10/16'
+                -
+                  handle: desktop
+                  field:
+                    type: assets
+                    container: assets
+                    max_files: 1
+                    display: Desktop
+                    validate:
+                      - required
+                    instructions: 'Ideal ratio is 2/1'
