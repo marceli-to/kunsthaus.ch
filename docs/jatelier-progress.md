@@ -206,3 +206,42 @@ crop → pick a style → `erstellen` → preview + download. (Form prefills on
 > The supporter PNGs (e.g. `reto-zogg.png`) used as test portraits already have
 > baked-in "… SAGT JA ZU …" text + a cream background — that's the stand-in
 > image, not the generator. Real uploads are on white with no text.
+
+---
+
+## 7. Session handoff — decisions & gotchas (2026-07-08, phases 4–6)
+
+Context for whoever (or whichever instance) picks this up next.
+
+**Product decisions locked this session (don't re-litigate):**
+- **Scope = phases 4, 5, 6 only.** Public gallery (Phase 7) and the
+  `app:prune-previews` command + full deploy docs (Phase 8) are deliberately
+  deferred, not forgotten. Phase 7 needs a client answer (is a supporter gallery
+  wanted?) before building.
+- **Storage = private disk + signed URLs.** Source portrait + composite live on
+  the private `local` disk (`storage/app/private/`); everything user- or
+  moderator-facing is served through a signed route, never a public URL. This
+  matches the brief's FADP posture.
+
+**Gotchas / non-obvious choices:**
+- **CP file route middleware:** the moderator image route
+  (`cp.generated-images.file`) uses the base **`statamic.cp`** middleware group,
+  **NOT** `statamic.cp.authenticated`. The `authenticated` group includes
+  `HandleAuthenticatedInertiaRequests`, which assumes an Inertia page response
+  and throws *"Only arrays and Traversables can be unpacked, null given"* on a
+  raw file stream. Permission (`view generated_image`) is enforced in the
+  controller instead. Don't "upgrade" it back to the authenticated group.
+- **Preview→submit metadata** is carried in a server-side sidecar JSON next to
+  the temp files (name/style/bg flag), so `/api/submit` only needs
+  `{preview_id, email, consent}` and the client can't change what was composited.
+- **Publish notification dedupe** is a single guard on `notified_at` in
+  `PublishGeneratedImage`, shared by the CP "Freigeben & benachrichtigen" action
+  AND the `saved` observer (which fires if a moderator flips the status select
+  directly). Both converge on one dispatch.
+
+**Local dev reminders:**
+- `MAIL_MAILER=log` → the submit-copy and publish mails only land in
+  `storage/logs/laravel.log`, not a real inbox.
+- `QUEUE_CONNECTION=database`, no worker runs automatically → drain with
+  `php artisan queue:work --stop-when-empty` to actually send the queued mails.
+- After blueprint/config/role changes: `php please stache:clear && php artisan config:clear`.
