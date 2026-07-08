@@ -2,33 +2,44 @@
 
   {{ partial:components/layout/inner spacing="pb-40 md:pb-60 xl:pb-80 pt-12 md:pt-32 xl:pt-52" }}
 
-    {{# Title (Wortmarke) #}}
-    {{ partial:components/headings/h2 class="mb-16 md:mb-24 xl:mb-32" }}{{ heading ?? 'JAtelier' }}{{ /partial:components/headings/h2 }}
+    {{ partial:components/headings/h2 class="mb-16 md:mb-24 xl:mb-32" }}
+      {{ heading ?? 'JAtelier' }}
+    {{ /partial:components/headings/h2 }}
 
     <div class="grid md:grid-cols-2 gap-20 md:gap-40 xl:gap-60">
 
       <div>
         {{ if lead }}
-          {{ partial:components/headings/h3 size="sm" class="text-pretty mb-12 md:mb-16" }}{{ lead }}{{ /partial:components/headings/h3 }}
+          {{ partial:components/headings/h3 size="sm" class="text-pretty mb-12 md:mb-16" }}
+            {{ lead }}
+          {{ /partial:components/headings/h3 }}
         {{ /if }}
 
         {{ if editor }}
-          <div class="mb-24 md:mb-32">{{ editor }}</div>
+          <div class="mb-24 md:mb-32">
+            {{ editor }}
+          </div>
         {{ /if }}
 
         {{ if subtitle_process }}
-          {{ partial:components/headings/h3 size="sm" class="text-pretty mb-16 md:mb-20" }}{{ subtitle_process }}{{ /partial:components/headings/h3 }}
+          {{ partial:components/headings/h3 size="sm" class="text-pretty mb-16 md:mb-20" }}
+            {{ subtitle_process }}
+          {{ /partial:components/headings/h3 }}
         {{ /if }}
 
         {{ if steps }}
-          <ol class="grid gap-16 md:gap-20">
+          <ol class="grid gap-20 md:gap-32 xl:gap-44">
             {{ steps }}
               <li>
-                <p class="font-sans-bold mb-4 md:mb-8">{{ count }}. {{ title }}</p>
-                {{ if text }}<p class="mb-0">{{ text | nl2br }}</p>{{ /if }}
+                <span class="block font-sans-bold mb-4">{{ count }}. {{ title }}</span>
+                {{ if text }}<span class="block">{{ text | nl2br }}</span>{{ /if }}
               </li>
             {{ /steps }}
           </ol>
+        {{ /if }}
+        
+        {{ if claim }}
+          <p class="text-sm md:text-md xl:text-lg leading-[1.25] font-sans-bold mt-24 md:mt-32 xl:mt-44">{{ claim }}</p>
         {{ /if }}
       </div>
 

@@ -4,7 +4,7 @@ fields:
     handle: editor
     field:
       type: bard
-      display: Editor
+      display: Text
       buttons:
         - h2
         - h3

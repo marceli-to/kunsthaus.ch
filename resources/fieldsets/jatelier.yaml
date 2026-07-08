@@ -11,32 +11,38 @@ fields:
     field:
       type: text
       display: Subtitle
-      instructions: 'Bold introductory line, e.g. «Create your personal JA».'
   - import: editor
   -
     handle: subtitle_process
     field:
       type: text
       display: Subtitle
-      instructions: 'Subtitle introducing the process — shown above the numbered steps, e.g. «So funktioniert es:».'
+      instructions: 'Subtitle introducing the process – shown above the numbered steps, e.g. «So funktioniert es:».'
       default: 'So funktioniert es:'
   -
     handle: steps
     field:
-      type: grid
+      type: replicator
       display: Steps
-      mode: stacked
-      add_row: 'Add step'
+      collapse: true
       instructions: 'The numbered steps (1., 2., 3. …) are numbered automatically.'
-      fields:
-        -
-          handle: title
-          field:
-            type: text
-            display: Title
-            required: true
-        -
-          handle: text
-          field:
-            type: textarea
-            display: Text
+      sets:
+        step:
+          display: Step
+          fields:
+            -
+              handle: title
+              field:
+                type: text
+                display: Title
+                required: true
+            -
+              handle: text
+              field:
+                type: textarea
+                display: Text
+  -
+    handle: claim
+    field:
+      type: textarea
+      display: Claim

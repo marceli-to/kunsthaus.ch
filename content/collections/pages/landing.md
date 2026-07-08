@@ -324,17 +324,26 @@ blocks:
     subtitle_process: 'So funktioniert es:'
     steps:
       - id: xnkxpk2w
+        type: step
         title: 'Bild hochladen'
         text: 'Laden Sie ein Foto von sich hoch. Am besten eignet sich ein Portraitbild, möglichst frontal aufgenommen. Verwendet wird vor allem der Bereich von Gesicht und Oberkörper.'
+        enabled: true
       - id: 81DM7pea
+        type: step
         title: 'Kunststil auswählen'
         text: 'Wählen Sie im Dropdown einen Zeichnungs- oder Malstil, der zu Ihnen passt. Daraus entsteht Ihr persönliches «JA für das Kunsthaus».'
+        enabled: true
       - id: oRFCkijx
+        type: step
         title: 'Bild erstellen'
         text: 'Das JAtelier kombiniert Ihr Foto mit Ihrem individuellen JA. Das fertige Bild wird auf der Website publiziert.'
+        enabled: true
       - id: jAEYarP9
+        type: step
         title: 'Bild herunterladen und teilen'
         text: 'Laden Sie Ihr Bild herunter und zeigen Sie Ihrem Umfeld, dass Ihnen das Kunsthaus am Herzen liegt. Teilen Sie Ihr JA auf Social Media, per WhatsApp oder direkt mit Freundinnen, Freunden und Bekannten.'
+        enabled: true
+    claim: 'Jedes JA zählt. Machen Sie sichtbar, dass Zürich JA zum Kunsthaus sagt.'
   -
     id: 170d8d9e-e0c7-4c22-97b2-2f414872b2a6
     items:
@@ -464,7 +473,7 @@ blocks:
     anchor: faq
     title: FAQ
 updated_by: 1
-updated_at: 1783517933
+updated_at: 1783523676
 ---
 The real site is built in the `default` Antlers template. The original
 prototype landing page is archived at docs/prototype/home.antlers.html.
