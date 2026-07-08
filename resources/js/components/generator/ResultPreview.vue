@@ -1,38 +1,116 @@
 <script setup>
+import { ref } from 'vue';
 import BaseButton from '../BaseButton.vue';
+import FormCheckbox from '../form/FormCheckbox.vue';
 
-// Final preview: the generated image plus download / start-over actions.
-defineProps({
-	url: { type: String, required: true },
+// Preview + confirm step. The image is generated but NOT yet stored: the visitor
+// must give consent ("Verwenden") before we create a record and email a copy.
+// On submit success we swap to the permanent download.
+const props = defineProps({
+	url: { type: String, required: true },      // signed temp preview URL
+	previewId: { type: String, required: true },
+	email: { type: String, required: true },
 });
 
 defineEmits(['reset']);
+
+const consent = ref(false);
+const submitting = ref(false);
+const error = ref('');
+const downloadUrl = ref('');   // set once submitted → permanent, signed
+
+async function submit() {
+	if (!consent.value || submitting.value) return;
+
+	submitting.value = true;
+	error.value = '';
+
+	try {
+		const res = await fetch('/api/submit', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				Accept: 'application/json',
+			},
+			body: JSON.stringify({
+				preview_id: props.previewId,
+				email: props.email,
+				consent: true,
+			}),
+		});
+		const json = await res.json().catch(() => ({}));
+
+		if (!res.ok) {
+			if (res.status === 429) error.value = 'Zu viele Anfragen — bitte warten Sie einen Moment.';
+			else error.value = json.message ?? 'Etwas ist schiefgelaufen.';
+			return;
+		}
+		downloadUrl.value = json.download_url;
+	} catch {
+		error.value = 'Netzwerkfehler — bitte versuchen Sie es erneut.';
+	} finally {
+		submitting.value = false;
+	}
+}
 </script>
 
 <template>
 	<div class="flex flex-col gap-24 max-w-md">
 
 		<img
-			:src="url"
+			:src="downloadUrl || url"
 			alt="Ihr «JA zum Kunsthaus» Bild"
 			width="1080"
 			height="1350"
 			class="w-full h-auto border-2 border-white bg-white">
 
-		<div class="flex gap-16 md:gap-24">
-			<BaseButton
-				:href="url"
-				download="ja-zum-kunsthaus.jpg">
-				Herunterladen
-			</BaseButton>
+		<!-- Submitted: permanent download + confirmation -->
+		<template v-if="downloadUrl">
+			<p>Vielen Dank! Ihr Bild wurde gespeichert und wird nun geprüft. Eine Kopie
+				haben wir an Ihre E-Mail-Adresse gesendet.</p>
 
-			<BaseButton
-				variant="ghost"
-				@click="$emit('reset')">
-				Neues Bild
-			</BaseButton>
+			<div class="flex gap-16 md:gap-24">
+				<BaseButton
+					:href="downloadUrl"
+					download="ja-zum-kunsthaus.jpg">
+					Herunterladen
+				</BaseButton>
 
-		</div>
-		<p class="text-sm">Vorschau — noch nicht gespeichert oder veröffentlicht (Bestätigung folgt).</p>
+				<BaseButton
+					variant="ghost"
+					@click="$emit('reset')">
+					Neues Bild
+				</BaseButton>
+			</div>
+		</template>
+
+		<!-- Preview: consent + confirm -->
+		<template v-else>
+			<FormCheckbox v-model="consent">
+				Ich habe das Recht, dieses Foto und den eingegebenen Namen zu verwenden,
+				und bin damit einverstanden, dass mein Bild veröffentlicht wird und mir
+				eine Kopie zugesendet wird.
+			</FormCheckbox>
+
+			<p
+				v-if="error"
+				class="border border-white px-12 py-10 text-white">
+				{{ error }}
+			</p>
+
+			<div class="flex gap-16 md:gap-24">
+				<BaseButton
+					:disabled="!consent || submitting"
+					@click="submit">
+					{{ submitting ? 'Wird gespeichert…' : 'Verwenden' }}
+				</BaseButton>
+
+				<BaseButton
+					variant="ghost"
+					@click="$emit('reset')">
+					Neues Bild
+				</BaseButton>
+			</div>
+		</template>
 	</div>
 </template>

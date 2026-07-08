@@ -121,21 +121,58 @@ overlap the portrait box again, the Vue crop UI auto-shows the live JA overlay.
 - Config single-sourced in `config/composite.php` via `/api/generator`.
 - Long-name auto-shrink; clean error handling; rate limit.
 
+### ✅ Done — Phases 4–6 (backend: submit → moderate → publish) [2026-07-08]
+- **Storage reworked to the PRIVATE `local` disk.** `CompositeService` now writes
+  the composite + EXIF-stripped source portrait + a sidecar `{...}.json` (name,
+  style, bg flag) to `storage/app/private/previews/{preview_id}.*` and returns a
+  **temporary signed URL** (`previews.show`, 30 min) — no more public preview
+  folder. `ImageGenerator.vue` now also sends `background_removed`.
+- **Phase 4 — confirm/submit.** `POST /api/submit` (`SubmitImageRequest`:
+  email + required `consent` + preview-exists) → `SubmitGeneratedImage` action
+  **moves** the temp files to `images/{uuid}/{final.jpg,source.ext}`, creates the
+  `GeneratedImage` record (`status=submitted`, `consent_at`), deletes the sidecar,
+  and **queues** the copy email (`SubmittedImageCopy`, database queue). Returns
+  `{uuid, status, download_url}` (signed 7-day `images.download`). The Vue
+  `ResultPreview.vue` is now the **consent step**: checkbox + "Verwenden" → submit
+  → permanent download.
+- **Data layer.** `create_generated_images_table` migration; `GeneratedImage`
+  model (uuid default, enum/bool/datetime casts, `HasRunwayResource`,
+  `final_url`/`source_url` accessors); `GeneratedImageStatus` enum;
+  `GeneratedImageObserver` (`deleting` → wipe both private files;
+  `saved`+published → notify once).
+- **Phase 5 — Runway moderation.** `statamic-rad-pack/runway ^9.5` installed.
+  Resource `generated_image` ("Generierte Bilder") + blueprint at
+  `resources/blueprints/runway/generated_image.yaml` (read-only metadata, status
+  select, reviewer checklist, moderator-only image URLs via the CP file route).
+  **Moderator** role in `resources/users/roles.yaml` (view/edit/delete, **no
+  create** — records only via the API). `PublishAndNotify` CP action (auto-
+  discovered) + `PublishGeneratedImage` domain action.
+- **Phase 6 — publish notification.** `ImagePublished` queued mail (composite
+  attached, tokenised `images.remove` delete link), subject "Dein Bild wurde
+  veröffentlicht". **Dedupe** on `notified_at` (single guard shared by the CP
+  action and a direct status-select change). Deleting a record (CP or the remove
+  link) wipes all files (observer). Verified end-to-end.
+
 ### ⏳ Pending / next steps
 1. **Try the crop with real faces** and nudge geometry in `config/composite.php`
    if the portrait/JA sizes or spacing feel off (it's just numbers).
-2. **Phase C/D — confirm → store → deliver** (brief Phase 4):
-   - After preview, a "Verwenden" step: preview + **required consent checkbox**.
-   - `POST /api/submit` → validate consent → migration + `GeneratedImage` model
-     → promote temp preview to permanent, store source portrait, `consent_at`,
-     `status = submitted`.
-   - Offer **download**, **email-to-me**, and **share** (WhatsApp/social).
-3. **Phase 5 — moderation** (Runway resource + reviewer checklist).
-4. **Phase 6 — publish notification** (mail, cron/`sync`, dedupe guard).
-5. **Phase 7 — public gallery** (if in scope) + privacy/consent wording.
-6. **Phase 8 — prune-previews** scheduled command; README/deploy notes.
-7. Optional polish: **letter-spacing** on the name line (Intervention has no
+2. **Phase 7 — public gallery** (if in scope) + privacy/consent wording. *(Client
+   product question: is a supporter gallery wanted? Deferred — not built.)*
+3. **Phase 8 — `app:prune-previews`** scheduled command to sweep orphaned temp
+   files in `storage/app/private/previews/` older than ~24h; README/deploy notes
+   (the cron `queue:work --stop-when-empty` line + mail provider).
+4. Optional polish: **letter-spacing** on the name line (Intervention has no
    native tracking → manual glyph spacing) to match the example.
+
+### 🔧 Prod/deploy notes for Phases 4–6
+- **Mail** is `log` in dev — set a real transactional provider (Postmark/Resend/
+  SES) before prod, or the copy + publish mails only hit the log.
+- **Queue** is `database`; both mails are queued. On the shared host drive it with
+  the per-minute cron `php artisan queue:work --stop-when-empty --max-time=50`
+  (or switch those jobs to `sync`). Nothing drains the queue in dev unless you run
+  `php artisan queue:work --stop-when-empty`.
+- **Moderator user:** assign the `moderator` role (or keep super). The CP source/
+  final image links are gated on `view generated_image` + CP auth.
 
 ### ⚠️ Flags
 - `@imgly/background-removal` is **AGPL-3.0** — buy the commercial licence or

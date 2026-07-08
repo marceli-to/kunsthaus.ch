@@ -1,4 +1,11 @@
-# admin:
-#   title: Administrator
-#   permissions:
-#     - super
+moderator:
+  title: Moderator
+  permissions:
+    # JAtelier moderation: review submissions, change status, delete (which wipes
+    # the private files). NOT `create generated_image` — records are only born via
+    # /api/submit. Access to the private image files is gated on `view` in the
+    # ServeGeneratedImageFileController route.
+    - 'access cp'
+    - 'view generated_image'
+    - 'edit generated_image'
+    - 'delete generated_image'

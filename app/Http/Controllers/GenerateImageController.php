@@ -20,6 +20,7 @@ class GenerateImageController extends Controller
 			styleKey: $request->validated('ja_style'),
 			firstName: $request->firstName(),
 			lastName: $request->lastName(),
+			backgroundRemoved: $request->boolean('background_removed'),
 		);
 
 		return new ImagePreviewResource($preview);

@@ -33,6 +33,7 @@ class GenerateImageRequest extends FormRequest
 			'ja_style' => ['required', 'string', 'max:64'],
 			'first_name' => ['required', 'string', 'max:40'],
 			'last_name' => ['required', 'string', 'max:40'],
+			'background_removed' => ['sometimes', 'boolean'],
 		];
 	}
 

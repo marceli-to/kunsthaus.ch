@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\GenerateImageController;
 use App\Http\Controllers\GeneratorConfigController;
+use App\Http\Controllers\SubmitImageController;
 use Illuminate\Support\Facades\Route;
 
 // Boot payload for the generator island: "JA" styles + bg-removal flag +
@@ -13,3 +14,9 @@ Route::get('/generator', GeneratorConfigController::class);
 // composites them onto the campaign template via GD, and returns a preview.
 // 10 requests/min per IP — public upload+processing endpoint.
 Route::post('/generate', GenerateImageController::class)->middleware('throttle:10,1');
+
+// Confirm/submit (Phase 4): the visitor consented → promote the temp preview to
+// permanent private storage, create the GeneratedImage record (status=submitted,
+// consent_at) and queue the copy email. Only needs {preview_id, email, consent}.
+// 20 requests/min per IP.
+Route::post('/submit', SubmitImageController::class)->middleware('throttle:20,1');

@@ -37,6 +37,7 @@ const error = ref('');
 const fieldErrors = reactive({});
 const generating = ref(false);
 const previewUrl = ref('');
+const previewId = ref('');
 
 // ── Portrait source (file, preview, background removal) ─────────────────────
 const photoUpload = ref(null);
@@ -108,6 +109,7 @@ async function generate() {
 		body.append('ja_style', form.signStyle);
 		body.append('first_name', form.firstName);
 		body.append('last_name', form.lastName);
+		body.append('background_removed', form.removeBg ? '1' : '0');
 
 		const res = await fetch('/api/generate', {
 			method: 'POST',
@@ -123,6 +125,7 @@ async function generate() {
 			return;
 		}
 		previewUrl.value = json.url;
+		previewId.value = json.preview_id;
 	} catch {
 		error.value = 'Netzwerkfehler — bitte versuchen Sie es erneut.';
 	} finally {
@@ -132,6 +135,7 @@ async function generate() {
 
 function reset() {
 	previewUrl.value = '';
+	previewId.value = '';
 }
 </script>
 
@@ -141,6 +145,8 @@ function reset() {
 		<template v-if="previewUrl">
 			<ResultPreview
 				:url="previewUrl"
+				:preview-id="previewId"
+				:email="form.email"
 				@reset="reset" />
 		</template>
 

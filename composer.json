@@ -10,6 +10,7 @@
         "intervention/image": "^3.0",
         "laravel/framework": "^13.8",
         "laravel/tinker": "^3.0",
+        "statamic-rad-pack/runway": "^9.5",
         "statamic/cms": "^6.0"
     },
     "require-dev": {

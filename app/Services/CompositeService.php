@@ -2,9 +2,11 @@
 
 namespace App\Services;
 
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Str;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Typography\FontFactory;
-use RuntimeException;
 
 /**
  * Deterministic image compositing (NO AI). Layers the visitor's portrait, the
@@ -12,12 +14,23 @@ use RuntimeException;
  * the template canvas using Intervention Image's GD driver (no Imagick — the
  * target Swiss shared host may not have it).
  *
- * Reading the portrait and re-encoding the flattened result strips all source
- * EXIF metadata (incl. GPS); orientation is applied first so phone photos are
- * upright.
+ * Reading the portrait and re-encoding both the source copy and the flattened
+ * result strips all source EXIF metadata (incl. GPS); orientation is applied
+ * first so phone photos are upright.
+ *
+ * Everything is written to the PRIVATE "local" disk under `previews/` and served
+ * via a temporary signed route — the composite is pre-consent, so it is never
+ * exposed at a guessable public URL. On submit (Phase 4) these temp files are
+ * promoted to permanent private storage; orphans are swept by app:prune-previews.
+ * PROD: build app:prune-previews (Phase 8) to sweep `private/previews/` > ~24h.
  */
 class CompositeService
 {
+	/**
+	 * Temp working directory on the private "local" disk (storage/app/private).
+	 */
+	private const TEMP_DIR = 'previews';
+
 	private ImageManager $manager;
 
 	public function __construct()
@@ -27,15 +40,26 @@ class CompositeService
 	}
 
 	/**
-	 * Build the composite and write a flattened JPEG preview to the public
-	 * "previews" folder. Returns [previewId, absolute public URL].
+	 * Build the composite, persist the (EXIF-stripped) source portrait, the
+	 * flattened composite and a sidecar of the submit metadata — all to the
+	 * private disk, keyed by a fresh preview id. Returns the preview id, a signed
+	 * temporary URL for the composite, and the two relative paths so the submit
+	 * action can promote them without re-uploading.
 	 *
 	 * @param  string  $portraitPath  absolute path to the uploaded portrait
+	 * @param  string  $portraitExt   source portrait extension (jpg/png/webp)
 	 * @param  string  $jaPngPath     absolute path to the chosen JA style PNG
-	 * @return array{0: string, 1: string}
+	 * @param  array<string, mixed>  $meta  sidecar metadata (name, style, bg flag)
+	 * @return array{preview_id: string, url: string, source_path: string, composite_path: string}
 	 */
-	public function build(string $portraitPath, string $jaPngPath, string $firstName, string $lastName): array
-	{
+	public function build(
+		string $portraitPath,
+		string $portraitExt,
+		string $jaPngPath,
+		string $firstName,
+		string $lastName,
+		array $meta,
+	): array {
 		$cfg = config('composite');
 
 		// 1. White canvas.
@@ -46,9 +70,8 @@ class CompositeService
 		// into its fixed box. Top gravity keeps the face when cropping a tall
 		// photo; the JA card below overlaps the lower part.
 		$p = $cfg['portrait'];
-		$portrait = $this->manager->read($portraitPath)
-			->orient()
-			->cover($p['width'], $p['height'], $p['gravity'] ?? 'center');
+		$portraitImage = $this->manager->read($portraitPath)->orient();
+		$portrait = (clone $portraitImage)->cover($p['width'], $p['height'], $p['gravity'] ?? 'center');
 		$canvas->place($portrait, 'top-left', $p['x'], $p['y']);
 
 		// 3. Chosen "JA" style card — cover-fit its fixed (square) box and draw
@@ -84,23 +107,38 @@ class CompositeService
 		$footerY = $f['y'] + (int) (($f['height'] - $footer->height()) / 2);
 		$canvas->place($footer, 'top-left', $footerX, $footerY);
 
-		// 6. Flatten to JPEG on the public temp "previews" disk by UUID.
-		// PROD: previews are pre-consent — serve via a signed/expiring route off
-		// a private disk rather than a public URL, and let app:prune-previews
-		// (Phase 4) sweep anything older than ~24h.
-		$previewId = (string) \Illuminate\Support\Str::uuid();
-		$relativeDir = 'previews';
-		$absoluteDir = storage_path("app/public/{$relativeDir}");
-		if (!is_dir($absoluteDir) && !mkdir($absoluteDir, 0775, true) && !is_dir($absoluteDir)) {
-			throw new RuntimeException('Could not create previews directory.');
-		}
+		// 6. Persist to the private disk, keyed by a fresh preview id.
+		$previewId = (string) Str::uuid();
+		$disk = Storage::disk('local');
 
-		$absolutePath = "{$absoluteDir}/{$previewId}.jpg";
-		$canvas->toJpeg(quality: 90)->save($absolutePath);
+		// Source portrait — re-encoded from the EXIF-oriented decode above so the
+		// moderation copy carries no GPS/metadata either. Kept for review only.
+		$ext = in_array($portraitExt, ['jpg', 'jpeg', 'png', 'webp'], true) ? $portraitExt : 'jpg';
+		$sourcePath = self::TEMP_DIR."/{$previewId}.src.{$ext}";
+		$disk->put($sourcePath, (string) $portraitImage->encodeByExtension($ext));
 
-		$url = rtrim(config('app.url'), '/')."/storage/{$relativeDir}/{$previewId}.jpg";
+		// Flattened composite preview (JPEG).
+		$compositePath = self::TEMP_DIR."/{$previewId}.jpg";
+		$disk->put($compositePath, (string) $canvas->toJpeg(quality: 90));
 
-		return [$previewId, $url];
+		// Sidecar metadata so /api/submit only needs {preview_id, email, consent}
+		// and the server owns the (already-sanitised) name/style/bg flag — the
+		// client can't change what's baked into the composite between preview and
+		// submit.
+		$disk->put(self::TEMP_DIR."/{$previewId}.json", json_encode($meta + [
+			'source_path' => $sourcePath,
+			'composite_path' => $compositePath,
+		], JSON_THROW_ON_ERROR));
+
+		// Signed temp URL so the browser <img>/download can read the private file.
+		$url = URL::temporarySignedRoute('previews.show', now()->addMinutes(30), ['preview' => $previewId]);
+
+		return [
+			'preview_id' => $previewId,
+			'url' => $url,
+			'source_path' => $sourcePath,
+			'composite_path' => $compositePath,
+		];
 	}
 
 	/**
