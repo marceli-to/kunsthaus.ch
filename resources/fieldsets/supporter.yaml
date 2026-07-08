@@ -6,11 +6,6 @@ fields:
       type: text
       display: Title
   -
-    handle: presidium_title
-    field:
-      type: text
-      display: 'Co-Präsidium Title'
-  -
     handle: presidium
     field:
       type: replicator
@@ -35,17 +30,6 @@ fields:
                 required: true
                 validate:
                   - required
-            -
-              handle: quote
-              field:
-                type: textarea
-                display: Quote
-            -
-              handle: linkedin_url
-              field:
-                type: text
-                input_type: url
-                display: 'LinkedIn URL'
   -
     handle: committee_title
     field:

@@ -1,31 +1,22 @@
 <section id="komitee">
 
-  {{ partial:components/layout/inner class="pb-20 md:pb-40 xl:pb-60 pt-12 md:pt-32 xl:pt-52" }}
+  {{ partial:components/layout/inner }}
 
     {{ if title }}
-      {{ partial:components/headings/h2 class="text-accent text-pretty max-w-5xl mb-16 md:mb-24 xl:mb-32" }}
+      {{ partial:components/headings/h2 class="text-accent text-pretty max-w-5xl mb-20 md:mb-32 xl:mb-44" }}
         {{ title }}
       {{ /partial:components/headings/h2 }}
-    {{ /if }}
-
-    {{ if presidium_title }}
-      {{ partial:components/headings/h3 class="text-accent text-balance mb-16 md:mb-24 xl:mb-32" }}
-        {{ presidium_title }}
-      {{ /partial:components/headings/h3 }}
     {{ /if }}
 
     {{ if presidium }}
       <div class="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-16 md:gap-24 xl:gap-32 mb-20 md:mb-40 xl:mb-60">
         {{ presidium }}
-          {{ partial:components/cards/member
-            :image="image"
-            :name="name"
-            :quote="quote"
-            :linkedin_url="linkedin_url"
-          }}
+          {{ partial:components/cards/member :image="image" :name="name" }}
         {{ /presidium }}
       </div>
     {{ /if }}
+
+    <!-- TODO: Insert images from jatelier -->
 
     {{ if committee_title }}
       {{ partial:components/headings/h3 class="text-accent text-balance mb-16 md:mb-24 xl:mb-32" }}

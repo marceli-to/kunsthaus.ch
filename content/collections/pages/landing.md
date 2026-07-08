@@ -4,6 +4,26 @@ blueprint: page
 title: Landing
 blocks:
   -
+    id: 2qYQ_yYST5RfVQBimHQe-
+    visuals:
+      - id: Vm4OOKzsFnM45fuWKzzsD
+        mobile: visual-mobile-1.jpg
+        desktop: visual-1.jpg
+        type: visual
+        enabled: true
+      - id: igiB0pxRhwgRuLSlMnbd_
+        mobile: visual-mobile-2.jpg
+        desktop: visual-2.jpg
+        type: visual
+        enabled: true
+      - id: Wr1RVtHA3SDqaMFVPxxY3
+        mobile: visual-mobile-3.jpg
+        desktop: visual-3.jpg
+        type: visual
+        enabled: true
+    type: header_visuals
+    enabled: true
+  -
     id: wYHSGzCujNx3InzFy_gzR
     title: 'Das Kunsthaus braucht unsere Hilfe'
     editor:
@@ -144,32 +164,25 @@ blocks:
   -
     id: 95jWhYNftVMTMtDd2HvB7
     title: 'Wir alle sagen JA zum Kunsthaus und JA zu Zürich.'
-    presidium_title: 'Co-Präsidium des Komitees «JA zum Kunsthaus»'
     presidium:
       - id: XGmm6jFdWR1WTM--HJ5gG
         image: supporter/anna-muster.png
         name: 'Anna Muster'
-        quote: 'Ein starkes Kunsthaus gehört zu Zürich – dafür sage ich mit Überzeugung Ja.'
-        linkedin_url: 'https://linkedin.com'
         type: member
         enabled: true
       - id: LIehdMLOX0n1771DRLRmZ
         image: supporter/pippiloti-rist.png
         name: 'Pippiloti Rist'
-        quote: 'Kultur verbindet über Generationen hinweg. Deshalb unterstütze ich diese Vorlage.'
-        linkedin_url: 'https://linkedin.com'
         type: member
         enabled: true
       - id: XcdeXFlAMNlPiEqVllgC6
         image: supporter/reto-zogg.png
         name: 'Reto Zogg'
-        quote: 'Das Kunsthaus ist ein Aushängeschild für Zürich – weit über die Stadtgrenzen hinaus.'
         type: member
         enabled: true
       - id: 9CBPIhimDIA2c7kYEPjGw
         image: supporter/familie-muster.png
         name: 'Familie Muster'
-        quote: 'Für uns als Familie ist das Kunsthaus ein Ort der Begegnung und Inspiration.'
         type: member
         enabled: true
     committee_title: 'Komitee «JA zum Kunsthaus»'
@@ -451,7 +464,7 @@ blocks:
     anchor: faq
     title: FAQ
 updated_by: 1
-updated_at: 1783087335
+updated_at: 1783517933
 ---
 The real site is built in the `default` Antlers template. The original
 prototype landing page is archived at docs/prototype/home.antlers.html.

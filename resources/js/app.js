@@ -4,6 +4,7 @@ import { createApp } from 'vue';
 import ImageGenerator from './components/ImageGenerator.vue';
 import { initLogoAnimation } from './modules/logo-animation';
 import { initShyLogo } from './modules/shy';
+import { initSlideshows } from './modules/slideshow';
 
 // Alpine handles lightweight UI state (menu toggles, transitions).
 window.Alpine = Alpine;
@@ -15,6 +16,9 @@ initLogoAnimation();
 
 // Hide the logo while scrolling down on any opted-in [data-shy-logo] lockup.
 initShyLogo();
+
+// Header visuals slideshow — Swiper on every [data-slideshow] block.
+initSlideshows();
 
 // Vue island — mount only where the landing page provides a target.
 const el = document.getElementById('image-generator');

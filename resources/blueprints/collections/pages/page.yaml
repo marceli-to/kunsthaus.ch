@@ -23,6 +23,12 @@ tabs:
                 main:
                   display: Main
                   sets:
+                    header_visuals:
+                      display: 'Header Visuals'
+                      instructions: 'Header visuals with a mobile and desktop image each'
+                      icon: media-image-picture-gallery
+                      fields:
+                        - import: header_visuals
                     intro:
                       display: Intro
                       instructions: 'Add an intro section with a call to action'
@@ -38,7 +44,7 @@ tabs:
                     reasons:
                       display: Reasons
                       instructions: 'Reasons with speech bubbles and a closing statement'
-                      icon: comment
+                      icon: mail-chat-bubble-text
                       fields:
                         - import: reasons
                     faq:
@@ -56,13 +62,13 @@ tabs:
                     supporter:
                       display: Supporter
                       instructions: 'Co-Präsidium cards and Komitee member list'
-                      icon: user-group
+                      icon: fieldtype-users
                       fields:
                         - import: supporter
                     jatelier:
                       display: JAtelier
                       instructions: 'The image generator: explainer + steps and the upload/style/create form'
-                      icon: image
+                      icon: hero-image-above-text
                       fields:
                         - import: jatelier
   settings:

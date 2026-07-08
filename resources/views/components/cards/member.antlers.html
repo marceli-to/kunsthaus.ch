@@ -13,23 +13,4 @@
     {{ name }}
   {{ /partial:components/headings/h3 }}
 
-  {{ if quote }}
-    <p class="mb-8 md:mb-12 xl:mb-16">
-      {{ quote | nl2br }}
-    </p>
-  {{ /if }}
-
-  {{ if linkedin_url }}
-    <div>
-      <a
-        href="{{ linkedin_url }}"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="inline-flex text-accent hover:opacity-70 transition-opacity"
-        aria-label="{{ name }} auf LinkedIn">
-        {{ partial:components/icons/linkedin class="w-20 md:w-24 xl:w-28 h-auto" }}
-      </a>
-    </div>
-  {{ /if }}
-
 </article>

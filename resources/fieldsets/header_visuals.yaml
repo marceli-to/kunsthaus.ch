@@ -1,0 +1,32 @@
+title: 'Header Visuals'
+fields:
+  -
+    handle: visuals
+    field:
+      type: replicator
+      display: 'Header Visuals'
+      collapse: true
+      sets:
+        visual:
+          display: Visual
+          fields:
+            -
+              handle: mobile
+              field:
+                type: assets
+                container: assets
+                max_files: 1
+                display: Mobile
+                required: true
+                validate:
+                  - required
+            -
+              handle: desktop
+              field:
+                type: assets
+                container: assets
+                max_files: 1
+                display: Desktop
+                required: true
+                validate:
+                  - required

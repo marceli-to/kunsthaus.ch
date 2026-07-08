@@ -1,0 +1,35 @@
+{{ if visuals }}
+  <section>
+
+    <div class="swiper" data-slideshow>
+      <div class="swiper-wrapper">
+        {{ visuals }}
+          <div class="swiper-slide">
+
+            {{ if mobile }}
+              {{ partial:components/media/image
+                :image="mobile"
+                alt=""
+                sizes="100vw"
+                eager="true"
+                wrapperClass="md:hidden"
+              }}
+            {{ /if }}
+
+            {{ if desktop }}
+              {{ partial:components/media/image
+                :image="desktop"
+                alt=""
+                sizes="100vw"
+                eager="true"
+                wrapperClass="hidden md:block"
+              }}
+            {{ /if }}
+
+          </div>
+        {{ /visuals }}
+      </div>
+    </div>
+
+  </section>
+{{ /if }}
