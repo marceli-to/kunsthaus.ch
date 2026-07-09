@@ -40,6 +40,16 @@ defineExpose({
 	<div>
 		<H4>Ihr Foto</H4>
 
+    <!-- Helper caption + inline background-removal action -->
+    <template v-if="!cutoutBusy && hasPortrait">
+      <p class="mt-8 md:mt-12 text-xs md:text-sm">
+        Verschieben Sie den Rahmen, um den Bildausschnitt festzulegen.<template v-if="bgRemovalEnabled"> Optional können Sie den Hintergrund <button
+          type="button"
+          class="decoration-1 underline underline-offset-2 md:underline-offset-4 hover:no-underline cursor-pointer"
+          @click="removeBg = !removeBg; emit('toggle-bg')">{{ removeBg ? 'wiederherstellen' : 'entfernen' }}</button>.</template>
+      </p>
+    </template>
+
 		<UploadButton
 			ref="uploadButton"
 			label="Foto hochladen"
@@ -77,16 +87,6 @@ defineExpose({
 					</template>
 				</div>
 
-				<!-- Helper caption + inline background-removal action -->
-				<template v-if="!cutoutBusy">
-					<p class="mt-8 md:mt-12 text-xs md:text-sm">
-						Verschieben Sie den Rahmen, um den Bildausschnitt festzulegen.<template v-if="bgRemovalEnabled"> Optional können Sie den Hintergrund <button
-							type="button"
-							class="decoration-1 underline underline-offset-2 md:underline-offset-4 hover:no-underline cursor-pointer"
-							@click="removeBg = !removeBg; emit('toggle-bg')">{{ removeBg ? 'wiederherstellen' : 'entfernen' }}</button>.</template>
-					</p>
-				</template>
-
 				<div class="mt-16 md:mt-24 flex gap-16 md:gap-24">
 					<BaseButton
 						size="sm"
@@ -103,6 +103,7 @@ defineExpose({
 						</BaseButton>
 					</template>
 				</div>
+
 			</div>
 		</template>
 	</div>

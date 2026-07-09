@@ -12,7 +12,7 @@ defineProps({
 </script>
 
 <template>
-	<label class="flex items-start gap-8 cursor-pointer">
+	<label class="flex items-start gap-16 md:gap-20 cursor-pointer">
 		<input
 			v-model="modelValue"
 			v-bind="inputAttrs"

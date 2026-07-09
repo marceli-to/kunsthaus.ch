@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import BaseButton from '../BaseButton.vue';
 import FormCheckbox from '../form/FormCheckbox.vue';
 
@@ -10,6 +10,20 @@ const props = defineProps({
 	url: { type: String, required: true },      // signed temp preview URL
 	previewId: { type: String, required: true },
 	email: { type: String, required: true },
+	firstName: { type: String, default: '' },
+	lastName: { type: String, default: '' },
+});
+
+// Download filename: "ja-zum-kunsthaus-vorname-nachname.jpg", slugified so it's
+// filesystem-safe (umlauts folded, spaces → dashes, other chars dropped).
+const downloadName = computed(() => {
+	const slug = `${props.firstName} ${props.lastName}`
+		.toLowerCase()
+		.normalize('NFD').replace(/[̀-ͯ]/g, '')  // strip diacritics
+		.replace(/ß/g, 'ss')
+		.replace(/[^a-z0-9]+/g, '-')
+		.replace(/^-+|-+$/g, '');
+	return slug ? `ja-zum-kunsthaus-${slug}.jpg` : 'ja-zum-kunsthaus.jpg';
 });
 
 defineEmits(['reset']);
@@ -66,51 +80,55 @@ async function submit() {
 
 		<!-- Submitted: permanent download + confirmation -->
 		<template v-if="downloadUrl">
-			<p>Vielen Dank! Ihr Bild wurde gespeichert und wird nun geprüft. Eine Kopie
-				haben wir an Ihre E-Mail-Adresse gesendet.</p>
+      <div class="space-y-16 md:space-y-24">
+        <div>Vielen Dank! Ihr Bild wurde gespeichert und wird nun geprüft. Nach der Freigabe erhalten Sie eine E-Mail als Bestätigung.</div>
+        <div class="flex flex-col items-center gap-8 md:gap-16">
+          <BaseButton
+            class="w-full"
+            :href="downloadUrl"
+            :download="downloadName">
+            Herunterladen
+          </BaseButton>
 
-			<div class="flex gap-16 md:gap-24">
-				<BaseButton
-					:href="downloadUrl"
-					download="ja-zum-kunsthaus.jpg">
-					Herunterladen
-				</BaseButton>
-
-				<BaseButton
-					variant="ghost"
-					@click="$emit('reset')">
-					Neues Bild
-				</BaseButton>
-			</div>
+          <BaseButton
+            variant="ghost"
+            @click="$emit('reset')">
+            Neues Bild
+          </BaseButton>
+        </div>
+      </div>
 		</template>
 
 		<!-- Preview: consent + confirm -->
 		<template v-else>
-			<FormCheckbox v-model="consent">
-				Ich habe das Recht, dieses Foto und den eingegebenen Namen zu verwenden,
-				und bin damit einverstanden, dass mein Bild veröffentlicht wird und mir
-				eine Kopie zugesendet wird.
-			</FormCheckbox>
+      <div class="space-y-16 md:space-y-24">
+        
+        <FormCheckbox v-model="consent">
+          Ich habe das Recht, dieses Foto und den eingegebenen Namen zu verwenden und bin damit einverstanden, dass mein Bild veröffentlicht wird
+        </FormCheckbox>
 
-			<p
-				v-if="error"
-				class="border border-white px-12 py-10 text-white">
-				{{ error }}
-			</p>
+        <template v-if="error">
+          <div class="border border-white px-12 py-10 text-white">
+            {{ error }}
+          </div>
+        </template>
 
-			<div class="flex gap-16 md:gap-24">
-				<BaseButton
-					:disabled="!consent || submitting"
-					@click="submit">
-					{{ submitting ? 'Wird gespeichert…' : 'Verwenden' }}
-				</BaseButton>
+        <div class="flex flex-col items-center gap-8 md:gap-16">
+          <BaseButton
+            class="w-full"
+            :disabled="!consent || submitting"
+            @click="submit">
+            {{ submitting ? 'Wird gespeichert…' : 'Verwenden' }}
+          </BaseButton>
 
-				<BaseButton
-					variant="ghost"
-					@click="$emit('reset')">
-					Neues Bild
-				</BaseButton>
-			</div>
+          <BaseButton
+            variant="ghost"
+            @click="$emit('reset')">
+            Neues Bild
+          </BaseButton>
+        </div>
+
+      </div>
 		</template>
 	</div>
 </template>

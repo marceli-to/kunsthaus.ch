@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive, computed, onMounted } from 'vue';
+import { ref, reactive, computed, onMounted, nextTick } from 'vue';
 import { useGeneratorConfig } from '../composables/useGeneratorConfig';
 import { useGeometry } from '../composables/useGeometry';
 import { usePortraitSource } from '../composables/usePortraitSource';
@@ -33,8 +33,17 @@ const removeBg = computed({
 	set: (v) => { form.removeBg = v; },
 });
 
+const rootEl = ref(null);
 const error = ref('');
 const fieldErrors = reactive({});
+
+// The result view is shorter than the form; bring the generator back into view
+// so the visitor isn't left staring at whitespace below it.
+function scrollToTop() {
+	nextTick(() => {
+		rootEl.value?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+	});
+}
 const generating = ref(false);
 const previewUrl = ref('');
 const previewId = ref('');
@@ -126,6 +135,7 @@ async function generate() {
 		}
 		previewUrl.value = json.url;
 		previewId.value = json.preview_id;
+		scrollToTop();
 	} catch {
 		error.value = 'Netzwerkfehler — bitte versuchen Sie es erneut.';
 	} finally {
@@ -136,17 +146,22 @@ async function generate() {
 function reset() {
 	previewUrl.value = '';
 	previewId.value = '';
+	scrollToTop();
 }
 </script>
 
 <template>
-	<div class="text-white">
+	<div
+		ref="rootEl"
+		class="scroll-mt-20 md:scroll-mt-32 xl:scroll-mt-48 text-white">
 
 		<template v-if="previewUrl">
 			<ResultPreview
 				:url="previewUrl"
 				:preview-id="previewId"
 				:email="form.email"
+				:first-name="form.firstName"
+				:last-name="form.lastName"
 				@reset="reset" />
 		</template>
 
@@ -191,7 +206,7 @@ function reset() {
 						size="lg"
 						:disabled="!canGenerate"
 						@click="generate">
-						{{ generating ? 'Bild wird erstellt…' : 'Bild erstellen' }}
+						{{ generating ? 'Vorschau wird erstellt…' : 'Vorschau erstellen' }}
 					</BaseButton>
 				</div>
 			</div>

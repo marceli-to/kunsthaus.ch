@@ -28,7 +28,7 @@ const sizes = {
 const variants = {
 	solid: 'bg-white text-accent',
 	outline: 'border-2 border-white text-white',
-	ghost: 'text-white hover:bg-white/20',
+	ghost: 'text-white hover:underline decoration-2 underline-offset-4',
 };
 </script>
 
