@@ -21,6 +21,8 @@ const props = defineProps({
 	overlayStyle: { type: Object, default: () => ({}) },
 	defaultSize: { type: Function, required: true },
 	defaultPosition: { type: Function, required: true },
+	// Validation message (e.g. "no photo chosen") shown below the upload button.
+	error: { type: String, default: '' },
 });
 
 const removeBg = defineModel('removeBg', { type: Boolean, default: false });
@@ -55,6 +57,12 @@ defineExpose({
 			label="Foto hochladen"
 			:class="{ hidden: hasPortrait || cutoutBusy }"
 			@select="emit('select', $event)" />
+
+		<template v-if="error && !hasPortrait && !cutoutBusy">
+			<p class="text-error text-xs md:text-sm mt-4">
+				{{ error }}
+			</p>
+		</template>
 
 		<template v-if="hasPortrait || cutoutBusy">
 			<div>

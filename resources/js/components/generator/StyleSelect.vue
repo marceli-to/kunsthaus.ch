@@ -13,6 +13,9 @@ const props = defineProps({
 	fieldErrors: { type: Object, default: () => ({}) },
 });
 
+// Ask the parent to clear the style error when the visitor focuses the select.
+const emit = defineEmits(['clear-error']);
+
 const selected = computed(() => props.styles.find((s) => s.key === modelValue.value) ?? null);
 </script>
 
@@ -23,7 +26,8 @@ const selected = computed(() => props.styles.find((s) => s.key === modelValue.va
 		<FormSelect
 			v-model="modelValue"
 			:options="styles"
-			:error="fieldErrors.ja_style?.[0]" />
+			:error="fieldErrors.ja_style?.[0]"
+			@focus="emit('clear-error', 'ja_style')" />
 
 		<!-- Preview of the selected style -->
 		<span

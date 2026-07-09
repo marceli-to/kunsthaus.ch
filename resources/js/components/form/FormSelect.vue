@@ -9,6 +9,9 @@ defineProps({
 	placeholder: { type: String, default: 'Bitte wählen…' },
 	error: { type: String, default: '' },
 });
+
+// Bubbles the native focus so the parent can clear the field's error.
+defineEmits(['focus']);
 </script>
 
 <template>
@@ -16,7 +19,9 @@ defineProps({
 		<div class="relative">
 			<select
 				v-model="modelValue"
-				class="w-full appearance-none bg-transparent border-2 border-white px-8 md:px-12 py-10 md:py-12 pr-32! text-white focus:outline-none!">
+				class="w-full appearance-none bg-transparent border-2 px-8 md:px-12 py-10 md:py-12 pr-32! text-white focus:outline-none!"
+				:class="error ? 'border-error' : 'border-white'"
+				@focus="$emit('focus', $event)">
 				<option
 					value=""
 					disabled
@@ -42,7 +47,7 @@ defineProps({
 			</span>
 		</div>
 		<template v-if="error">
-			<p class="text-tiny mt-4">
+			<p class="text-error text-xs md:text-sm mt-4">
 				{{ error }}
 			</p>
 		</template>

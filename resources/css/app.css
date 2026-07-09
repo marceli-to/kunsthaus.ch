@@ -16,6 +16,7 @@
   --font-sans-medium: 'futura-pt', ui-sans-serif, system-ui, sans-serif;
   --font-sans-bold: 'futura-pt-bold', ui-sans-serif, system-ui, sans-serif;
   --color-accent: #0000ff;
+  --color-error: #ff9494; /* light red — legible on the blue accent without the saturated-red vibration */
   --color-light: #FFFBF8;
 }
 

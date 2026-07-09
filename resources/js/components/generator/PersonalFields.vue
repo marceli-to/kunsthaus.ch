@@ -11,6 +11,9 @@ const email = defineModel('email', { type: String, default: '' });
 defineProps({
 	fieldErrors: { type: Object, default: () => ({}) },
 });
+
+// Ask the parent to clear a field's error when the visitor focuses it.
+const emit = defineEmits(['clear-error']);
 </script>
 
 <template>
@@ -30,7 +33,8 @@ defineProps({
 				type="text"
 				maxlength="40"
 				autocomplete="given-name"
-				:error="fieldErrors.first_name?.[0]" />
+				:error="fieldErrors.first_name?.[0]"
+				@focus="emit('clear-error', 'first_name')" />
 		</div>
 
 		<div>
@@ -43,7 +47,8 @@ defineProps({
 				type="text"
 				maxlength="40"
 				autocomplete="family-name"
-				:error="fieldErrors.last_name?.[0]" />
+				:error="fieldErrors.last_name?.[0]"
+				@focus="emit('clear-error', 'last_name')" />
 		</div>
 
 		<div>
@@ -54,7 +59,9 @@ defineProps({
 				id="email"
 				v-model="email"
 				type="email"
-				autocomplete="email" />
+				autocomplete="email"
+				:error="fieldErrors.email?.[0]"
+				@focus="emit('clear-error', 'email')" />
 		</div>
 	</div>
 
