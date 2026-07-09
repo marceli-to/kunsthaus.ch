@@ -42,7 +42,7 @@ class ImagePublished extends Notification implements ShouldQueue
 		);
 
 		return (new MailMessage)
-			->subject('Dein Bild wurde veröffentlicht')
+			->subject('Ja zum Kunsthaus – Ihr Bild wurde veröffentlicht')
 			->markdown('mail.image-published', [
 				'name' => $this->image->fullName(),
 				'removeUrl' => $removeUrl,
