@@ -70,10 +70,17 @@ class GeneratedImage extends Model
 	 * text field for Runway to auto-pick, so this drives the edit-page title and
 	 * the listing's title column. Falls back so it's never null (a null title
 	 * crashes Statamic's <Head>).
+	 *
+	 * Deliberately the legacy `getTitleAttribute()` accessor, NOT the new-style
+	 * `title(): Attribute`: the resource is search-indexed on every save and
+	 * Runway's search resolver does `method_exists($model, 'title')` — a new-style
+	 * accessor creates a method literally named `title`, so it would call
+	 * `$model->title()` (an Attribute, not the value) and every save (submit /
+	 * publish / reject) would throw. The `get…Attribute` name avoids the clash.
 	 */
-	protected function title(): Attribute
+	public function getTitleAttribute(): string
 	{
-		return Attribute::get(fn () => $this->fullName() ?: 'Bild #'.$this->getKey());
+		return $this->fullName() ?: 'Bild #'.$this->getKey();
 	}
 
 	/**

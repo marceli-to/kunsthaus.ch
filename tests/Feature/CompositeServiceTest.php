@@ -3,14 +3,17 @@
 namespace Tests\Feature;
 
 use App\Services\CompositeService;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 /**
  * Exercises the real GD compositing pipeline end-to-end (no mocking of
  * Intervention). It reads real portrait + JA PNGs off disk, composites onto the
  * campaign template using the bundled font/footer assets, and writes a flattened
- * JPEG preview. Asserts the returned contract and that a valid image lands on the
- * public disk.
+ * JPEG preview plus the EXIF-stripped source copy and a metadata sidecar to the
+ * PRIVATE "local" disk (faked here). Asserts the returned contract, the files
+ * that land on disk and that a valid image of the configured canvas size is
+ * produced.
  */
 class CompositeServiceTest extends TestCase
 {
@@ -22,6 +25,10 @@ class CompositeServiceTest extends TestCase
 	{
 		parent::setUp();
 
+		// The composite is persisted to the private "local" disk; fake it so the
+		// test neither touches real storage nor needs cleanup.
+		Storage::fake('local');
+
 		$this->portraitPath = $this->makePng(1200, 800, [30, 120, 200]);
 		$this->jaPath = $this->makePng(684, 684, [200, 60, 60]);
 	}
@@ -31,46 +38,75 @@ class CompositeServiceTest extends TestCase
 		@unlink($this->portraitPath);
 		@unlink($this->jaPath);
 
-		// Clean up any previews written during the test.
-		foreach (glob(storage_path('app/public/previews/*.jpg')) as $file) {
-			@unlink($file);
-		}
-
 		parent::tearDown();
 	}
 
-	public function test_it_returns_a_preview_id_and_url(): void
+	/**
+	 * @return array{preview_id: string, url: string, source_path: string, composite_path: string}
+	 */
+	private function build(string $firstName = 'Marcel', string $lastName = 'Stadelmann'): array
 	{
-		[$previewId, $url] = app(CompositeService::class)->build(
+		return app(CompositeService::class)->build(
 			portraitPath: $this->portraitPath,
+			portraitExt: 'png',
 			jaPngPath: $this->jaPath,
-			firstName: 'Marcel',
-			lastName: 'Stadelmann',
+			firstName: $firstName,
+			lastName: $lastName,
+			meta: [
+				'first_name' => $firstName,
+				'last_name' => $lastName,
+				'ja_style' => 'oil',
+				'background_removed' => false,
+			],
 		);
+	}
+
+	public function test_it_returns_a_preview_id_and_a_signed_url(): void
+	{
+		$result = $this->build();
 
 		$this->assertMatchesRegularExpression(
 			'/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/',
-			$previewId,
+			$result['preview_id'],
 			'preview_id should be a UUID',
 		);
 
-		$this->assertStringEndsWith("/storage/previews/{$previewId}.jpg", $url);
-		$this->assertStringStartsWith(rtrim(config('app.url'), '/'), $url);
+		// The composite is pre-consent, so it is served via a temporary signed
+		// route — never a guessable public URL.
+		$this->assertStringContainsString('/previews/'.$result['preview_id'], $result['url']);
+		$this->assertStringContainsString('signature=', $result['url']);
+	}
+
+	public function test_it_persists_the_composite_source_and_sidecar_to_the_private_disk(): void
+	{
+		$result = $this->build();
+
+		$disk = Storage::disk('local');
+
+		$disk->assertExists($result['composite_path']);
+		$disk->assertExists($result['source_path']);
+		$disk->assertExists("previews/{$result['preview_id']}.json");
+
+		$this->assertSame("previews/{$result['preview_id']}.jpg", $result['composite_path']);
+		$this->assertStringStartsWith("previews/{$result['preview_id']}.src.", $result['source_path']);
+
+		// The sidecar carries the (server-owned) submit metadata plus the two paths
+		// so /api/submit can promote the files without a re-upload.
+		$sidecar = json_decode($disk->get("previews/{$result['preview_id']}.json"), true);
+		$this->assertSame('oil', $sidecar['ja_style']);
+		$this->assertSame('Marcel', $sidecar['first_name']);
+		$this->assertFalse($sidecar['background_removed']);
+		$this->assertSame($result['composite_path'], $sidecar['composite_path']);
+		$this->assertSame($result['source_path'], $sidecar['source_path']);
 	}
 
 	public function test_it_writes_a_valid_jpeg_of_the_configured_canvas_size(): void
 	{
-		[$previewId] = app(CompositeService::class)->build(
-			portraitPath: $this->portraitPath,
-			jaPngPath: $this->jaPath,
-			firstName: 'Anna',
-			lastName: 'Meier',
-		);
+		$result = $this->build('Anna', 'Meier');
 
-		$path = storage_path("app/public/previews/{$previewId}.jpg");
-		$this->assertFileExists($path);
+		$bytes = Storage::disk('local')->get($result['composite_path']);
+		$info = getimagesizefromstring($bytes);
 
-		$info = getimagesize($path);
 		$this->assertNotFalse($info, 'output should be a readable image');
 		$this->assertSame('image/jpeg', $info['mime']);
 		$this->assertSame(config('composite.canvas.width'), $info[0]);
@@ -79,28 +115,18 @@ class CompositeServiceTest extends TestCase
 
 	public function test_it_handles_an_empty_name_without_error(): void
 	{
-		[$previewId] = app(CompositeService::class)->build(
-			portraitPath: $this->portraitPath,
-			jaPngPath: $this->jaPath,
-			firstName: '',
-			lastName: '',
-		);
+		$result = $this->build('', '');
 
-		$this->assertFileExists(storage_path("app/public/previews/{$previewId}.jpg"));
+		Storage::disk('local')->assertExists($result['composite_path']);
 	}
 
 	public function test_it_shrinks_the_font_so_very_long_names_still_fit(): void
 	{
 		// A pathologically long name must not throw and must still produce a
 		// canvas-sized image (the fitFontSize loop clamps to min_size).
-		[$previewId] = app(CompositeService::class)->build(
-			portraitPath: $this->portraitPath,
-			jaPngPath: $this->jaPath,
-			firstName: str_repeat('Wolfgang', 8),
-			lastName: str_repeat('Amadeus', 8),
-		);
+		$result = $this->build(str_repeat('Wolfgang', 8), str_repeat('Amadeus', 8));
 
-		$info = getimagesize(storage_path("app/public/previews/{$previewId}.jpg"));
+		$info = getimagesizefromstring(Storage::disk('local')->get($result['composite_path']));
 		$this->assertSame(config('composite.canvas.width'), $info[0]);
 	}
 

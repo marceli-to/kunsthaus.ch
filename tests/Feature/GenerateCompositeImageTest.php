@@ -42,15 +42,27 @@ class GenerateCompositeImageTest extends TestCase
 		$composite = Mockery::mock(CompositeService::class);
 		$composite->shouldReceive('build')
 			->once()
-			->with(Mockery::on(fn ($arg) => is_string($arg)), '/abs/path/oil.png', 'Marcel', 'Stadelmann')
-			->andReturn(['preview-uuid', 'https://example.test/storage/previews/preview-uuid.jpg']);
+			->with(
+				Mockery::on(fn ($arg) => is_string($arg)), // portraitPath
+				Mockery::type('string'),                   // portraitExt
+				'/abs/path/oil.png',                       // jaPngPath
+				'Marcel',
+				'Stadelmann',
+				Mockery::on(fn ($meta) => is_array($meta) && $meta['ja_style'] === 'oil' && $meta['background_removed'] === true),
+			)
+			->andReturn([
+				'preview_id' => 'preview-uuid',
+				'url' => 'https://example.test/previews/preview-uuid',
+				'source_path' => 'previews/preview-uuid.src.jpg',
+				'composite_path' => 'previews/preview-uuid.jpg',
+			]);
 
 		$result = (new GenerateCompositeImage($styles, $composite))
-			->handle($portrait, 'oil', 'Marcel', 'Stadelmann');
+			->handle($portrait, 'oil', 'Marcel', 'Stadelmann', true);
 
 		$this->assertSame([
 			'preview_id' => 'preview-uuid',
-			'url' => 'https://example.test/storage/previews/preview-uuid.jpg',
+			'url' => 'https://example.test/previews/preview-uuid',
 		], $result);
 	}
 
@@ -67,7 +79,7 @@ class GenerateCompositeImageTest extends TestCase
 		$this->expectException(UnknownStyleException::class);
 
 		(new GenerateCompositeImage($styles, $composite))
-			->handle($portrait, 'bogus', 'Marcel', 'Stadelmann');
+			->handle($portrait, 'bogus', 'Marcel', 'Stadelmann', false);
 	}
 
 	public function test_it_wraps_composite_failures_in_an_image_generation_exception(): void
@@ -84,7 +96,7 @@ class GenerateCompositeImageTest extends TestCase
 
 		try {
 			(new GenerateCompositeImage($styles, $composite))
-				->handle($portrait, 'oil', 'Marcel', 'Stadelmann');
+				->handle($portrait, 'oil', 'Marcel', 'Stadelmann', false);
 			$this->fail('Expected ImageGenerationException was not thrown.');
 		} catch (ImageGenerationException $e) {
 			$this->assertInstanceOf(RuntimeException::class, $e->getPrevious());

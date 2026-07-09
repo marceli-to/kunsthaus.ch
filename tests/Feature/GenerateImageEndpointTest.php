@@ -36,8 +36,10 @@ class GenerateImageEndpointTest extends TestCase
 	{
 		$composite = Mockery::mock(CompositeService::class);
 		$composite->shouldReceive('build')->andReturn([
-			'11111111-1111-1111-1111-111111111111',
-			'https://example.test/storage/previews/x.jpg',
+			'preview_id' => '11111111-1111-1111-1111-111111111111',
+			'url' => 'https://example.test/previews/x',
+			'source_path' => 'previews/x.src.jpg',
+			'composite_path' => 'previews/x.jpg',
 		]);
 		$this->app->instance(CompositeService::class, $composite);
 	}
@@ -62,7 +64,7 @@ class GenerateImageEndpointTest extends TestCase
 		$response->assertOk()
 			->assertExactJson([
 				'preview_id' => '11111111-1111-1111-1111-111111111111',
-				'url' => 'https://example.test/storage/previews/x.jpg',
+				'url' => 'https://example.test/previews/x',
 			]);
 	}
 
@@ -73,8 +75,13 @@ class GenerateImageEndpointTest extends TestCase
 		$composite = Mockery::mock(CompositeService::class);
 		$composite->shouldReceive('build')
 			->once()
-			->with(Mockery::any(), Mockery::any(), 'Marcel', 'Stadelmann')
-			->andReturn(['id', 'https://example.test/storage/previews/id.jpg']);
+			->with(Mockery::any(), Mockery::any(), Mockery::any(), 'Marcel', 'Stadelmann', Mockery::type('array'))
+			->andReturn([
+				'preview_id' => 'id',
+				'url' => 'https://example.test/previews/id',
+				'source_path' => 'previews/id.src.jpg',
+				'composite_path' => 'previews/id.jpg',
+			]);
 		$this->app->instance(CompositeService::class, $composite);
 
 		$this->postJson('/api/generate', $this->validPayload([
