@@ -160,8 +160,6 @@ function reset() {
 				:url="previewUrl"
 				:preview-id="previewId"
 				:email="form.email"
-				:first-name="form.firstName"
-				:last-name="form.lastName"
 				@reset="reset" />
 		</template>
 

@@ -64,6 +64,19 @@ class GeneratedImage extends Model
 	}
 
 	/**
+	 * Suggested download filename for the composite, personalised with the
+	 * visitor's name (e.g. "ja-zum-kunsthaus-vorname-nachname.jpg"). Str::slug
+	 * folds umlauts/ß and lowercases, matching the client-side hint in
+	 * ResultPreview.vue. Falls back to the generic name when empty.
+	 */
+	public function downloadFilename(): string
+	{
+		$slug = Str::slug($this->fullName());
+
+		return $slug ? "ja-zum-kunsthaus-{$slug}.jpg" : 'ja-zum-kunsthaus.jpg';
+	}
+
+	/**
 	 * Moderator-only link to the final composite (private disk, signed CP route).
 	 * Surfaced read-only in the Runway blueprint so reviewers can open the image.
 	 */

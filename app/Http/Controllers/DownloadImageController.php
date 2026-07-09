@@ -21,7 +21,7 @@ class DownloadImageController extends Controller
 		$disk = Storage::disk('local');
 		abort_unless($disk->exists($image->final_path), 404);
 
-		return $disk->download($image->final_path, 'ja-zum-kunsthaus.jpg', [
+		return $disk->download($image->final_path, $image->downloadFilename(), [
 			'Content-Type' => 'image/jpeg',
 		]);
 	}

@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from 'vue';
+import { ref } from 'vue';
 import BaseButton from '../BaseButton.vue';
 import FormCheckbox from '../form/FormCheckbox.vue';
 
@@ -10,20 +10,6 @@ const props = defineProps({
 	url: { type: String, required: true },      // signed temp preview URL
 	previewId: { type: String, required: true },
 	email: { type: String, required: true },
-	firstName: { type: String, default: '' },
-	lastName: { type: String, default: '' },
-});
-
-// Download filename: "ja-zum-kunsthaus-vorname-nachname.jpg", slugified so it's
-// filesystem-safe (umlauts folded, spaces → dashes, other chars dropped).
-const downloadName = computed(() => {
-	const slug = `${props.firstName} ${props.lastName}`
-		.toLowerCase()
-		.normalize('NFD').replace(/[̀-ͯ]/g, '')  // strip diacritics
-		.replace(/ß/g, 'ss')
-		.replace(/[^a-z0-9]+/g, '-')
-		.replace(/^-+|-+$/g, '');
-	return slug ? `ja-zum-kunsthaus-${slug}.jpg` : 'ja-zum-kunsthaus.jpg';
 });
 
 defineEmits(['reset']);
@@ -86,7 +72,7 @@ async function submit() {
           <BaseButton
             class="w-full"
             :href="downloadUrl"
-            :download="downloadName">
+            download="ja-zum-kunsthaus.jpg">
             Herunterladen
           </BaseButton>
 
