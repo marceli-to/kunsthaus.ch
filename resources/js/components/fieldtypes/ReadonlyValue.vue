@@ -17,6 +17,10 @@ const display = computed(() => {
 
     const v = props.value;
     const as = props.config?.as;
+    const options = props.config?.options;
+
+    // Map a value to a label (e.g. enum status → German label).
+    if (options && Object.prototype.hasOwnProperty.call(options, v)) return options[v];
 
     if (as === 'bool') return v ? 'Ja' : 'Nein';
 

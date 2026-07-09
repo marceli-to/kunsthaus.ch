@@ -21,6 +21,14 @@ return [
         \App\Models\GeneratedImage::class => [
             'name' => 'JAtelier Bilder',
             'singular' => 'JAtelier Bild',
+            // Records are created only via /api/submit — duplicating a submission
+            // in the CP makes no sense, so drop the "Duplizieren" action.
+            'duplicatable' => false,
+            // The detail page is a review view: all fields are read-only and
+            // moderation happens via the Freigeben/Ablehnen buttons, so make the
+            // resource read-only to drop the pointless "Speichern" button. This
+            // also hides Runway's built-in delete — restored via DeleteImage.
+            'read_only' => true,
             // The moderation blueprint has no text field for Runway to auto-pick
             // as the record title (all fields are custom read-only displays), so
             // name it explicitly — otherwise the CP title is null and crashes.

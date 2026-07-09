@@ -1,4 +1,8 @@
 title: 'Generiertes Bild'
+# Records are created only via /api/submit — hide the blueprint so Runway drops
+# the "Create" button (and blocks create server-side). Editing/deleting the
+# existing records is unaffected.
+hide: true
 tabs:
   main:
     display: Bild
@@ -24,15 +28,11 @@ tabs:
               text: 'In voller Grösse öffnen'
               visibility: read_only
           -
-            handle: status
+            handle: moderation
             field:
-              type: select
-              display: Status
-              instructions: 'Über die Aktion «Freigeben & benachrichtigen» wird der Ersteller einmalig per E-Mail informiert.'
-              options:
-                submitted: Eingereicht
-                published: Veröffentlicht
-                rejected: Abgelehnt
+              type: moderation_actions
+              display: 'Freigabe'
+              save: false
           -
             handle: first_name
             field:

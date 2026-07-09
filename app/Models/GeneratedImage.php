@@ -7,6 +7,7 @@ use App\Observers\GeneratedImageObserver;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use StatamicRadPack\Runway\Traits\HasRunwayResource;
@@ -33,6 +34,7 @@ use StatamicRadPack\Runway\Traits\HasRunwayResource;
 #[ObservedBy(GeneratedImageObserver::class)]
 class GeneratedImage extends Model
 {
+	use HasFactory;
 	use HasRunwayResource;
 
 	protected static function booted(): void
@@ -85,6 +87,23 @@ class GeneratedImage extends Model
 		$slug = Str::slug($this->fullName());
 
 		return $slug ? "ja-zum-kunsthaus-{$slug}.jpg" : 'ja-zum-kunsthaus.jpg';
+	}
+
+	/**
+	 * Payload for the moderation_actions fieldtype: current status plus the POST
+	 * endpoints (and a CSRF token) for the "Freigeben" / "Ablehnen" buttons on
+	 * the CP detail page. Computed, never saved.
+	 *
+	 * @return array<string, mixed>
+	 */
+	protected function moderation(): Attribute
+	{
+		return Attribute::get(fn () => [
+			'status' => $this->status?->value,
+			'publish_url' => $this->uuid ? route('cp.generated-images.publish', ['uuid' => $this->uuid]) : null,
+			'reject_url' => $this->uuid ? route('cp.generated-images.reject', ['uuid' => $this->uuid]) : null,
+			'csrf' => csrf_token(),
+		]);
 	}
 
 	/**

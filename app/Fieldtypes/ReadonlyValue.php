@@ -2,6 +2,7 @@
 
 namespace App\Fieldtypes;
 
+use BackedEnum;
 use Carbon\CarbonInterface;
 use Illuminate\Support\Carbon;
 use Statamic\Fields\Fieldtype;
@@ -16,16 +17,22 @@ use Throwable;
  * accessor-only fields).
  *
  * The `as` config controls formatting in the listing column: `datetime`,
- * `date`, `bool`, or plain text (default). The publish-form component does its
- * own display formatting from the raw value.
+ * `date`, `bool`, or plain text (default). An `options` map (value => label)
+ * renders a label instead of the raw value (e.g. an enum status). The
+ * publish-form component does its own display formatting from the raw value.
  */
 class ReadonlyValue extends Fieldtype
 {
 	public function preProcess($data)
 	{
-		// Hand the JS component a stable ISO string for dates; leave the rest.
+		// Hand the JS component a stable ISO string for dates, and the scalar
+		// value for backed enums (e.g. the status column) so `options` can map it.
 		if ($data instanceof CarbonInterface) {
 			return $data->toIso8601String();
+		}
+
+		if ($data instanceof BackedEnum) {
+			return $data->value;
 		}
 
 		return $data;
@@ -43,6 +50,15 @@ class ReadonlyValue extends Fieldtype
 	{
 		if ($data === null || $data === '') {
 			return null;
+		}
+
+		if ($data instanceof BackedEnum) {
+			$data = $data->value;
+		}
+
+		$options = $this->config('options');
+		if (is_array($options) && array_key_exists($data, $options)) {
+			return $options[$data];
 		}
 
 		$as = $this->config('as');
