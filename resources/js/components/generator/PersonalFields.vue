@@ -4,10 +4,9 @@ import FormLabel from '../form/FormLabel.vue';
 import FormInput from '../form/FormInput.vue';
 
 // Name / Vorname / E-Mail inputs. Two-way bound via v-model:field on the parent.
-// NOTE: dev-only prefill for faster testing — reset before deploying to prod
-const lastName = defineModel('lastName', { type: String, default: 'Stadelmann' });
-const firstName = defineModel('firstName', { type: String, default: 'Marcel' });
-const email = defineModel('email', { type: String, default: 'm@marceli.to' });
+const lastName = defineModel('lastName', { type: String, default: '' });
+const firstName = defineModel('firstName', { type: String, default: '' });
+const email = defineModel('email', { type: String, default: '' });
 
 defineProps({
 	fieldErrors: { type: Object, default: () => ({}) },
