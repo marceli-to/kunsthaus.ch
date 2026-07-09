@@ -79,28 +79,17 @@ const overlayUrl = computed(() =>
 	signOverlapsPortrait.value && selectedStyle.value ? selectedStyle.value.url : null,
 );
 
-// The button is only blocked while work is in flight — validation happens on
-// click so the visitor sees *what* is missing instead of a silently disabled
-// button.
-const busy = computed(() => generating.value || cutoutBusy.value);
-
-// Client-side mirror of GenerateImageRequest: populates fieldErrors for every
-// invalid field at once (same keys + German messages the server would return),
-// so a click surfaces all problems together. Returns true when the form is
-// valid. File-level problems (mime/size/dimensions) are caught fail-fast on
-// selection by usePortraitSource and shown in the top banner.
-function validate() {
-	Object.keys(fieldErrors).forEach((k) => delete fieldErrors[k]);
-
-	if (!hasPortrait.value) fieldErrors.portrait = ['Bitte wählen Sie ein Foto.'];
-	if (!form.signStyle) fieldErrors.ja_style = ['Bitte wählen Sie einen Stil.'];
-	if (form.firstName.trim() === '') fieldErrors.first_name = ['Bitte geben Sie einen Vornamen ein.'];
-	if (form.lastName.trim() === '') fieldErrors.last_name = ['Bitte geben Sie einen Namen ein.'];
-	if (form.email.trim() === '') fieldErrors.email = ['Bitte geben Sie Ihre E-Mail-Adresse ein.'];
-	else if (!emailValid.value) fieldErrors.email = ['Bitte geben Sie eine gültige E-Mail-Adresse ein.'];
-
-	return Object.keys(fieldErrors).length === 0;
-}
+// The button stays inactive until the visitor has a photo, a style, both names
+// and a valid email — so it only lights up once the form can actually be sent.
+const canGenerate = computed(() =>
+	hasPortrait.value &&
+	!!form.signStyle &&
+	form.firstName.trim() !== '' &&
+	form.lastName.trim() !== '' &&
+	emailValid.value &&
+	!generating.value &&
+	!cutoutBusy.value,
+);
 
 // Clear a field's error as soon as the visitor edits it, so fixed fields don't
 // keep showing a stale message.
@@ -124,11 +113,10 @@ onMounted(async () => {
 
 // ── Generate (preview only — no record yet; confirm + consent is Phase 4) ──
 async function generate() {
-	error.value = '';
-	if (!validate()) return;
-
 	generating.value = true;
+	error.value = '';
 	previewUrl.value = '';
+	Object.keys(fieldErrors).forEach((k) => delete fieldErrors[k]);
 
 	try {
 		const portraitBlob = await exportCrop();
@@ -233,7 +221,7 @@ function reset() {
 					</template>
 					<BaseButton
 						size="lg"
-						:disabled="busy"
+						:disabled="!canGenerate"
 						@click="generate">
 						{{ generating ? 'Vorschau wird erstellt…' : 'Vorschau erstellen' }}
 					</BaseButton>
