@@ -75,12 +75,6 @@ async function submit() {
             download="ja-zum-kunsthaus.jpg">
             Herunterladen
           </BaseButton>
-
-          <BaseButton
-            variant="ghost"
-            @click="$emit('reset')">
-            Neues Bild
-          </BaseButton>
         </div>
       </div>
 		</template>
