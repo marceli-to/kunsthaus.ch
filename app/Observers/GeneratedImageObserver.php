@@ -4,7 +4,9 @@ namespace App\Observers;
 
 use App\Actions\PublishGeneratedImage;
 use App\Enums\GeneratedImageStatus;
+use App\Jobs\GeneratePublicVersions;
 use App\Models\GeneratedImage;
+use App\Services\CompositeService;
 use Illuminate\Support\Facades\Storage;
 
 /**
@@ -24,16 +26,24 @@ class GeneratedImageObserver
 	public function saved(GeneratedImage $image): void
 	{
 		if ($image->status === GeneratedImageStatus::Published) {
+			// Render the public renditions (full + cropped web-version) off the
+			// request so the moderator's "Freigeben" click returns immediately;
+			// the supporter-block tag self-heals if a visitor arrives first.
+			GeneratePublicVersions::dispatch($image);
 			$this->publisher->notifyOnce($image);
 		}
 	}
 
 	public function deleting(GeneratedImage $image): void
 	{
+		// Private originals (source portrait + final composite).
 		$paths = array_filter([$image->source_image_path, $image->final_path]);
 
 		if ($paths !== []) {
 			Storage::disk('local')->delete($paths);
 		}
+
+		// Public renditions, if this image was ever published (FADP deletion path).
+		Storage::disk('public')->deleteDirectory(CompositeService::publicDir($image));
 	}
 }

@@ -31,6 +31,33 @@ fields:
                 validate:
                   - required
   -
+    handle: photobox_images
+    field:
+      type: replicator
+      display: 'Photobox images'
+      collapse: true
+      sets:
+        image:
+          display: Image
+          fields:
+            -
+              handle: image
+              field:
+                type: assets
+                container: assets
+                max_files: 1
+                display: Image
+            -
+              handle: firstname
+              field:
+                type: text
+                display: Firstname
+            -
+              handle: name
+              field:
+                type: text
+                display: Name
+  -
     handle: committee_title
     field:
       type: text

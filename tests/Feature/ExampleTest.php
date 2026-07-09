@@ -2,11 +2,15 @@
 
 namespace Tests\Feature;
 
-// use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class ExampleTest extends TestCase
 {
+	// The landing page renders the supporter block, whose {{ jatelier_images }}
+	// tag queries the generated_images table — so the schema must exist.
+	use RefreshDatabase;
+
 	/**
 	 * A basic test example.
 	 */

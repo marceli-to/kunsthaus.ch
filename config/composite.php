@@ -84,6 +84,16 @@ return [
 		'image' => 'resources/composite/footer-logo.png',
 	],
 
+	// Public "web-version" of a published composite. On approval the private
+	// 1080×1350 final is copied to the PUBLIC disk as-is, and a second rendition
+	// is centre-cropped left+right to this taller, mobile-friendly frame (the
+	// side whitespace is trimmed; the centred portrait/JA/name/footer are kept).
+	// Only the aspect ratio matters — the crop keeps the final's native height.
+	'web' => [
+		'aspect_width' => 1280,
+		'aspect_height' => 2170,
+	],
+
 	// Upload validation limits.
 	'upload' => [
 		'max_kb' => 12288,         // 12 MB

@@ -309,6 +309,31 @@ blocks:
         enabled: true
     type: supporter
     enabled: true
+    photobox_images:
+      - id: ZEV9bAjvZTl6Szx0sijeu
+        image: final.jpg
+        firstname: Marcel
+        name: Stadelmann
+        type: image
+        enabled: true
+      - id: fczzIHzU7b-qlkRFcGOEI
+        image: final-2.jpg
+        firstname: Peter
+        name: Muster
+        type: image
+        enabled: true
+      - id: OMmyBOyEJE7oWoZdbUaQ3
+        image: final.jpg
+        firstname: Sandra
+        name: Mustermüller
+        type: image
+        enabled: true
+      - id: A3NbpXP59uxtX7IF5Tc-a
+        image: final-2.jpg
+        firstname: Beatrice
+        name: Steiner
+        type: image
+        enabled: true
   -
     id: JAtelierHomeBlock01
     type: jatelier
@@ -473,7 +498,7 @@ blocks:
     anchor: faq
     title: FAQ
 updated_by: 1
-updated_at: 1783523676
+updated_at: 1783585313
 ---
 The real site is built in the `default` Antlers template. The original
 prototype landing page is archived at docs/prototype/home.antlers.html.

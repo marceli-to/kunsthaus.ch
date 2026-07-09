@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\GeneratedImage;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
@@ -139,6 +140,70 @@ class CompositeService
 			'source_path' => $sourcePath,
 			'composite_path' => $compositePath,
 		];
+	}
+
+	/**
+	 * Public-disk directory for a published image's public renditions, keyed by
+	 * uuid (unguessable). Served straight from `/storage/...` — no PHP streaming.
+	 */
+	public static function publicDir(GeneratedImage $image): string
+	{
+		return "jatelier/{$image->uuid}";
+	}
+
+	/**
+	 * Relative paths (on the PUBLIC disk) of the two public renditions of a
+	 * published composite: the full 1080×1350 `final` and the left/right-cropped
+	 * `web` version.
+	 *
+	 * @return array{final: string, web: string}
+	 */
+	public static function publicPaths(GeneratedImage $image): array
+	{
+		$dir = self::publicDir($image);
+
+		return ['final' => "{$dir}/final.jpg", 'web' => "{$dir}/web.jpg"];
+	}
+
+	/**
+	 * On approval: copy the private final to the PUBLIC disk and render the
+	 * cropped web-version alongside it. Idempotent — skips when both public files
+	 * already exist, so re-saving a published record (or a page render that
+	 * self-heals a missing file) does no needless work. The private original is
+	 * untouched.
+	 */
+	public function ensurePublicVersions(GeneratedImage $image): void
+	{
+		if (! $image->final_path) {
+			return;
+		}
+
+		$paths = self::publicPaths($image);
+		$public = Storage::disk('public');
+
+		if ($public->exists($paths['final']) && $public->exists($paths['web'])) {
+			return;
+		}
+
+		$private = Storage::disk('local');
+		if (! $private->exists($image->final_path)) {
+			return;
+		}
+
+		$bytes = $private->get($image->final_path);
+
+		// Full final — copied verbatim (already a JPEG), no re-encode.
+		$public->put($paths['final'], $bytes);
+
+		// Web-version — centre-crop left+right to the configured aspect, keeping
+		// the final's native height (only side whitespace is trimmed).
+		$web = config('composite.web');
+		$img = $this->manager->read($bytes);
+		$cropWidth = (int) round($img->height() * $web['aspect_width'] / $web['aspect_height']);
+		$cropWidth = min($cropWidth, $img->width());
+		$img->crop($cropWidth, $img->height(), position: 'center');
+
+		$public->put($paths['web'], (string) $img->toJpeg(quality: 90));
 	}
 
 	/**
