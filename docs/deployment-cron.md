@@ -23,6 +23,24 @@ binary to the host's paths):
 `--max-time=50` caps each run under the one-minute cron interval so runs never
 overlap. `sync` is the fallback (see below) if the host can't run the queue line.
 
+## Staging — as configured (Hostpoint, control-panel cron)
+
+Both jobs are live in the hosting panel's *Aktive Cronjobs*, each scheduled
+every minute (`* * * * *`). Resolved paths for `staging.kunsthaus-ja.ch`:
+
+- **App root:** `/home/micedoqu/www/staging.kunsthaus-ja.ch`
+- **PHP binary:** `/opt/alt/php84/usr/bin/php` (CloudLinux alt-PHP 8.4 — pin the
+  full versioned path; bare `php` in cron can resolve to an older default)
+
+```
+cd /home/micedoqu/www/staging.kunsthaus-ja.ch && /opt/alt/php84/usr/bin/php artisan queue:work --stop-when-empty --max-time=50 >> /dev/null 2>&1
+cd /home/micedoqu/www/staging.kunsthaus-ja.ch && /opt/alt/php84/usr/bin/php artisan schedule:run >> /dev/null 2>&1
+```
+
+Env verified: `QUEUE_CONNECTION=database` (queue cron does real work),
+`MAIL_MAILER=smtp`, `MAIL_TO="m@marceli.to"` (all staging mail redirected to
+one inbox — keep this set outside production).
+
 ## What the queue actually drains
 
 `QUEUE_CONNECTION=database` (`config/queue.php`, the `jobs` table). Everything the
