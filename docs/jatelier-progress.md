@@ -167,10 +167,12 @@ overlap the portrait box again, the Vue crop UI auto-shows the live JA overlay.
 ### 🔧 Prod/deploy notes for Phases 4–6
 - **Mail** is `log` in dev — set a real transactional provider (Postmark/Resend/
   SES) before prod, or the copy + publish mails only hit the log.
-- **Queue** is `database`; both mails are queued. On the shared host drive it with
-  the per-minute cron `php artisan queue:work --stop-when-empty --max-time=50`
-  (or switch those jobs to `sync`). Nothing drains the queue in dev unless you run
-  `php artisan queue:work --stop-when-empty`.
+- **Queue** is `database`; both mails AND the `GeneratePublicVersions` job (public
+  image renditions on publish) are queued. On the shared host drive it with the
+  per-minute cron `php artisan queue:work --stop-when-empty --max-time=50` (or
+  switch to `sync`). Nothing drains the queue in dev unless you run
+  `php artisan queue:work --stop-when-empty`. **Full cron setup:
+  `docs/deployment-cron.md`.**
 - **Moderator user:** assign the `moderator` role (or keep super). The CP source/
   final image links are gated on `view generated_image` + CP auth.
 
