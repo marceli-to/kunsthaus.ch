@@ -19,8 +19,13 @@ return [
         // wipes the private files via the model observer). The blueprint lives at
         // resources/blueprints/runway/generated_image.yaml.
         \App\Models\GeneratedImage::class => [
-            'name' => 'Generierte Bilder',
-            'singular' => 'Generiertes Bild',
+            'name' => 'JAtelier Bilder',
+            'singular' => 'JAtelier Bild',
+            // The moderation blueprint has no text field for Runway to auto-pick
+            // as the record title (all fields are custom read-only displays), so
+            // name it explicitly — otherwise the CP title is null and crashes.
+            // `title` is a model accessor → full name ("Vorname Name").
+            'title_field' => 'title',
             'order_by' => 'created_at',
             'order_by_direction' => 'desc',
             'cp_icon' => 'assets',

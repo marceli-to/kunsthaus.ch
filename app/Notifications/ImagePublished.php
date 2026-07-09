@@ -43,11 +43,10 @@ class ImagePublished extends Notification implements ShouldQueue
 
 		return (new MailMessage)
 			->subject('Dein Bild wurde veröffentlicht')
-			->greeting('Hallo '.$this->image->fullName())
-			->line('Ihr «JA zum Kunsthaus» Bild wurde freigegeben und ist nun veröffentlicht. Das fertige Bild ist angehängt.')
-			->line('Herzlichen Dank für Ihre Unterstützung.')
-			->line('Möchten Sie Ihr Bild wieder entfernen? Über den folgenden Link wird es vollständig gelöscht:')
-			->action('Bild entfernen', $removeUrl)
+			->markdown('mail.image-published', [
+				'name' => $this->image->fullName(),
+				'removeUrl' => $removeUrl,
+			])
 			->attachFromStorageDisk('local', $this->image->final_path, 'ja-zum-kunsthaus.jpg', [
 				'mime' => 'image/jpeg',
 			]);

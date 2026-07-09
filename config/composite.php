@@ -24,6 +24,9 @@ return [
 	// or swap to a permissive model (BiRefNet/MODNet) before enabling in prod.
 	'bg_removal' => (bool) env('COMPOSITE_BG_REMOVAL', true),
 
+	// Address notified when a visitor submits a portrait for moderation.
+	'notify_address' => env('MAIL_NOTIFY', 'info@kunsthaus-ja.ch'),
+
 	// Output canvas — fixed 1080×1350 (4:5), white background.
 	'canvas' => [
 		'width' => 1080,

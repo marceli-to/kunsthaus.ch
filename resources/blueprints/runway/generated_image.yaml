@@ -6,34 +6,22 @@ tabs:
       -
         fields:
           -
-            handle: checklist
+            # Clickable title column in the listing (full name, from the model's
+            # `title` accessor). Hidden in the edit form and never saved — it has
+            # no DB column. `title_field` in config/runway.php points here.
+            handle: title
             field:
-              type: html
-              display: 'Prüf-Checkliste'
-              html: |
-                <div style="border:1px solid #e2e8f0;border-radius:.5rem;padding:1rem;background:#f8fafc;font-size:.875rem;line-height:1.6">
-                  <strong>Vor der Freigabe bitte prüfen:</strong>
-                  <ul style="margin:.5rem 0 0;padding-left:1.25rem">
-                    <li>Das Porträt ist angemessen und darf veröffentlicht werden (keine dritten, nicht einwilligenden Personen; besondere Sorgfalt bei Minderjährigen).</li>
-                    <li>Der eingegebene Name/Text ist angemessen (öffentlicher UGC-Text im Bild).</li>
-                    <li>Der Freisteller (falls verwendet) sieht sauber aus.</li>
-                  </ul>
-                </div>
+              type: text
+              display: Name
+              listable: true
+              visibility: hidden
+              save: false
           -
             handle: final_url
             field:
-              type: text
-              input_type: url
-              display: 'Fertiges Bild (URL)'
-              instructions: 'Zum Ansehen in neuem Tab öffnen — nur für Moderatoren erreichbar.'
-              visibility: read_only
-          -
-            handle: source_url
-            field:
-              type: text
-              input_type: url
-              display: 'Quell-Porträt (URL)'
-              instructions: 'Zum Ansehen in neuem Tab öffnen — nur für Moderatoren erreichbar.'
+              type: image_preview
+              display: 'Generiertes Bild'
+              text: 'In voller Grösse öffnen'
               visibility: read_only
           -
             handle: status
@@ -41,7 +29,6 @@ tabs:
               type: select
               display: Status
               instructions: 'Über die Aktion «Freigeben & benachrichtigen» wird der Ersteller einmalig per E-Mail informiert.'
-              width: 50
               options:
                 submitted: Eingereicht
                 published: Veröffentlicht
@@ -49,68 +36,53 @@ tabs:
           -
             handle: first_name
             field:
-              type: text
+              type: readonly_value
               display: Vorname
               width: 50
-              visibility: read_only
           -
             handle: last_name
             field:
-              type: text
+              type: readonly_value
               display: Name
               width: 50
-              visibility: read_only
           -
             handle: user_email
             field:
-              type: text
+              type: readonly_value
               display: E-Mail
               width: 50
-              visibility: read_only
           -
             handle: ja_style
             field:
-              type: text
+              type: readonly_value
               display: 'JA-Stil'
               width: 50
-              visibility: read_only
           -
             handle: background_removed
             field:
-              type: toggle
+              type: readonly_value
+              as: bool
               display: 'Hintergrund entfernt'
               width: 50
-              visibility: read_only
-          -
-            handle: consent_at
-            field:
-              type: date
-              display: 'Einwilligung am'
-              time_enabled: true
-              width: 50
-              visibility: read_only
-          -
-            handle: published_at
-            field:
-              type: date
-              display: 'Veröffentlicht am'
-              time_enabled: true
-              width: 50
-              visibility: read_only
-          -
-            handle: notified_at
-            field:
-              type: date
-              display: 'Benachrichtigt am'
-              time_enabled: true
-              width: 50
-              visibility: read_only
           -
             handle: created_at
             field:
-              type: date
-              display: Eingereicht
-              time_enabled: true
+              type: readonly_value
+              as: datetime
+              display: 'Eingereicht am'
               width: 50
-              visibility: read_only
               listable: true
+          -
+            handle: published_at
+            field:
+              type: readonly_value
+              as: datetime
+              display: 'Veröffentlicht am'
+              width: 50
+          -
+            handle: notified_at
+            field:
+              type: readonly_value
+              as: datetime
+              display: 'Benachrichtigt am'
+              width: 50

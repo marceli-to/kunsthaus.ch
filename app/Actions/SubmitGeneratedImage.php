@@ -5,7 +5,7 @@ namespace App\Actions;
 use App\Enums\GeneratedImageStatus;
 use App\Exceptions\ImageGenerationException;
 use App\Exceptions\PreviewExpiredException;
-use App\Mail\SubmittedImageCopy;
+use App\Mail\NewSubmissionNotification;
 use App\Models\GeneratedImage;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
@@ -83,8 +83,9 @@ class SubmitGeneratedImage
 		// Temp preview is consumed; drop the sidecar.
 		$disk->delete($sidecarPath);
 
-		// Immediate copy to the visitor (queued — see the mailable).
-		Mail::to($image->user_email)->send(new SubmittedImageCopy($image));
+		// Notify the moderation address that a portrait awaits review (queued —
+		// see the mailable). No confirmation is sent to the visitor.
+		Mail::to(config('composite.notify_address'))->send(new NewSubmissionNotification($image));
 
 		return $image;
 	}

@@ -64,6 +64,17 @@ class GeneratedImage extends Model
 	}
 
 	/**
+	 * CP record title (Runway `title_field`). The moderation blueprint has no
+	 * text field for Runway to auto-pick, so this drives the edit-page title and
+	 * the listing's title column. Falls back so it's never null (a null title
+	 * crashes Statamic's <Head>).
+	 */
+	protected function title(): Attribute
+	{
+		return Attribute::get(fn () => $this->fullName() ?: 'Bild #'.$this->getKey());
+	}
+
+	/**
 	 * Suggested download filename for the composite, personalised with the
 	 * visitor's name (e.g. "ja-zum-kunsthaus-vorname-nachname.jpg"). Str::slug
 	 * folds umlauts/ß and lowercases, matching the client-side hint in

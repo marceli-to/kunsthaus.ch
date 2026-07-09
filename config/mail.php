@@ -115,4 +115,36 @@ return [
 		'name' => env('MAIL_FROM_NAME', env('APP_NAME', 'Laravel')),
 	],
 
+	/*
+	|--------------------------------------------------------------------------
+	| Markdown Mail Settings
+	|--------------------------------------------------------------------------
+	|
+	| Theme = the CSS inlined into every Markdown mail. 'kunsthaus' resolves to
+	| resources/views/vendor/mail/html/themes/kunsthaus.css. Components are
+	| published under the same vendor/mail path so header/footer are editable.
+	|
+	*/
+
+	'markdown' => [
+		'theme' => env('MAIL_THEME', 'kunsthaus'),
+
+		'paths' => [
+			resource_path('views/vendor/mail'),
+		],
+	],
+
+	/*
+	|--------------------------------------------------------------------------
+	| Non-Production Catch-All Address
+	|--------------------------------------------------------------------------
+	|
+	| Outside production, AppServiceProvider funnels ALL outgoing mail to this
+	| address (via Mail::alwaysTo) so dev/staging never contacts real
+	| recipients. Point it at your local MailHog/Mailpit inbox.
+	|
+	*/
+
+	'to' => env('MAIL_TO'),
+
 ];
