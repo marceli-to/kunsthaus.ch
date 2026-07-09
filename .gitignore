@@ -23,6 +23,10 @@
 /storage/*.key
 /storage/pail
 /vendor
+/content
+/users
+/resources/users
+/public/assets
 _ide_helper.php
 Homestead.json
 Homestead.yaml
