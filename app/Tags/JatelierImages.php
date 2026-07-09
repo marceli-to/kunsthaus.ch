@@ -10,7 +10,7 @@ use Statamic\Tags\Tags;
 
 /**
  * `{{ jatelier_images }}` — the published JAtelier composites, for the public
- * supporter block. Yields only moderator-approved images (oldest first), each
+ * supporter block. Yields only moderator-approved images (newest first), each
  * with its public URLs: `url` is the cropped web-version, `full_url` the full
  * 1080×1350 composite. Both are static files on the public disk (served from
  * /storage). Missing renditions are self-healed on first render so images
@@ -31,7 +31,7 @@ class JatelierImages extends Tags
 		$public = Storage::disk('public');
 
 		return GeneratedImage::where('status', GeneratedImageStatus::Published)
-			->orderBy('published_at')
+			->orderByDesc('published_at')
 			->get()
 			->map(function (GeneratedImage $image) use ($public) {
 				$this->composites->ensurePublicVersions($image);
