@@ -27,7 +27,7 @@ class NewSubmissionNotification extends Mailable implements ShouldQueue
 	public function envelope(): Envelope
 	{
 		return new Envelope(
-			subject: 'Neues «JA zum Kunsthaus» Bild eingereicht',
+			subject: 'Bild freigeben «JA zum Kunsthaus»',
 		);
 	}
 

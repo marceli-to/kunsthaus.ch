@@ -3,7 +3,6 @@ import { ref } from 'vue';
 import { Cropper } from 'vue-advanced-cropper';
 import Stencil from './Stencil.vue';
 import H4 from '../H4.vue';
-import BaseButton from '../BaseButton.vue';
 import UploadButton from '../form/UploadButton.vue';
 
 // Photo step: upload button → fixed-aspect cropper (with live sign overlay) →
@@ -42,14 +41,22 @@ defineExpose({
 	<div>
 		<H4>Ihr Foto</H4>
 
-    <!-- Helper caption + inline background-removal action -->
+    <!-- Helper caption + action links arranged above the photo -->
     <template v-if="!cutoutBusy && hasPortrait">
       <p class="mt-8 md:mt-12 text-xs md:text-sm">
-        Verschieben Sie den Rahmen, um den Bildausschnitt festzulegen.<template v-if="bgRemovalEnabled"> Optional können Sie den Hintergrund <button
+        Verschieben Sie den Rahmen, um den Bildausschnitt festzulegen.
+      </p>
+      <div class="mt-8 md:mt-12 flex flex-col items-start gap-4 text-xs md:text-sm">
+        <button
+          v-if="bgRemovalEnabled"
           type="button"
           class="decoration-1 underline underline-offset-2 md:underline-offset-4 hover:no-underline cursor-pointer"
-          @click="removeBg = !removeBg; emit('toggle-bg')">{{ removeBg ? 'wiederherstellen' : 'entfernen' }}</button>.</template>
-      </p>
+          @click="removeBg = !removeBg; emit('toggle-bg')">{{ removeBg ? 'Hintergrund wiederherstellen' : 'Hintergrund entfernen' }}</button>
+        <button
+          type="button"
+          class="decoration-1 underline underline-offset-2 md:underline-offset-4 hover:no-underline cursor-pointer"
+          @click="uploadButton?.open()">Anderes Bild hochladen</button>
+      </div>
     </template>
 
 		<UploadButton
@@ -65,7 +72,7 @@ defineExpose({
 		</template>
 
 		<template v-if="hasPortrait || cutoutBusy">
-			<div>
+			<div class="mt-8 md:mt-12">
 				<div class="relative w-fit max-w-full border border-white">
 					<Cropper
 						ref="cropperRef"
@@ -94,24 +101,6 @@ defineExpose({
 						</div>
 					</template>
 				</div>
-
-				<div class="mt-16 md:mt-24 flex gap-16 md:gap-24">
-					<BaseButton
-						size="sm"
-						:disabled="cutoutBusy"
-						@click="uploadButton?.open()">
-						Foto ändern
-					</BaseButton>
-					<template v-if="!cutoutBusy">
-						<BaseButton
-							size="sm"
-							variant="ghost"
-							@click="emit('clear')">
-							Entfernen
-						</BaseButton>
-					</template>
-				</div>
-
 			</div>
 		</template>
 	</div>

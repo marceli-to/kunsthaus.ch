@@ -19,11 +19,8 @@
 @endisset
 
 {{-- Footer --}}
-{{-- ▸ PLACEHOLDER imprint — replace with the client's real address / contact / links --}}
 <x-slot:footer>
 <x-mail::footer>
-Kunsthaus Zürich · Heimplatz 5 · 8001 Zürich · [kunsthaus.ch](https://www.kunsthaus.ch)
-
 © {{ date('Y') }} {{ config('app.name') }}
 </x-mail::footer>
 </x-slot:footer>

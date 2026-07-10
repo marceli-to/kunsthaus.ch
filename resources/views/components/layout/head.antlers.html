@@ -1,23 +1,18 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-{{# Don't let mobile browsers auto-link/style phone numbers, emails or addresses #}}
 <meta name="format-detection" content="telephone=no, date=no, email=no, address=no">
 <meta name="csrf-token" content="{{ csrf_token }}">
-
-{{# Title & description #}}
 {{ if is_homepage }}
-  <title>Ja zum Kunsthaus. Ja zu Zürich</title>
+<title>Ja zum Kunsthaus. Ja zu Zürich</title>
 {{ else }}
-  <title>{{ title ?? site:name }} — Ja zum Kunsthaus. Ja zu Zürich</title>
+<title>{{ title ?? site:name }} — Ja zum Kunsthaus. Ja zu Zürich</title>
 {{ /if }}
 {{ seo_title = is_homepage ? "Ja zum Kunsthaus. Ja zu Zürich" : "{title} — Ja zum Kunsthaus. Ja zu Zürich" }}
 {{ seo_description = meta_description ?? description ?? "Das Kunsthaus braucht unsere Hilfe." }}
 {{ seo_image = "{config:app:url}{og_image ?? '/img/og-image.jpg'}" }}
 <meta name="description" content="{{ seo_description }}">
 <link rel="canonical" href="{{ current_url }}">
-
-{{# Open Graph (Facebook, LinkedIn, WhatsApp, …) #}}
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Ja zum Kunsthaus. Ja zu Zürich">
 <meta property="og:locale" content="de_CH">
@@ -28,14 +23,10 @@
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Ja zum Kunsthaus. Ja zu Zürich">
-
-{{# Twitter / X #}}
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{{ seo_title }}">
 <meta name="twitter:description" content="{{ seo_description }}">
 <meta name="twitter:image" content="{{ seo_image }}">
-
-{{# Icons & manifest #}}
 <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="shortcut icon" href="/favicon.ico">
@@ -43,6 +34,5 @@
 <meta name="apple-mobile-web-app-title" content="Ja zum Kunsthaus. Ja zu Zürich">
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#ffffff">
-
 {{ vite src="resources/css/app.css|resources/js/app.js" }}
 </head>
