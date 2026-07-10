@@ -41,6 +41,12 @@ tabs:
                       icon: fieldtype-text
                       fields:
                         - import: explainer
+                    privacy:
+                      display: Privacy
+                      instructions: 'A titled rich text section (bard also allows H1)'
+                      icon: fieldtype-text
+                      fields:
+                        - import: privacy
                     reasons:
                       display: Reasons
                       instructions: 'Reasons with speech bubbles and a closing statement'

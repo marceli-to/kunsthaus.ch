@@ -1,0 +1,17 @@
+<section class="bg-black/5">
+
+  {{ partial:components/layout/inner }}
+
+    {{ partial:components/headings/h1 class="text-accent mb-16 md:mb-24 xl:mb-32" }}
+      {{ title }}
+    {{ /partial:components/headings/h1 }}
+
+    <article class="text-accent
+      [&_h2]:font-sans-bold [&_h2]:leading-[1.1] [&_h2]:text-md md:[&_h2]:text-lg xl:[&_h2]:text-xl [&_h2]:mb-8 md:[&_h2]:mb-12 xl:[&_h2]:mb-16
+      [&_h3]:font-sans-bold [&_h3]:leading-[1.1] [&_h3]:text-sm md:[&_h3]:text-md xl:[&_h3]:text-lg [&_h3]:mb-4 md:[&_h3]:mb-8 xl:[&_h3]:mb-12">
+      {{ editor }}
+    </article>
+
+  {{ /partial:components/layout/inner }}
+
+</section>

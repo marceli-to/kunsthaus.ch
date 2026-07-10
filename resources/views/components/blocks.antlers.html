@@ -10,6 +10,10 @@
   {{ partial:components/blocks/explainer }}
 {{ /if }}
 
+{{ if type == 'privacy' }}
+  {{ partial:components/blocks/privacy }}
+{{ /if }}
+
 {{ if type == 'reasons' }}
   {{ partial:components/blocks/reasons }}
 {{ /if }}
