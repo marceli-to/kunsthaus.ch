@@ -109,12 +109,12 @@ return [
 		  // Sharpened contain variants — used for the header visuals only.
 		  'md-sharp-webp' => ['w' => 768, 'h' => 10000, 'q' => 90, 'fit' => 'contain', 'fm' => 'webp', 'sharp' => 15],
 		  'lg-sharp-webp' => ['w' => 1280, 'h' => 10000, 'q' => 90, 'fit' => 'contain', 'fm' => 'webp', 'sharp' => 15],
-		  'xl-sharp-webp' => ['w' => 1440, 'h' => 10000, 'q' => 90, 'fit' => 'contain', 'fm' => 'webp', 'sharp' => 15],
-		  '2xl-sharp-webp' => ['w' => 1680, 'h' => 10000, 'q' => 90, 'fit' => 'contain', 'fm' => 'webp', 'sharp' => 15],
+		  'xl-sharp-webp' => ['w' => 1680, 'h' => 10000, 'q' => 90, 'fit' => 'contain', 'fm' => 'webp', 'sharp' => 15],
+		  '2xl-sharp-webp' => ['w' => 2500, 'h' => 10000, 'q' => 90, 'fit' => 'contain', 'fm' => 'webp', 'sharp' => 15],
 		  'md-sharp' => ['w' => 768, 'h' => 10000, 'q' => 90, 'fit' => 'contain', 'sharp' => 15],
 		  'lg-sharp' => ['w' => 1280, 'h' => 10000, 'q' => 90, 'fit' => 'contain', 'sharp' => 15],
-		  'xl-sharp' => ['w' => 1440, 'h' => 10000, 'q' => 90, 'fit' => 'contain', 'sharp' => 15],
-		  '2xl-sharp' => ['w' => 1680, 'h' => 10000, 'q' => 90, 'fit' => 'contain', 'sharp' => 15],
+		  'xl-sharp' => ['w' => 1680, 'h' => 10000, 'q' => 90, 'fit' => 'contain', 'sharp' => 15],
+		  '2xl-sharp' => ['w' => 2500, 'h' => 10000, 'q' => 90, 'fit' => 'contain', 'sharp' => 15],
 
 		  'md-16x10-webp' => ['w' => 768, 'h' => 480, 'q' => 90, 'fit' => 'crop_focal', 'fm' => 'webp'],
 		  'lg-16x10-webp' => ['w' => 1280, 'h' => 800, 'q' => 90, 'fit' => 'crop_focal', 'fm' => 'webp'],
