@@ -17,8 +17,9 @@
  */
 
 import Swiper from 'swiper';
-import { Autoplay } from 'swiper/modules';
+import { Autoplay, EffectFade } from 'swiper/modules';
 import 'swiper/css';
+import 'swiper/css/effect-fade';
 
 const prefersReducedMotion = () =>
     window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
@@ -31,10 +32,12 @@ export function createSlideshow(el) {
     const slides = el.querySelectorAll('.swiper-slide').length;
 
     return new Swiper(el, {
-        modules: [Autoplay],
+        modules: [Autoplay, EffectFade],
         loop: slides > 1,
         speed: 600,
         allowTouchMove: false,
+        effect: 'fade',
+        fadeEffect: { crossFade: true },
         // A single slide has nothing to advance to; motion-averse users get a
         // static first slide either way.
         autoplay:
