@@ -34,7 +34,7 @@ export function createSlideshow(el) {
     return new Swiper(el, {
         modules: [Autoplay, EffectFade],
         loop: slides > 1,
-        speed: 600,
+        speed: 1000,
         allowTouchMove: false,
         effect: 'fade',
         fadeEffect: { crossFade: true },
