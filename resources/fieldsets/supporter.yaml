@@ -31,6 +31,12 @@ fields:
                 validate:
                   - required
   -
+    handle: photobox_title
+    field:
+      type: text
+      display: 'Photobox Title'
+      instructions: 'Überschrift über der Foto-Wall (Standard: «Unterstützende»).'
+  -
     handle: photobox_images
     field:
       type: replicator
@@ -85,3 +91,43 @@ fields:
               field:
                 type: text
                 display: Position
+  -
+    handle: logos_title
+    field:
+      type: text
+      display: 'Logos Title'
+      instructions: 'Überschrift über dem Logo-Teppich (z. B. «Unterstützende Organisationen»).'
+  -
+    handle: logos
+    field:
+      type: replicator
+      display: 'Supporter Logos'
+      instructions: 'Logos unterstützender Parteien und Organisationen. Werden vier pro Zeile dargestellt, direkt nach der Komitee-Liste.'
+      collapse: true
+      sets:
+        logo:
+          display: Logo
+          fields:
+            -
+              handle: image
+              field:
+                type: assets
+                container: assets
+                max_files: 1
+                display: Logo
+                instructions: 'PNG (transparent) oder SVG empfohlen.'
+                required: true
+                validate:
+                  - required
+            -
+              handle: name
+              field:
+                type: text
+                display: Name
+                instructions: 'Name der Organisation – wird als Alt-Text verwendet.'
+            -
+              handle: url
+              field:
+                type: text
+                display: 'Link (optional)'
+                instructions: 'Optionaler Link zur Organisation (inkl. https://).'

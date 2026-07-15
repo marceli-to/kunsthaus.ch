@@ -67,7 +67,7 @@ tabs:
                         - import: posts
                     supporter:
                       display: Supporter
-                      instructions: 'Co-Präsidium cards and Komitee member list'
+                      instructions: 'Co-Präsidium cards, Komitee member list and supporter logos'
                       icon: fieldtype-users
                       fields:
                         - import: supporter

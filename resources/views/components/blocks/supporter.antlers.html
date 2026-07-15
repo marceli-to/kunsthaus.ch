@@ -45,14 +45,47 @@
       </div>
     {{ /if }}
 
+    {{ if logos }}
+      <div class="mt-56 md:mt-80 xl:mt-104 mb-40 md:mb-56 xl:mb-72">
+        {{ if logos_title }}
+          {{ partial:components/headings/h3 class="text-accent text-balance mb-27 md:mb-41 xl:mb-54" }}
+            {{ logos_title }}
+          {{ /partial:components/headings/h3 }}
+        {{ /if }}
+
+        <ul class="grid grid-cols-2 md:grid-cols-4 items-center gap-x-24 md:gap-x-32 xl:gap-x-40 gap-y-40 md:gap-y-56 xl:gap-y-72">
+          {{ logos }}
+            {{ if image }}
+              <li class="flex items-center justify-center">
+                {{ if url }}
+                  <a href="{{ url }}" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center w-full">
+                {{ /if }}
+                  <img
+                    src="{{ image:url }}"
+                    alt="{{ name ? name : image:alt }}"
+                    {{ if image:width }}width="{{ image:width }}" height="{{ image:height }}"{{ /if }}
+                    loading="lazy"
+                    class="block w-auto h-auto max-w-[75%] md:max-w-[70%] xl:max-w-[65%] max-h-48 md:max-h-64 xl:max-h-72 object-contain">
+                {{ if url }}
+                  </a>
+                {{ /if }}
+              </li>
+            {{ /if }}
+          {{ /logos }}
+        </ul>
+      </div>
+    {{ /if }}
+
   {{ /partial:components/layout/inner }}
 
   <div class="bg-muted">
     {{ partial:components/layout/inner }}
 
-      {{ partial:components/headings/h3 class="text-accent text-balance mb-27 md:mb-41 xl:mb-54" }}
-        Unterstützende
-      {{ /partial:components/headings/h3 }}
+      {{ if photobox_title }}
+        {{ partial:components/headings/h3 class="text-accent text-balance mb-27 md:mb-41 xl:mb-54" }}
+          {{ photobox_title }}
+        {{ /partial:components/headings/h3 }}
+      {{ /if }}
 
       {{ if photobox_images }}
         <div class="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-24 xl:gap-32 mb-20 md:mb-40 xl:mb-60">
