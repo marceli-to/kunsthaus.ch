@@ -132,11 +132,11 @@ img {
 /* Logo */
 
 .logo {
-    /* ▸ PLACEHOLDER logo sizing — the campaign lockup is wide (not square) */
+    /* Campaign lockup is wide (≈4.93:1) — 340px wide → ~69px tall */
     height: auto;
-    max-height: 48px;
+    max-height: 70px;
     width: auto;
-    max-width: 240px;
+    max-width: 340px;
 }
 
 /* Body */
