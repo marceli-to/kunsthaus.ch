@@ -18,6 +18,7 @@
   --color-accent: #0000ff;
   --color-error: #ff9494; /* light red — legible on the blue accent without the saturated-red vibration */
   --color-light: #FFFBF8;
+  --color-muted: #F2F2F2; /* section background to visually separate the supporter images */
 }
 
 @layer base {

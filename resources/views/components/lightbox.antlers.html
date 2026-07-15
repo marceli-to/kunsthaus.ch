@@ -1,0 +1,38 @@
+{{#
+  Full-screen image lightbox. Driven by Alpine `lb` state that must live on an
+  ancestor: x-data="{ lb: { open: false, src: '', alt: '' } }".
+  Triggers set lb.src / lb.alt and flip lb.open. The overlay dims the page
+  behind it; clicking the backdrop, pressing Escape or the close button closes
+  it. The image scales to the viewport (contain, minus a small margin so the
+  corner button stays on screen). The close button is centred exactly on the
+  image's top-right corner — the corner (and thus the image diagonal) runs
+  through its centre. It reuses the menu toggle style (menu/buttons/hide).
+#}}
+<div
+  x-show="lb.open"
+  x-cloak
+  @keydown.escape.window="lb.open = false"
+  @click="lb.open = false"
+  x-transition:enter="transition ease-out duration-150"
+  x-transition:enter-start="opacity-0"
+  x-transition:enter-end="opacity-100"
+  x-transition:leave="transition ease-in duration-150"
+  x-transition:leave-start="opacity-100"
+  x-transition:leave-end="opacity-0"
+  class="fixed inset-0 z-70 bg-black/80 flex items-center justify-center">
+
+  <div class="relative" @click.stop>
+    <img
+      :src="lb.src"
+      :alt="lb.alt"
+      class="block w-auto h-auto object-contain max-w-[calc(100vw-3rem)] max-h-[calc(100dvh-6rem)] md:max-h-[calc(100dvh-7rem)] xl:max-h-[calc(100dvh-8rem)]">
+    <button
+      type="button"
+      @click="lb.open = false"
+      aria-label="Schliessen"
+      class="absolute bottom-full right-0 mb-4 md:mb-6 xl:mb-8 cursor-pointer w-30 h-30 md:w-36 md:h-36 xl:w-44 xl:h-44 flex items-center justify-end">
+      {{ partial:components/icons/cross size="sm" class="w-14 md:w-20 md:h-20 xl:w-22 h-auto text-white" }}
+    </button>
+  </div>
+
+</div>

@@ -158,11 +158,11 @@ img {
     -premailer-cellspacing: 0;
     -premailer-width: 570px;
     background-color: #ffffff;
-    border: 2px solid #0000ff; /* solid so the card edge actually renders */
+    border: none; /* no card outline — plain white mail */
     margin: 0 auto;
     padding: 0;
     width: 570px;
-    overflow: hidden; /* clips the header/content cells to the rounded corners */
+    overflow: hidden;
 }
 
 .inner-body a {
