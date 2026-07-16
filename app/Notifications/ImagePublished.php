@@ -23,6 +23,12 @@ class ImagePublished extends Notification implements ShouldQueue
 {
 	use Queueable;
 
+	/** Retry a transient transport failure instead of failing permanently. */
+	public int $tries = 3;
+
+	/** @var array<int, int> seconds before each retry */
+	public array $backoff = [60, 300];
+
 	public function __construct(public GeneratedImage $image) {}
 
 	/**

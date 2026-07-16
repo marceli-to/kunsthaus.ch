@@ -21,6 +21,12 @@ class GeneratePublicVersions implements ShouldQueue
 {
 	use Queueable;
 
+	/** Retry a transient failure — idempotent, so retries are harmless. */
+	public int $tries = 3;
+
+	/** @var array<int, int> seconds before each retry */
+	public array $backoff = [60, 300];
+
 	public function __construct(public GeneratedImage $image) {}
 
 	public function handle(CompositeService $composites): void
