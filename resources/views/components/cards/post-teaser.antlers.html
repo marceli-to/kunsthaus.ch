@@ -8,7 +8,9 @@
     {{ summary }}
   </div>
 
-  <div>
-    {{ partial:components/button href="{{ url }}" variant="inverted" label="{{ title }}" }}mehr erfahren{{ /partial:components/button }}
-  </div>
+  {{ if blocks }}
+    <div>
+      {{ partial:components/button href="{{ url }}" variant="inverted" label="{{ title }}" }}mehr erfahren{{ /partial:components/button }}
+    </div>
+  {{ /if }}
 </article>
