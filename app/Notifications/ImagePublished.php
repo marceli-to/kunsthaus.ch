@@ -41,11 +41,10 @@ class ImagePublished extends Notification implements ShouldQueue
 
 	public function toMail(object $notifiable): MailMessage
 	{
-		$removeUrl = URL::temporarySignedRoute(
-			'images.remove',
-			now()->addDays(30),
-			['uuid' => $this->image->uuid],
-		);
+		// Opaque token in the path — permanent (an FADP deletion link shouldn't
+		// expire) and free of the `?expires=&signature=` query that Safe
+		// Browsing flags as phishing.
+		$removeUrl = URL::route('images.remove', ['token' => $this->image->removeToken()]);
 
 		return (new MailMessage)
 			->subject('Ja zum Kunsthaus – Ihr Bild wurde veröffentlicht')

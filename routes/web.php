@@ -23,10 +23,15 @@ Route::get('/images/{uuid}/download', DownloadImageController::class)
 	->name('images.download');
 
 // Tokenised remove / unsubscribe from the publish email — deletes the record and
-// its private files. Long-lived signed URL.
-Route::get('/images/{uuid}/remove', RemoveImageController::class)
-	->middleware('signed')
+// its private files. Opaque token in the path (no signed query string — that
+// pattern trips Google Safe Browsing's phishing heuristic).
+Route::get('/bild-entfernen/{token}', [RemoveImageController::class, 'byToken'])
 	->name('images.remove');
+
+// Legacy remove links from mails sent before the token switch (signed URL).
+Route::get('/images/{uuid}/remove', [RemoveImageController::class, 'byUuid'])
+	->middleware('signed')
+	->name('images.remove.legacy');
 
 // Moderator-only view of a submitted image's private files (source / final) in
 // the Control Panel. Uses the base `statamic.cp` group (session + CP auth guard)

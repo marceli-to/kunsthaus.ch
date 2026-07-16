@@ -43,7 +43,25 @@ class GeneratedImage extends Model
 		// of the auto-increment id.
 		static::creating(function (self $image) {
 			$image->uuid ??= (string) Str::uuid();
+			$image->remove_token ??= Str::random(48);
 		});
+	}
+
+	/**
+	 * Opaque token behind the remove/unsubscribe link in the publish mail. A
+	 * plain path segment (no `?expires=&signature=` query) so the URL doesn't
+	 * look like phishing to Safe Browsing. Self-heals rows from before the
+	 * column existed; saved quietly so the observer's publish pipeline doesn't
+	 * re-fire over a token backfill.
+	 */
+	public function removeToken(): string
+	{
+		if (! $this->remove_token) {
+			$this->remove_token = Str::random(48);
+			$this->saveQuietly();
+		}
+
+		return $this->remove_token;
 	}
 
 	/**
