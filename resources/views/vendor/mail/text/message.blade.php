@@ -20,8 +20,9 @@
 
     {{-- Footer --}}
     <x-slot:footer>
-        <x-mail::footer>
-            Komitee «JA zum Kunsthaus», Tessinerplatz 7, 8002 Zürich, info@kunsthaus-ja.ch
-        </x-mail::footer>
+        <x-mail::footer>Komitee «JA zum Kunsthaus»
+Tessinerplatz 7
+8002 Zürich
+info@kunsthaus-ja.ch</x-mail::footer>
     </x-slot:footer>
 </x-mail::layout>
