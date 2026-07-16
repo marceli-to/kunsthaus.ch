@@ -112,7 +112,13 @@
                   width="1280"
                   height="2170"
                   loading="lazy"
-                  class="block w-full h-auto">
+                  {{#
+                    web.jpg has 57px side margins but only 28px top/bottom
+                    (at 796×1350). The proportional padding adds the missing
+                    29px (29/796 ≈ 3.64% of width) so the white frame is even
+                    at every display size.
+                  #}}
+                  class="block w-full h-auto py-[3.64%] bg-white">
               </button>
             {{ /jatelier }}
           </div>
