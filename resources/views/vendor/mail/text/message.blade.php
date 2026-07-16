@@ -21,7 +21,7 @@
     {{-- Footer --}}
     <x-slot:footer>
         <x-mail::footer>
-            © {{ date('Y') }} {{ config('app.name') }}. @lang('All rights reserved.')
+            Komitee «JA zum Kunsthaus», Tessinerplatz 7, 8002 Zürich, info@kunsthaus-ja.ch
         </x-mail::footer>
     </x-slot:footer>
 </x-mail::layout>

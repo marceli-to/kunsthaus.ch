@@ -117,8 +117,8 @@ img {
 /* Header */
 
 .header {
-    padding: 16px 0 32px; /* less space above the logo, more below */
-    text-align: center;
+    padding: 16px 32px 32px; /* left/right matches the content-cell so the logo lines up with the text */
+    text-align: left;
     background-color: #ffffff; /* logo sits inside the white card */
 }
 
@@ -189,14 +189,14 @@ img {
     -premailer-width: 570px;
     margin: 0 auto;
     padding: 0;
-    text-align: center;
+    text-align: left;
     width: 570px;
 }
 
 .footer p {
     color: #8a8a8a; /* ▸ PLACEHOLDER muted footer text */
     font-size: 12px;
-    text-align: center;
+    text-align: left;
 }
 
 .footer a {
@@ -241,7 +241,7 @@ img {
     -premailer-width: 100%;
     margin: 30px auto;
     padding: 0;
-    text-align: center;
+    text-align: left;
     width: 100%;
     float: unset;
 }

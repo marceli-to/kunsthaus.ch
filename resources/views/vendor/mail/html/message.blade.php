@@ -21,7 +21,10 @@
 {{-- Footer --}}
 <x-slot:footer>
 <x-mail::footer>
-© {{ date('Y') }} {{ config('app.name') }}
+Komitee «JA zum Kunsthaus»<br>
+Tessinerplatz 7<br>
+8002 Zürich<br>
+<a href="mailto:info@kunsthaus-ja.ch">info@kunsthaus-ja.ch</a>
 </x-mail::footer>
 </x-slot:footer>
 </x-mail::layout>
