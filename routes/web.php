@@ -5,10 +5,14 @@ use App\Http\Controllers\ModerateImageController;
 use App\Http\Controllers\RemoveImageController;
 use App\Http\Controllers\ServeGeneratedImageFileController;
 use App\Http\Controllers\ServePreviewController;
+use App\Http\Controllers\SitemapController;
 use Illuminate\Support\Facades\Route;
 
 // The landing page is served by Statamic's `pages` collection (home entry at /).
 // Statamic registers its own front-end + Control Panel routes automatically.
+
+// XML sitemap for search engines, generated from the routable Statamic entries.
+Route::get('/sitemap.xml', SitemapController::class)->name('sitemap');
 
 // Serve a pre-consent composite preview from the private disk. Reachable only
 // via the temporary signed URL minted by CompositeService.
