@@ -69,5 +69,31 @@
   "inLanguage": "de-CH"
 }
 </script>
+{{ if is_homepage }}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Abstimmung vom 27. September 2026: JA zum Kunsthaus Zürich",
+  "description": {{ seo_description | to_json }},
+  "url": "{{ config:app:url }}/",
+  "inLanguage": "de-CH",
+  "about": {
+    "@type": "Event",
+    "name": "Abstimmung: JA zum Kunsthaus Zürich",
+    "startDate": "2026-09-27",
+    "location": {
+      "@type": "Place",
+      "name": "Zürich",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Zürich",
+        "addressCountry": "CH"
+      }
+    }
+  }
+}
+</script>
+{{ /if }}
 {{ vite src="resources/css/app.css|resources/js/app.js" }}
 </head>
