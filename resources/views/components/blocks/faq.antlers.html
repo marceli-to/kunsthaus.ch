@@ -47,4 +47,23 @@
 
   {{ /partial:components/layout/inner }}
 
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {{ items }}
+      {
+        "@type": "Question",
+        "name": {{ title | to_json }},
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": {{ answer | strip_tags | to_json }}
+        }
+      }{{ unless last }},{{ /unless }}
+      {{ /items }}
+    ]
+  }
+  </script>
+
 </section>

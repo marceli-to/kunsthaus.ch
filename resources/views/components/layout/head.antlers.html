@@ -13,11 +13,11 @@
 	gtag('config', 'G-FV5LKP2314');
 </script>
 {{ if is_homepage }}
-<title>Ja zum Kunsthaus. Ja zu Zürich</title>
+<title>Abstimmung vom 27. September 2026: JA zum Kunsthaus Zürich</title>
 {{ else }}
 <title>{{ title ?? site:name }} — Ja zum Kunsthaus. Ja zu Zürich</title>
 {{ /if }}
-{{ seo_title = is_homepage ? "Ja zum Kunsthaus. Ja zu Zürich" : "{title} — Ja zum Kunsthaus. Ja zu Zürich" }}
+{{ seo_title = is_homepage ? "Abstimmung vom 27. September 2026: JA zum Kunsthaus Zürich" : "{title} — Ja zum Kunsthaus. Ja zu Zürich" }}
 {{ seo_description = meta_description ?? description ?? "Das Kunsthaus braucht unsere Hilfe." }}
 {{ seo_image = "{config:app:url}{og_image ?? '/img/og-image.jpg'}" }}
 <meta name="description" content="{{ seo_description }}">
@@ -43,5 +43,31 @@
 <meta name="apple-mobile-web-app-title" content="Ja zum Kunsthaus. Ja zu Zürich">
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#ffffff">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Komitee «JA zum Kunsthaus»",
+  "alternateName": "Ja zum Kunsthaus. Ja zu Zürich",
+  "url": "{{ config:app:url }}/",
+  "logo": "{{ config:app:url }}/img/logo.png",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Tessinerplatz 7, c/o FDP Stadt Zürich",
+    "postalCode": "8002",
+    "addressLocality": "Zürich",
+    "addressCountry": "CH"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Ja zum Kunsthaus. Ja zu Zürich",
+  "url": "{{ config:app:url }}/",
+  "inLanguage": "de-CH"
+}
+</script>
 {{ vite src="resources/css/app.css|resources/js/app.js" }}
 </head>
