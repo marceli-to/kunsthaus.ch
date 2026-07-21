@@ -22,7 +22,15 @@
       {{ /partial:components/headings/h3 }}
     {{ /if }}
 
-    {{ if committee }}
+    {{ if committee_text }}
+      <div class="text-accent
+        [&_ul]:grid [&_ul]:grid-cols-1 md:[&_ul]:grid-cols-2 [&_ul]:gap-x-16 md:[&_ul]:gap-x-24 xl:[&_ul]:gap-x-32 [&_ul]:gap-y-4 md:[&_ul]:gap-y-6 xl:[&_ul]:gap-y-8
+        [&_ul]:list-disc [&_ul]:pl-16 md:[&_ul]:pl-20
+        [&_p]:mb-4 md:[&_p]:mb-6 xl:[&_p]:mb-8
+        xl:[&_strong]:whitespace-nowrap">
+        {{ committee_text }}
+      </div>
+    {{ elseif committee }}
       <div x-data="{ expanded: false }">
 
         <ul class="grid grid-cols-1 md:grid-cols-2 gap-x-16 md:gap-x-24 xl:gap-x-32 gap-y-4 md:gap-y-6 xl:gap-y-8 list-disc pl-16 md:pl-20">

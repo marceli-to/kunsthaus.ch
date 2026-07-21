@@ -69,10 +69,25 @@ fields:
       type: text
       display: 'Komitee Title'
   -
+    handle: committee_text
+    field:
+      type: bard
+      display: 'Komitee (Liste)'
+      instructions: 'Unterstützende als Aufzählung erfassen, pro Zeile «Name, Titel». Wenn ausgefüllt, wird diese Liste anstelle der alten Komitee-Einträge angezeigt.'
+      buttons:
+        - bold
+        - italic
+        - unorderedlist
+        - removeformat
+      toolbar_mode: floating
+      remove_empty_nodes: true
+      collapse: true
+  -
     handle: committee
     field:
       type: replicator
-      display: Komitee
+      display: 'Komitee (alt)'
+      instructions: 'Wird nur noch angezeigt, solange «Komitee (Liste)» leer ist.'
       collapse: true
       sets:
         member:
