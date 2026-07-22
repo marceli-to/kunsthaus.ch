@@ -1,0 +1,50 @@
+# Alles erlaubt. Die KI-Crawler stehen zusätzlich explizit drin, damit die
+# Freigabe unmissverständlich ist — Recherchen zu Abstimmungsvorlagen laufen
+# zunehmend über KI-Tools, die Seite soll dort auffindbar sein.
+
+User-agent: *
+Disallow:
+
+# OpenAI (ChatGPT-Training, Live-Abruf im Chat, ChatGPT-Suche)
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+# Anthropic (Claude)
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+# Perplexity
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+# Google Gemini / AI Overviews
+User-agent: Google-Extended
+Allow: /
+
+# Apple Intelligence
+User-agent: Applebot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+# Microsoft Copilot
+User-agent: bingbot
+Allow: /
+
+Sitemap: https://kunsthaus-ja.ch/sitemap.xml
