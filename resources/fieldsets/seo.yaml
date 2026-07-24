@@ -6,3 +6,11 @@ fields:
       type: textarea
       display: 'Meta Description'
       localizable: false
+  -
+    handle: noindex
+    field:
+      type: toggle
+      display: 'Von Suchmaschinen ausschliessen (noindex)'
+      instructions: 'Verhindert die Indexierung dieser Seite (setzt <meta name="robots" content="noindex, nofollow">).'
+      default: false
+      localizable: false
