@@ -21,6 +21,7 @@
 {{ seo_description = meta_description ?? description ?? "Das Kunsthaus braucht unsere Hilfe." }}
 {{ seo_image = "{config:app:url}{og_image ?? '/img/og-image.jpg'}" }}
 <meta name="description" content="{{ seo_description }}">
+{{ if noindex }}<meta name="robots" content="noindex, nofollow">{{ /if }}
 <link rel="canonical" href="{{ current_url }}">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Ja zum Kunsthaus. Ja zu Zürich">

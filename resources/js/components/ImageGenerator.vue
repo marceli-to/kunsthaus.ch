@@ -10,6 +10,12 @@ import PhotoUpload from './generator/PhotoUpload.vue';
 import StyleSelect from './generator/StyleSelect.vue';
 import ResultPreview from './generator/ResultPreview.vue';
 
+// `public` (landing) stores + publishes on confirm; `private` (/jatelier
+// employee page) only emails/downloads the image — no record, no publishing.
+const props = defineProps({
+	mode: { type: String, default: 'public' },
+});
+
 // ── Config + geometry ──────────────────────────────────────────────────────
 const { styles, bgRemovalEnabled, geometry, uploadLimits, configError, loadConfig } = useGeneratorConfig();
 const { cropAspect, overlayStyle, signOverlapsPortrait, defaultSize, defaultPosition } = useGeometry(geometry);
@@ -176,6 +182,7 @@ function reset() {
 				:url="previewUrl"
 				:preview-id="previewId"
 				:email="form.email"
+				:mode="props.mode"
 				@reset="reset" />
 		</template>
 

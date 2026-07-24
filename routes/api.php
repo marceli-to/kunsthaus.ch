@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DeliverPrivateImageController;
 use App\Http\Controllers\GenerateImageController;
 use App\Http\Controllers\GeneratorConfigController;
 use App\Http\Controllers\SubmitImageController;
@@ -20,3 +21,9 @@ Route::post('/generate', GenerateImageController::class)->middleware('throttle:1
 // consent_at) and queue the copy email. Only needs {preview_id, email, consent}.
 // 20 requests/min per IP.
 Route::post('/submit', SubmitImageController::class)->middleware('throttle:20,1');
+
+// Private delivery (/jatelier, employee page): email the composite to the
+// employee for their own use + return a signed download URL. NO database record,
+// NO publishing — these images never reach the site. Only needs {preview_id,
+// email}. 20 requests/min per IP.
+Route::post('/deliver', DeliverPrivateImageController::class)->middleware('throttle:20,1');

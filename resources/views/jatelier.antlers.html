@@ -1,0 +1,56 @@
+<section id="jatelier" class="bg-accent text-white scroll-mt-20">
+
+  {{ partial:components/layout/inner spacing="pb-40 md:pb-60 xl:pb-80 pt-12 md:pt-32 xl:pt-52" }}
+
+    {{ partial:components/headings/h2 size="xl" class="mb-16 md:mb-24 xl:mb-32" }}
+      {{ heading ?? 'JAtelier' }}
+    {{ /partial:components/headings/h2 }}
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-20 md:gap-40 xl:gap-60">
+
+      <div>
+        {{ partial:components/headings/h3 size="sm" class="text-pretty mb-12 md:mb-16" }}
+          Gestalte dein persönliches «JA zum Kunsthaus» Bild für den privaten Gebrauch – zum Beispiel für deine Social-Media-Posts.
+        {{ /partial:components/headings/h3 }}
+
+        <div class="mb-24 md:mb-32">
+          <p>Lade ein Bild von dir hoch, wähle einen passenden Kunststil – und erstelle daraus dein persönliches Kampagnenbild. Das Bild wird <strong>nicht</strong> auf der Website veröffentlicht.</p>
+        </div>
+
+        {{ partial:components/headings/h3 size="sm" class="text-pretty mb-16 md:mb-20" }}
+          So funktioniert es:
+        {{ /partial:components/headings/h3 }}
+
+        <ol class="grid gap-20 md:gap-32 xl:gap-44">
+          <li>
+            <span class="block font-sans-bold mb-4">1. Bild hochladen</span>
+            <span class="block">Lade ein Foto von dir hoch. Am besten eignet sich ein Portraitbild, möglichst frontal aufgenommen. Verwendet wird vor allem der Bereich von Gesicht und Oberkörper.</span>
+          </li>
+          <li>
+            <span class="block font-sans-bold mb-4">2. Kunststil auswählen</span>
+            <span class="block">Wähle im Dropdown einen Zeichnungs- oder Malstil, der zu dir passt. Daraus entsteht dein persönliches «JA für das Kunsthaus».</span>
+          </li>
+          <li>
+            <span class="block font-sans-bold mb-4">3. Bild erstellen</span>
+            <span class="block">Das JAtelier kombiniert dein Foto mit deinem individuellen JA. Das fertige Bild wird dir zum Download angeboten und per E-Mail zugeschickt – es wird nicht auf der Website publiziert.</span>
+          </li>
+          <li>
+            <span class="block font-sans-bold mb-4">4. Bild herunterladen und teilen</span>
+            <span class="block">Lade dein Bild herunter und zeige deinem Umfeld, dass dir das Kunsthaus am Herzen liegt. Teile dein JA auf Social Media, per WhatsApp oder direkt mit Freundinnen, Freunden und Bekannten.</span>
+          </li>
+        </ol>
+
+        <p class="text-sm md:text-md xl:text-lg leading-[1.25] font-sans-bold mt-24 md:mt-32 xl:mt-44">Jedes JA zählt. Mach sichtbar, dass Zürich JA zum Kunsthaus sagt.</p>
+      </div>
+
+      <div>
+        <div id="image-generator" data-mode="private">
+          <noscript>Bitte aktivieren Sie JavaScript, um Ihr persönliches JA zu gestalten.</noscript>
+        </div>
+      </div>
+
+    </div>
+
+  {{ /partial:components/layout/inner }}
+
+</section>

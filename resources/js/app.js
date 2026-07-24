@@ -20,11 +20,13 @@ initShyLogo();
 // Header visuals slideshow — Swiper on every [data-slideshow] block.
 initSlideshows();
 
-// Vue island — mount only where the landing page provides a target.
+// Vue island — mount where a page provides a target (landing block or the
+// /jatelier employee page). The component fetches its own config (styles,
+// bg-removal, geometry) from /api/generator on mount. The only prop is `mode`:
+// `public` (default, landing) stores + publishes; `private` (data-mode="private",
+// /jatelier) only emails/downloads the image and never touches the database.
 const el = document.getElementById('image-generator');
 
 if (el) {
-    // The component fetches its own config (styles, bg-removal, geometry) from
-    // /api/generator on mount — no props to wire here.
-    createApp(ImageGenerator).mount(el);
+    createApp(ImageGenerator, { mode: el.dataset.mode ?? 'public' }).mount(el);
 }

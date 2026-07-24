@@ -1,42 +1,52 @@
 <script setup>
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import BaseButton from '../BaseButton.vue';
 import FormCheckbox from '../form/FormCheckbox.vue';
 
-// Preview + confirm step. The image is generated but NOT yet stored: the visitor
-// must give consent ("Verwenden") before we create a record and email a copy.
-// On submit success we swap to the permanent download.
+// Preview + confirm step. The image is generated but NOT yet delivered.
+//
+// `public` (landing): the visitor must consent to PUBLICATION ("Verwenden")
+// before we store a record and email a copy — POST /api/submit.
+//
+// `private` (/jatelier, employees): the image is for the person's OWN use, so
+// there is no publish-consent and nothing is stored. One click emails it and
+// reveals the download — POST /api/deliver.
 const props = defineProps({
 	url: { type: String, required: true },      // signed temp preview URL
 	previewId: { type: String, required: true },
 	email: { type: String, required: true },
+	mode: { type: String, default: 'public' },
 });
 
 defineEmits(['reset']);
 
+const isPrivate = computed(() => props.mode === 'private');
+
 const consent = ref(false);
 const submitting = ref(false);
 const error = ref('');
-const downloadUrl = ref('');   // set once submitted → permanent, signed
+const downloadUrl = ref('');   // set once submitted/delivered → permanent, signed
 
 async function submit() {
-	if (!consent.value || submitting.value) return;
+	// Public needs consent; private delivers straight away.
+	if ((!isPrivate.value && !consent.value) || submitting.value) return;
 
 	submitting.value = true;
 	error.value = '';
 
 	try {
-		const res = await fetch('/api/submit', {
+		const endpoint = isPrivate.value ? '/api/deliver' : '/api/submit';
+		const payload = isPrivate.value
+			? { preview_id: props.previewId, email: props.email }
+			: { preview_id: props.previewId, email: props.email, consent: true };
+
+		const res = await fetch(endpoint, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
 				Accept: 'application/json',
 			},
-			body: JSON.stringify({
-				preview_id: props.previewId,
-				email: props.email,
-				consent: true,
-			}),
+			body: JSON.stringify(payload),
 		});
 		const json = await res.json().catch(() => ({}));
 
@@ -64,10 +74,11 @@ async function submit() {
 			height="1350"
 			class="w-full h-auto border-2 border-white bg-white">
 
-		<!-- Submitted: permanent download + confirmation -->
+		<!-- Delivered: permanent download + confirmation -->
 		<template v-if="downloadUrl">
       <div class="space-y-16 md:space-y-24">
-        <div>Vielen Dank! Ihr Bild wurde gespeichert und wird nun geprüft. Nach der Freigabe erhalten Sie eine E-Mail als Bestätigung.</div>
+        <div v-if="isPrivate">Ihr Bild wurde an {{ email }} gesendet. Sie können es hier auch direkt herunterladen.</div>
+        <div v-else>Vielen Dank! Ihr Bild wurde gespeichert und wird nun geprüft. Nach der Freigabe erhalten Sie eine E-Mail als Bestätigung.</div>
         <div class="flex flex-col items-center gap-8 md:gap-16">
           <BaseButton
             class="w-full"
@@ -75,15 +86,21 @@ async function submit() {
             download="ja-zum-kunsthaus.jpg">
             Herunterladen
           </BaseButton>
+
+          <BaseButton
+            variant="ghost"
+            @click="$emit('reset')">
+            Neues Bild
+          </BaseButton>
         </div>
       </div>
 		</template>
 
-		<!-- Preview: consent + confirm -->
+		<!-- Preview: confirm (public: + publish-consent) -->
 		<template v-else>
       <div class="space-y-16 md:space-y-24">
-        
-        <FormCheckbox v-model="consent">
+
+        <FormCheckbox v-if="!isPrivate" v-model="consent">
           Ich habe das Recht, dieses Foto und den eingegebenen Namen zu verwenden und bin damit einverstanden, dass mein Bild veröffentlicht wird
         </FormCheckbox>
 
@@ -96,9 +113,10 @@ async function submit() {
         <div class="flex flex-col items-center gap-8 md:gap-16">
           <BaseButton
             class="w-full"
-            :disabled="!consent || submitting"
+            :disabled="(!isPrivate && !consent) || submitting"
             @click="submit">
-            {{ submitting ? 'Wird gespeichert…' : 'Verwenden' }}
+            <template v-if="isPrivate">{{ submitting ? 'Wird gesendet…' : 'Herunterladen &amp; per E-Mail erhalten' }}</template>
+            <template v-else>{{ submitting ? 'Wird gespeichert…' : 'Verwenden' }}</template>
           </BaseButton>
 
           <BaseButton

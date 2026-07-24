@@ -30,6 +30,7 @@ class RoutableEntries
 			->where('published', true)
 			->get()
 			->reject(fn ($entry) => $entry->private())
+			->reject(fn ($entry) => (bool) $entry->value('noindex'))
 			->filter(fn ($entry) => $entry->url())
 			->values();
 	}
